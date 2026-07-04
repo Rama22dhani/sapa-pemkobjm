@@ -108,7 +108,7 @@
                 </button>
                 <div class="hidden md:flex items-center bg-slate-100 px-3 py-2 rounded-lg text-slate-500 focus-within:ring-2 focus-within:ring-bjm-gold">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" placeholder="Cari data kasus..." class="bg-transparent border-none outline-none text-sm w-48">
+                    <input type="text" id="kolomPencarian" placeholder="Ketik untuk mencari data..." class="bg-transparent border-none outline-none text-sm w-48 transition-all duration-300 focus:w-64">
                 </div>
             </div>
 
@@ -1243,5 +1243,32 @@
             </div>
         </div>
     </div>
+    <!-- MESIN PENCARI LIVE (GLOBAL SEARCH) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('kolomPencarian');
+            
+            searchInput.addEventListener('keyup', function(e) {
+                const keyword = e.target.value.toLowerCase();
+                // Mengambil seluruh baris data di semua tabel yang ada di Dasbor Admin
+                const rows = document.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    // Mengabaikan baris pesan kosong (seperti: "Belum ada data kasus masuk")
+                    if (row.querySelector('td[colspan]')) return;
+
+                    // Mengambil seluruh teks di dalam satu baris tabel tersebut
+                    const rowText = row.textContent.toLowerCase();
+                    
+                    // Logika Filter: Tampilkan jika cocok, sembunyikan jika tidak cocok
+                    if (rowText.includes(keyword)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
