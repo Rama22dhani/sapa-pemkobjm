@@ -3,16 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Masuk - Manajemen Pelaporan dan Pelanggaran</title>
+    <title>Masuk - Aplikasi Manajemen Pelaporan Pegawai</title>
 
-    <!-- Font Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Memanggil Tailwind -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
-    <!-- Fallback CDN jika Vite belum di-build -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -28,75 +25,86 @@
         }
     </script>
 </head>
-<body class="font-sans antialiased bg-bjm-dark min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+<body class="font-sans antialiased bg-bjm-dark min-h-screen flex items-center justify-center p-4 py-12 relative overflow-x-hidden overflow-y-auto selection:bg-bjm-gold selection:text-white">
+    
+    <a href="{{ url('/') }}" class="group absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 text-slate-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2.5 rounded-xl transition-all duration-300 font-medium text-sm z-50 backdrop-blur-md shadow-lg">
+        <svg class="w-4 h-4 transform transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Kembali ke Beranda
+    </a>
 
-    <!-- Efek Latar Belakang -->
-    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-bjm-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-bjm-gold/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden relative z-10">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden relative z-10 border border-white/20 transform transition-all">
         
-        <!-- Header / Logo Area -->
-        <div class="bg-slate-50 px-8 pt-10 pb-6 text-center border-b border-slate-100">
-            <img src="{{ asset('images/logo-bjm.png') }}" alt="Logo Banjarmasin" class="w-20 h-auto mx-auto drop-shadow-md mb-4">
-            <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Selamat Datang</h2>
-            <p class="text-sm text-slate-500 mt-2 font-medium">Aplikasi Manajemen Pelaporan dan Pelanggaran Pegawai<br>Pemerintah Kota Banjarmasin</p>
+        <div class="h-2 w-full bg-gradient-to-r from-yellow-400 via-bjm-gold to-amber-600"></div>
+
+        <div class="px-8 pt-10 pb-6 text-center">
+            <img src="{{ asset('images/logo-bjm.png') }}" alt="Logo Banjarmasin" class="w-20 h-auto mx-auto drop-shadow-md mb-5 hover:scale-105 transition-transform duration-300">
+            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-1">Selamat Datang</h2>
+            <p class="text-xs text-slate-500 font-medium leading-relaxed px-4">
+                Aplikasi Manajemen Pelaporan dan Pelanggaran Pegawai Kota Banjarmasin
+            </p>
         </div>
 
-        <!-- Form Area -->
-        <div class="px-8 py-8">
+        <div class="px-8 pb-10">
             
-            <!-- Session Status (Pesan Error/Sukses bawaan Laravel) -->
-            <x-auth-session-status class="mb-4" :status="session('status')" />
+            <x-auth-session-status class="mb-5 bg-emerald-50 text-emerald-600 p-3 rounded-xl text-sm font-bold border border-emerald-200 text-center" :status="session('status')" />
 
             <form method="POST" action="{{ route('login') }}" class="space-y-5">
                 @csrf
 
-                <!-- Email Address -->
-                <div>
-                    <label for="email" class="block text-sm font-bold text-slate-700 mb-1.5">Alamat Email</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" 
-                        class="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-xl px-4 py-3 focus:border-bjm-gold focus:ring-2 focus:ring-bjm-gold/20 outline-none transition-all placeholder:text-slate-400"
-                        placeholder="Masukkan email Anda">
-                    <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs text-red-500" />
+                <div class="space-y-1.5">
+                    <label for="email" class="block text-sm font-bold text-slate-700">Alamat Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
+                        </div>
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" 
+                            class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-11 pr-4 py-3 focus:bg-white focus:border-bjm-gold focus:ring-4 focus:ring-bjm-gold/10 outline-none transition-all duration-300 placeholder:text-slate-400 shadow-sm"
+                            placeholder="Masukkan email Anda">
+                    </div>
+                    <x-input-error :messages="$errors->get('email')" class="mt-1 text-xs text-red-500 font-medium" />
                 </div>
 
-                <!-- Password -->
-                <div>
-                    <div class="flex justify-between items-center mb-1.5">
+                <div class="space-y-1.5 pt-1">
+                    <div class="flex justify-between items-center">
                         <label for="password" class="block text-sm font-bold text-slate-700">Kata Sandi</label>
                         @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-xs font-semibold text-bjm-gold hover:text-amber-700 transition">
+                            <a href="{{ route('password.request') }}" class="text-xs font-bold text-bjm-gold hover:text-amber-700 transition-colors">
                                 Lupa Sandi?
                             </a>
                         @endif
                     </div>
-                    <input id="password" type="password" name="password" required autocomplete="current-password" 
-                        class="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-xl px-4 py-3 focus:border-bjm-gold focus:ring-2 focus:ring-bjm-gold/20 outline-none transition-all placeholder:text-slate-400"
-                        placeholder="••••••••">
-                    <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs text-red-500" />
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <input id="password" type="password" name="password" required autocomplete="current-password" 
+                            class="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl pl-11 pr-4 py-3 focus:bg-white focus:border-bjm-gold focus:ring-4 focus:ring-bjm-gold/10 outline-none transition-all duration-300 placeholder:text-slate-400 shadow-sm"
+                            placeholder="••••••••">
+                    </div>
+                    <x-input-error :messages="$errors->get('password')" class="mt-1 text-xs text-red-500 font-medium" />
                 </div>
 
-                <!-- Remember Me & Submit -->
-                <div class="flex items-center justify-between pt-2">
+                <div class="flex items-center justify-between pt-1 pb-2">
                     <label for="remember_me" class="inline-flex items-center cursor-pointer group">
-                        <input id="remember_me" type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-bjm-gold focus:ring-bjm-gold transition cursor-pointer">
-                        <span class="ms-2 text-sm font-medium text-slate-600 group-hover:text-slate-800 transition">Ingat saya</span>
+                        <div class="relative flex items-center">
+                            <input id="remember_me" type="checkbox" name="remember" class="peer w-4 h-4 rounded border-slate-300 text-bjm-gold focus:ring-bjm-gold/30 transition cursor-pointer">
+                        </div>
+                        <span class="ms-2 text-sm font-medium text-slate-500 group-hover:text-slate-800 transition-colors">Ingat saya</span>
                     </label>
                 </div>
 
-                <div class="pt-2">
-                    <button type="submit" class="w-full flex justify-center items-center gap-2 bg-bjm-dark hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-bjm-dark focus:ring-offset-2">
-                        Masuk ke Sistem
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </button>
-                </div>
+                <button type="submit" class="group w-full flex justify-center items-center gap-2 bg-bjm-dark hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-slate-800/30">
+                    Masuk ke Sistem
+                    <svg class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
 
-                <!-- Link to Register -->
                 @if (Route::has('register'))
-                <p class="text-center text-sm text-slate-500 font-medium mt-6">
-                    Belum memiliki akun pelapor? 
-                    <a href="{{ route('register') }}" class="text-bjm-gold font-bold hover:text-amber-700 transition">Daftar sekarang</a>
+                <p class="text-center text-sm text-slate-500 font-medium mt-8 pt-6 border-t border-slate-100">
+                    Belum memiliki akun pelapor? <br>
+                    <a href="{{ route('register') }}" class="inline-block mt-1 text-bjm-gold font-bold hover:text-amber-700 hover:underline transition-all">Daftar akun baru sekarang</a>
                 </p>
                 @endif
             </form>

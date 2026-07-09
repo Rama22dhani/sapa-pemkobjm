@@ -25,6 +25,10 @@
     </script>
 </head>
 <body class="bg-bjm-blue text-gray-100 min-h-screen flex flex-col items-center pt-10 px-4 font-sans relative overflow-x-hidden">
+    <a href="{{ url('/') }}" class="absolute top-4 left-4 sm:top-6 sm:left-6 flex items-center gap-2 text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 border border-white/10 px-4 py-2 rounded-lg transition font-medium text-sm z-50 backdrop-blur-sm shadow-lg">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        Kembali
+    </a>
 
     <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-bjm-gold rounded-full blur-[150px] opacity-5 z-0 pointer-events-none"></div>
     <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600 rounded-full blur-[150px] opacity-10 z-0 pointer-events-none"></div>

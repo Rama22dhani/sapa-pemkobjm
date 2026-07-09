@@ -48,7 +48,7 @@
     <div class="bg-bjm-dark pt-8 pb-24 px-4 sm:px-6 lg:px-8 border-b-4 border-bjm-gold">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <div>
-                <p class="text-slate-300 text-sm font-medium mb-1">Tiket Pengaduan</p>
+                <p class="text-slate-300 text-sm font-medium mb-1">Kode Kasus Pengaduan</p>
                 <h1 class="text-3xl font-bold text-white">#{{ $pengaduan->kode_tiket }}</h1>
             </div>
         </div>
@@ -183,7 +183,7 @@
                 @if($pengaduan->status == 'ditolak')
                     <div class="bg-red-50 border border-red-200 rounded-xl p-6">
                         <p class="text-xs text-red-600 uppercase font-bold tracking-wider mb-2 flex items-center gap-2">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             Alasan Penolakan
                         </p>
                         <p class="text-red-800 font-medium">{{ $pengaduan->alasan_penolakan }}</p>
@@ -352,7 +352,7 @@
                     @else
                         <div class="text-center py-10 bg-slate-50 rounded-xl border border-dashed border-slate-300">
                             <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                            <p class="text-slate-500 font-medium">Belum ada tanggapan atau pesan masuk dari pelapor untuk tiket ini.</p>
+                            <p class="text-slate-500 font-medium">Belum ada tanggapan atau pesan masuk dari pelapor untuk kasus ini.</p>
                         </div>
                     @endif
                 </div>
