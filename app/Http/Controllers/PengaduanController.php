@@ -23,6 +23,13 @@ class PengaduanController extends Controller
         return view('pelapor.dashboard', compact('laporans'));
     }
 
+    // FUNGSI BARU: Menampilkan Halaman Formulir Pengaduan Khusus
+    public function create()
+    {
+        $user = Auth::user();
+        return view('pelapor.create', compact('user'));
+    }
+
     public function store(Request $request)
     {
         // Validasi Input
@@ -68,7 +75,7 @@ class PengaduanController extends Controller
         ]);
 
         return redirect()->route('pelapor.dashboard')
-            ->with('success', 'Laporan berhasil dikirim! Kode Tiket: ' . $kodeTiket);
+            ->with('success', 'Laporan berhasil dikirim! Kode Kasus: ' . $kodeTiket);
     
     }
 

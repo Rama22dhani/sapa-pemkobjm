@@ -83,9 +83,12 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="{{ route('pelapor.dashboard') }}" class="group relative flex items-center justify-center gap-3 bg-bjm-gold hover:bg-bjm-gold-light text-white text-lg font-bold py-4 px-8 rounded-xl transition transform hover:-translate-y-1 shadow-xl hover:shadow-2xl hover:shadow-bjm-gold/30">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
-                        <span>Buat Pengaduan &rarr;</span>
+                    <a href="{{ route('pelapor.create') }}" 
+                        class="relative z-10 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-bold text-white text-sm shadow-md transition transform hover:-translate-y-0.5 w-full md:w-auto bg-bjm-gold hover:bg-amber-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Buat Pengaduan Baru
                     </a>
                     
                     <a href="{{ route('lacak') }}" class="flex items-center justify-center gap-3 bg-bjm-surface/50 backdrop-blur-md border border-gray-600 hover:border-bjm-gold/50 text-white text-lg font-semibold py-4 px-8 rounded-xl transition hover:bg-gray-800">

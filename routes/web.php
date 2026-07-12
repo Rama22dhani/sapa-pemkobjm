@@ -35,14 +35,18 @@ Route::post('/lacak', [PengaduanController::class, 'cariLacak'])->name('lacak.ca
 // === GRUP ROUTE YANG BUTUH LOGIN (AUTH) ===
 Route::middleware('auth')->group(function () {
     
-    // 1. AREA PELAPOR (MAS FAUZI)
+    // 1. AREA PELAPOR 
     Route::get('/pelapor/dashboard', [PengaduanController::class, 'index'])->name('pelapor.dashboard');
+    
+    // BARIS BARU: Route khusus untuk menampilkan halaman formulir
+    Route::get('/pelapor/pengaduan/buat', [PengaduanController::class, 'create'])->name('pelapor.create');
+    
     Route::post('/pelapor/kirim', [PengaduanController::class, 'store'])->name('pelapor.store');
     Route::post('/pelapor/tanggapan', [PengaduanController::class, 'storeTanggapan'])->name('pelapor.tanggapan.store');
 
     // --- AREA VERIFIKATOR TELAH RESMI DIHAPUS DARI SISTEM ---
 
-    // 2. AREA INVESTIGATOR (HAMBALI)
+    // 2. AREA INVESTIGATOR 
     Route::middleware('peran:investigator')->group(function () {
         Route::get('/investigator/dashboard', [PengaduanController::class, 'indexInvestigator'])
             ->name('investigator.dashboard');
@@ -52,7 +56,7 @@ Route::middleware('auth')->group(function () {
             ->name('investigator.update');
     });
 
-    // 3. AREA ADMINISTRATOR (RAMA - PUSAT KENDALI TUNGGAL)
+    // 3. AREA ADMINISTRATOR (PUSAT KENDALI TUNGGAL)
     Route::middleware('peran:admin')->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])
             ->name('admin.dashboard');
