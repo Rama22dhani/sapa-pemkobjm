@@ -38,7 +38,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('investigator.dashboard');
         } 
         elseif ($peran === 'pelapor') {
-            return redirect()->route('pelapor.dashboard');
+            // REVISI: Menggunakan intended() agar bisa membaca "URL Tujuan Awal"
+            // Jika ada tujuan awal (seperti form), lari ke form. Jika tidak, ke dashboard pelapor.
+            return redirect()->intended(route('pelapor.dashboard', absolute: false));
         }
 
         return redirect()->intended(route('dashboard', absolute: false));

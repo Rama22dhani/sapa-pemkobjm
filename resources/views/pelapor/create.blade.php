@@ -144,18 +144,20 @@
                     <input type="file" name="lampiran_bukti" class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-white border border-blue-200 rounded-xl shadow-sm transition-all"/>
                 </div>
 
-                <div class="flex flex-col sm:flex-row justify-end gap-3 border-t border-slate-200 pt-5">
+                <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-slate-200 mt-6">
                     <!-- Tombol Batal -->
                     <a href="{{ route('pelapor.dashboard') }}" 
-                        style="background-color: #e2e8f0; color: #475569; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; display: inline-block;">
+                        class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl font-bold text-slate-500 bg-slate-100 border border-slate-200 hover:bg-slate-200 hover:text-slate-800 transition-colors duration-200 text-sm">
                         Batal
                     </a>
                     
                     <!-- Tombol Kirim Pengaduan -->
                     <button type="submit" 
-                            style="background-color: #0f172a; color: white; padding: 12px 24px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                            class="group inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-white bg-bjm-blue hover:bg-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-bjm-blue/30 outline-none text-sm">
                         <span>Kirim Pengaduan Kasus</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                        <svg class="w-4 h-4 transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
                     </button>
                 </div>
             </form>

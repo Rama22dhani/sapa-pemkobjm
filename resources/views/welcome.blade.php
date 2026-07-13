@@ -83,17 +83,22 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <!-- Tombol Buat Pengaduan (Primary Action) -->
                     <a href="{{ route('pelapor.create') }}" 
-                        class="relative z-10 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-bold text-white text-sm shadow-md transition transform hover:-translate-y-0.5 w-full md:w-auto bg-bjm-gold hover:bg-amber-600">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        class="group relative z-10 inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-extrabold text-white text-base sm:text-lg bg-gradient-to-r from-bjm-gold to-amber-600 shadow-xl shadow-amber-600/30 transition-all duration-300 transform hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-amber-500/60 w-full md:w-auto">
+                        <svg class="w-6 h-6 transition-transform duration-300 group-hover:scale-125" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
                         </svg>
-                        Buat Pengaduan Baru
+                        <span class="tracking-wide">Buat Pengaduan Baru</span>
                     </a>
                     
-                    <a href="{{ route('lacak') }}" class="flex items-center justify-center gap-3 bg-bjm-surface/50 backdrop-blur-md border border-gray-600 hover:border-bjm-gold/50 text-white text-lg font-semibold py-4 px-8 rounded-xl transition hover:bg-gray-800">
-                        <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <span>Lacak Status Kasus</span>
+                    <!-- Tombol Lacak Status Kasus (Secondary Action) -->
+                    <a href="{{ route('lacak') }}" 
+                        class="group relative z-10 inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl font-bold text-white text-base sm:text-lg bg-white/5 backdrop-blur-md border border-gray-500 hover:border-bjm-gold hover:bg-white/10 shadow-lg hover:shadow-bjm-gold/20 transition-all duration-300 transform hover:-translate-y-1.5 w-full md:w-auto">
+                        <svg class="w-6 h-6 text-gray-300 group-hover:text-bjm-gold transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <span class="tracking-wide">Lacak Status Kasus</span>
                     </a>
                 </div>
             </div>

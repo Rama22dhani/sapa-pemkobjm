@@ -32,15 +32,20 @@ Route::get('/dashboard', function () {
 Route::get('/lacak', [PengaduanController::class, 'formLacak'])->name('lacak');
 Route::post('/lacak', [PengaduanController::class, 'cariLacak'])->name('lacak.cari');
 
+
+// =========================================================================
+// ROUTE FORMULIR PENGADUAN (Dikeluarkan dari Grup agar Redirect Login Berhasil)
+// =========================================================================
+Route::get('/pelapor/pengaduan/buat', [PengaduanController::class, 'create'])
+    ->name('pelapor.create')
+    ->middleware('auth');
+
+
 // === GRUP ROUTE YANG BUTUH LOGIN (AUTH) ===
 Route::middleware('auth')->group(function () {
     
     // 1. AREA PELAPOR 
     Route::get('/pelapor/dashboard', [PengaduanController::class, 'index'])->name('pelapor.dashboard');
-    
-    // BARIS BARU: Route khusus untuk menampilkan halaman formulir
-    Route::get('/pelapor/pengaduan/buat', [PengaduanController::class, 'create'])->name('pelapor.create');
-    
     Route::post('/pelapor/kirim', [PengaduanController::class, 'store'])->name('pelapor.store');
     Route::post('/pelapor/tanggapan', [PengaduanController::class, 'storeTanggapan'])->name('pelapor.tanggapan.store');
 
