@@ -8,7 +8,6 @@ use App\Models\Pengaduan;
 
 // --- HALAMAN UTAMA ---
 Route::get('/', function () {
-    // Hitung statistik
     $totalLaporan = Pengaduan::count();
     $laporanSelesai = Pengaduan::where('status', 'selesai')->count();
     
@@ -17,13 +16,12 @@ Route::get('/', function () {
         $persentase = round(($laporanSelesai / $totalLaporan) * 100);
     }
 
-    // Ambil 2 laporan terbaru untuk Live Monitoring
     $laporanTerbaru = Pengaduan::latest()->take(2)->get();
 
     return view('welcome', compact('totalLaporan', 'persentase', 'laporanTerbaru'));
 });
 
-// --- DASHBOARD UMUM (REDIRECTOR) ---
+// --- DASHBOARD UMUM ---
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -33,9 +31,8 @@ Route::get('/lacak', [PengaduanController::class, 'formLacak'])->name('lacak');
 Route::post('/lacak', [PengaduanController::class, 'cariLacak'])->name('lacak.cari');
 
 
-// =========================================================================
+
 // ROUTE FORMULIR PENGADUAN (Dikeluarkan dari Grup agar Redirect Login Berhasil)
-// =========================================================================
 Route::get('/pelapor/pengaduan/buat', [PengaduanController::class, 'create'])
     ->name('pelapor.create')
     ->middleware('auth');
@@ -48,8 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/pelapor/dashboard', [PengaduanController::class, 'index'])->name('pelapor.dashboard');
     Route::post('/pelapor/kirim', [PengaduanController::class, 'store'])->name('pelapor.store');
     Route::post('/pelapor/tanggapan', [PengaduanController::class, 'storeTanggapan'])->name('pelapor.tanggapan.store');
-
-    // --- AREA VERIFIKATOR TELAH RESMI DIHAPUS DARI SISTEM ---
 
     // 2. AREA INVESTIGATOR 
     Route::middleware('peran:investigator')->group(function () {
