@@ -52,15 +52,24 @@
 
         <!-- TAB: DATA KASUS -->
         <div x-show="tab === 'laporan'" class="bg-white border border-slate-200 rounded-xl p-8 shadow-sm space-y-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
                     <p class="text-xs text-slate-500 uppercase font-bold mb-2">Identitas Pelapor</p>
                     <p class="text-slate-800 font-bold text-lg">{{ $pengaduan->nama_pelapor }}</p>
-                    <p class="text-slate-600 text-sm">{{ $pengaduan->nomor_hp }} | {{ $pengaduan->email }}</p>
+                    <p class="text-slate-600 text-sm mt-1">{{ $pengaduan->nomor_hp }} | {{ $pengaduan->email }}</p>
+                    @if($pengaduan->nip)
+                        <p class="text-slate-500 text-xs mt-1">NIP: {{ $pengaduan->nip }}</p>
+                    @endif
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 uppercase font-bold mb-2">Detail Kejadian</p>
+                    <p class="text-slate-800 font-semibold text-sm">Lokasi: <span class="font-normal text-slate-600">{{ $pengaduan->lokasi_kejadian }}</span></p>
+                    <p class="text-slate-800 font-semibold text-sm mt-1">Tanggal: <span class="font-normal text-slate-600">{{ \Carbon\Carbon::parse($pengaduan->tanggal_kejadian)->format('d M Y') }}</span></p>
+                    <p class="text-slate-800 font-semibold text-sm mt-1">Kategori: <span class="font-normal text-slate-600">{{ $pengaduan->kategori_laporan }}</span></p>
                 </div>
                 <div>
                     <p class="text-xs text-slate-500 uppercase font-bold mb-2">Tingkat Pelanggaran</p>
-                    <span class="px-4 py-1.5 text-xs rounded-full font-bold border {{ $pengaduan->tingkat_pelanggaran == 'Berat' ? 'bg-red-50 text-red-700 border-red-200' : ($pengaduan->tingkat_pelanggaran == 'Sedang' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200') }}">
+                    <span class="px-4 py-1.5 text-xs rounded-full font-bold border inline-block mt-1 {{ $pengaduan->tingkat_pelanggaran == 'Berat' ? 'bg-red-50 text-red-700 border-red-200' : ($pengaduan->tingkat_pelanggaran == 'Sedang' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200') }}">
                         {{ $pengaduan->tingkat_pelanggaran ?? 'Belum Ditentukan' }}
                     </span>
                 </div>
@@ -79,7 +88,7 @@
                 <p class="text-xs text-cyan-800 uppercase font-bold mb-3">Informasi Tambahan Pelapor</p>
                 <p class="text-cyan-900 italic font-medium">"{{ $pengaduan->pesan_susulan }}"</p>
                 @if($pengaduan->lampiran_susulan)
-                    <a href="{{ asset('storage/' . $pengaduan->lampiran_susulan) }}" target="_blank" class="mt-4 inline-block text-xs font-bold text-cyan-700 hover:underline">📎 Lihat Lampiran Bukti Tambahan</a>
+                    <a href="{{ \Illuminate\Support\Str::startsWith($pengaduan->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset('storage/' . $pengaduan->lampiran_susulan) : asset('uploads/pengaduan/' . $pengaduan->lampiran_susulan) }}" target="_blank" class="mt-4 inline-block text-xs font-bold text-cyan-700 hover:underline">📎 Lihat Lampiran Bukti Tambahan</a>
                 @endif
             </div>
             @endif
@@ -94,9 +103,33 @@
         <!-- TAB: INVESTIGASI -->
         @if($pengaduan->status == 'selesai' || $pengaduan->status == 'investigasi')
         <div x-show="tab === 'investigasi'" style="display: none;" class="bg-white border border-slate-200 rounded-xl p-8 shadow-sm space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-slate-100 pb-6">
+                <div>
+                    <p class="text-xs text-slate-500 uppercase font-bold mb-1">Investigator Lapangan</p>
+                    <p class="text-slate-800 font-bold text-base flex items-center gap-2">
+                        <span>🕵️‍♂️</span> {{ $pengaduan->investigator->name ?? 'Belum Ditugaskan' }}
+                    </p>
+                    <p class="text-slate-500 text-xs mt-0.5">{{ $pengaduan->investigator->email ?? '' }}</p>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-500 uppercase font-bold mb-2">Bukti Temuan Lapangan</p>
+                    @if($pengaduan->bukti_investigasi)
+                        <a href="{{ asset('storage/' . $pengaduan->bukti_investigasi) }}" target="_blank" class="inline-flex items-center gap-2 bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold px-4 py-2 rounded-lg text-xs border border-purple-200 transition shadow-sm">
+                            📎 Lihat Lampiran Bukti Temuan
+                        </a>
+                    @else
+                        <span class="text-slate-400 italic text-xs">Tidak ada lampiran bukti temuan</span>
+                    @endif
+                </div>
+            </div>
+            
             <div>
                 <p class="text-xs text-bjm-gold uppercase font-bold mb-2">Fakta Lapangan</p>
                 <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-slate-700 leading-relaxed whitespace-pre-line">{{ $pengaduan->fakta_lapangan ?? '-' }}</div>
+            </div>
+            <div>
+                <p class="text-xs text-bjm-gold uppercase font-bold mb-2">Pihak Terkait / Saksi</p>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-slate-700 leading-relaxed whitespace-pre-line">{{ $pengaduan->pihak_terlibat ?? '-' }}</div>
             </div>
             <div>
                 <p class="text-xs text-bjm-gold uppercase font-bold mb-2">Kesimpulan & Rekomendasi</p>
@@ -108,9 +141,19 @@
         <!-- TAB: TINDAK LANJUT -->
         @if($pengaduan->status == 'selesai')
         <div x-show="tab === 'keputusan'" style="display: none;" class="bg-white border border-slate-200 rounded-xl p-8 shadow-sm space-y-6">
-            <div>
-                <p class="text-xs text-emerald-600 uppercase font-bold mb-2">Instansi Penindak</p>
-                <p class="text-slate-800 font-bold text-lg">{{ $pengaduan->pihak_penindak ?? '-' }}</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-b border-slate-100 pb-6">
+                <div>
+                    <p class="text-xs text-emerald-600 uppercase font-bold mb-1">Instansi Penindak</p>
+                    <p class="text-slate-800 font-bold text-base flex items-center gap-2">
+                        <span>⚖️</span> {{ $pengaduan->pihak_penindak ?? '-' }}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-emerald-600 uppercase font-bold mb-1">Tanggal Eksekusi</p>
+                    <p class="text-slate-800 font-bold text-base flex items-center gap-2">
+                        <span>📅</span> {{ $pengaduan->tanggal_tindak_lanjut ? \Carbon\Carbon::parse($pengaduan->tanggal_tindak_lanjut)->format('d M Y') : '-' }}
+                    </p>
+                </div>
             </div>
             <div>
                 <p class="text-xs text-emerald-600 uppercase font-bold mb-2">Detail Keputusan / Sanksi</p>

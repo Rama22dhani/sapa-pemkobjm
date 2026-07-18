@@ -40,29 +40,93 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-1 space-y-6">
-                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                    <h3 class="text-sm font-bold text-bjm-dark uppercase tracking-wider mb-4 border-b border-slate-100 pb-3 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-bjm-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        Ringkasan Investigator
-                    </h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Petugas Lapangan</p>
-                            <p class="text-slate-800 font-medium text-sm">{{ $pengaduan->investigator->name ?? 'Tim Lapangan' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Fakta Lapangan</p>
-                            <div class="bg-slate-50 p-3 rounded border border-slate-100 text-sm text-slate-700 leading-relaxed max-h-40 overflow-y-auto">
-                                {{ $pengaduan->fakta_lapangan ?? '-' }}
+            <div class="lg:col-span-1">
+                <div class="space-y-6 sticky top-24 max-h-[calc(100vh-6rem)] overflow-y-auto pr-1 pb-4">
+                    <!-- KARTU: DATA KASUS -->
+                    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-sm font-bold text-bjm-dark uppercase tracking-wider mb-4 border-b border-slate-100 pb-3 flex items-center gap-2">
+                            <span>📝</span> Data Kasus & Pelapor
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold uppercase mb-1">Pelapor</p>
+                                <p class="text-slate-800 font-bold text-sm">{{ $pengaduan->nama_pelapor }}</p>
+                                <p class="text-slate-500 text-xs">{{ $pengaduan->nomor_hp }} | {{ $pengaduan->email }}</p>
+                                @if($pengaduan->nip)
+                                    <p class="text-slate-500 text-xs">NIP: {{ $pengaduan->nip }}</p>
+                                @endif
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold uppercase mb-1">Kategori & Tingkat</p>
+                                <p class="text-slate-800 font-medium text-sm">{{ $pengaduan->kategori_laporan }}</p>
+                                <span class="px-2 py-0.5 mt-1 inline-block text-[10px] rounded font-bold border {{ $pengaduan->tingkat_pelanggaran == 'Berat' ? 'bg-red-50 text-red-700 border-red-200' : ($pengaduan->tingkat_pelanggaran == 'Sedang' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200') }}">
+                                    {{ $pengaduan->tingkat_pelanggaran ?? 'Belum Ditentukan' }}
+                                </span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold uppercase mb-1">Isi Laporan</p>
+                                <div class="bg-slate-50 p-3 rounded border border-slate-100 text-sm text-slate-700 leading-relaxed max-h-32 overflow-y-auto">
+                                    <p class="font-bold mb-1">{{ $pengaduan->judul_laporan }}</p>
+                                    {{ $pengaduan->isi_laporan }}
+                                </div>
+                            </div>
+                            
+                            @if($pengaduan->pesan_susulan)
+                            <div>
+                                <p class="text-xs text-cyan-600 font-bold uppercase mb-1">Info Tambahan Pelapor</p>
+                                <div class="bg-cyan-50 p-3 rounded border border-cyan-100 text-sm text-cyan-800 leading-relaxed font-medium italic">
+                                    "{{ $pengaduan->pesan_susulan }}"
+                                </div>
+                            </div>
+                            @endif
+
+                            <div class="flex flex-col gap-2 pt-2 border-t border-slate-100">
+                                @if($pengaduan->lampiran_bukti)
+                                    <a href="{{ asset('storage/' . $pengaduan->lampiran_bukti) }}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">📎 Lampiran Bukti Awal</a>
+                                @endif
+                                @if($pengaduan->lampiran_susulan)
+                                    <a href="{{ \Illuminate\Support\Str::startsWith($pengaduan->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset('storage/' . $pengaduan->lampiran_susulan) : asset('uploads/pengaduan/' . $pengaduan->lampiran_susulan) }}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1">📎 Lampiran Bukti Tambahan</a>
+                                @endif
                             </div>
                         </div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase mb-1">Kesimpulan & Rekomendasi</p>
-                            <div class="bg-amber-50 p-3 rounded border border-amber-100 text-sm text-amber-800 leading-relaxed font-medium">
-                                {{ $pengaduan->kesimpulan ?? '-' }}
+                    </div>
+
+                    <!-- KARTU: HASIL INVESTIGASI -->
+                    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                        <h3 class="text-sm font-bold text-bjm-dark uppercase tracking-wider mb-4 border-b border-slate-100 pb-3 flex items-center gap-2">
+                            <span>🕵️‍♂️</span> Hasil Investigasi
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold uppercase mb-1">Petugas Lapangan</p>
+                                <p class="text-slate-800 font-medium text-sm">{{ $pengaduan->investigator->name ?? 'Tim Lapangan' }}</p>
                             </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold uppercase mb-1">Fakta Lapangan</p>
+                                <div class="bg-slate-50 p-3 rounded border border-slate-100 text-sm text-slate-700 leading-relaxed max-h-32 overflow-y-auto">
+                                    {{ $pengaduan->fakta_lapangan ?? '-' }}
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold uppercase mb-1">Pihak Terkait / Saksi</p>
+                                <div class="bg-slate-50 p-3 rounded border border-slate-100 text-sm text-slate-700 leading-relaxed max-h-24 overflow-y-auto">
+                                    {{ $pengaduan->pihak_terlibat ?? '-' }}
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-bold uppercase mb-1">Kesimpulan & Rekomendasi</p>
+                                <div class="bg-amber-50 p-3 rounded border border-amber-100 text-sm text-amber-800 leading-relaxed font-medium max-h-32 overflow-y-auto">
+                                    {{ $pengaduan->kesimpulan ?? '-' }}
+                                </div>
+                            </div>
+                            
+                            @if($pengaduan->bukti_investigasi)
+                            <div class="pt-2 border-t border-slate-100">
+                                <a href="{{ asset('storage/' . $pengaduan->bukti_investigasi) }}" target="_blank" class="text-xs font-bold text-purple-600 hover:underline flex items-center gap-1">📎 Lampiran Bukti Temuan</a>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

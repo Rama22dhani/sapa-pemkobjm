@@ -354,17 +354,30 @@ class AdminController extends Controller
     public function updateInvestigasi(Request $request, $id)
     {
         $request->validate([
-            'fakta_lapangan' => 'required|string',
-            'pihak_terlibat' => 'required|string',
-            'kesimpulan' => 'required|string',
+            'fakta_lapangan'    => 'required|string',
+            'pihak_terlibat'    => 'required|string',
+            'kesimpulan'        => 'required|string',
+            'investigator_id'   => 'required|exists:users,id',
+            'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         $kasus = Pengaduan::findOrFail($id);
-        $kasus->update([
-            'fakta_lapangan' => $request->fakta_lapangan,
-            'pihak_terlibat' => $request->pihak_terlibat,
-            'kesimpulan' => $request->kesimpulan,
-        ]);
+        
+        $dataUpdate = [
+            'fakta_lapangan'  => $request->fakta_lapangan,
+            'pihak_terlibat'  => $request->pihak_terlibat,
+            'kesimpulan'      => $request->kesimpulan,
+            'investigator_id' => $request->investigator_id,
+        ];
+
+        if ($request->hasFile('bukti_investigasi')) {
+            if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
+                Storage::disk('public')->delete($kasus->bukti_investigasi);
+            }
+            $dataUpdate['bukti_investigasi'] = $request->file('bukti_investigasi')->store('bukti_investigasi', 'public');
+        }
+
+        $kasus->update($dataUpdate);
 
         return redirect()->back()->with('success', 'Kertas kerja investigasi berhasil dikoreksi!');
     }

@@ -571,7 +571,7 @@
                                                 pihak_penindak: {{ json_encode($k->pihak_penindak) }},
                                                 tanggal_tindak_lanjut: {{ json_encode($k->tanggal_tindak_lanjut ? \Carbon\Carbon::parse($k->tanggal_tindak_lanjut)->format("Y-m-d") : null) }},
                                                 lampiran_bukti_url: {{ json_encode($k->lampiran_bukti ? asset("storage/" . $k->lampiran_bukti) : null) }},
-                                                lampiran_susulan_url: {{ json_encode($k->lampiran_susulan ? asset("storage/" . $k->lampiran_susulan) : null) }},
+                                                lampiran_susulan_url: {{ json_encode($k->lampiran_susulan ? (\Illuminate\Support\Str::startsWith($k->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset("storage/" . $k->lampiran_susulan) : asset("uploads/pengaduan/" . $k->lampiran_susulan)) : null) }},
                                                 bukti_investigasi_url: {{ json_encode($k->bukti_investigasi ? asset("storage/" . $k->bukti_investigasi) : null) }}
                                             }' class="p-1.5 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-md transition" title="Edit Kasus Manual">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
@@ -873,7 +873,7 @@
 
                 <!-- MENU 4: INVESTIGASI -->
                 <div x-show="tab === 'investigasi'" x-transition.opacity style="display: none;"
-                    x-data="{ showModalEditInvestigasi: false, formInvestigasi: { id: '', fakta_lapangan: '', pihak_terlibat: '', kesimpulan: '' } }">
+                    x-data="{ showModalEditInvestigasi: false, formInvestigasi: { id: '', fakta_lapangan: '', pihak_terlibat: '', kesimpulan: '', investigator_id: '', bukti_investigasi_url: '' } }">
                     <div class="px-6 py-5 border-b border-slate-200 bg-white flex justify-between items-center">
                         <h3 class="text-lg font-bold text-slate-800">Data Kertas Kerja Investigasi</h3>
                         <a href="{{ route('admin.rekap.cetak', 'investigasi') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition">
@@ -905,7 +905,9 @@
                                                 id: {{ $i->id }}, 
                                                 fakta_lapangan: {{ json_encode($i->fakta_lapangan) }},
                                                 pihak_terlibat: {{ json_encode($i->pihak_terlibat) }},
-                                                kesimpulan: {{ json_encode($i->kesimpulan) }} 
+                                                kesimpulan: {{ json_encode($i->kesimpulan) }},
+                                                investigator_id: {{ json_encode($i->investigator_id) }},
+                                                bukti_investigasi_url: {{ json_encode($i->bukti_investigasi ? asset("storage/" . $i->bukti_investigasi) : null) }}
                                             }' class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-md transition" title="Edit Investigasi">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             </button>
@@ -926,37 +928,57 @@
                     </div>
 
                     <div x-show="showModalEditInvestigasi" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
-                        <div @click.away="showModalEditInvestigasi = false" class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden transform transition-all max-h-[90vh] flex flex-col">
-                            <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
-                                <h3 class="text-white font-bold text-lg">Edit Kertas Kerja Investigasi</h3>
-                                <button @click="showModalEditInvestigasi = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                                <div @click.away="showModalEditInvestigasi = false" class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden transform transition-all max-h-[90vh] flex flex-col">
+                                    <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
+                                        <h3 class="text-white font-bold text-lg">Edit Kertas Kerja Investigasi</h3>
+                                        <button @click="showModalEditInvestigasi = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                                    </div>
+                                    <form :action="'/admin/investigasi/' + formInvestigasi.id" method="POST" enctype="multipart/form-data" class="p-6 overflow-y-auto">
+                                        @csrf
+                                        @method('PUT')
+                                        
+                                        <div class="space-y-4">
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-700 mb-1">Investigator Lapangan <span class="text-red-500">*</span></label>
+                                                <select name="investigator_id" x-model="formInvestigasi.investigator_id" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none">
+                                                    <option value="">-- Pilih Investigator --</option>
+                                                    @foreach($dataPegawai->where('peran', 'investigator') as $inv)
+                                                        <option value="{{ $inv->id }}">{{ $inv->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-700 mb-1">Fakta di Lapangan <span class="text-red-500">*</span></label>
+                                                <textarea name="fakta_lapangan" x-model="formInvestigasi.fakta_lapangan" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-700 mb-1">Pihak Terlibat / Saksi <span class="text-red-500">*</span></label>
+                                                <textarea name="pihak_terlibat" x-model="formInvestigasi.pihak_terlibat" rows="2" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-700 mb-1">Kesimpulan Akhir & Rekomendasi <span class="text-red-500">*</span></label>
+                                                <textarea name="kesimpulan" x-model="formInvestigasi.kesimpulan" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-bold text-slate-700 mb-1">Lampiran Bukti Temuan Lapangan (Gambar/PDF)</label>
+                                                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-1">
+                                                    <input type="file" name="bukti_investigasi" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+                                                    <template x-if="formInvestigasi.bukti_investigasi_url">
+                                                        <a :href="formInvestigasi.bukti_investigasi_url" target="_blank" class="text-xs font-bold text-blue-600 hover:underline shrink-0 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 flex items-center gap-1">
+                                                            📎 Lihat Bukti Temuan Saat Ini
+                                                        </a>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="mt-6 flex justify-end gap-3 border-t border-slate-100 pt-4">
+                                            <button type="button" @click="showModalEditInvestigasi = false" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition">Batal</button>
+                                            <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-bjm-gold hover:bg-amber-600 rounded-lg transition shadow-md">Simpan Koreksi</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                            <form :action="'/admin/investigasi/' + formInvestigasi.id" method="POST" class="p-6 overflow-y-auto">
-                                @csrf
-                                @method('PUT')
-                                
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Fakta di Lapangan</label>
-                                        <textarea name="fakta_lapangan" x-model="formInvestigasi.fakta_lapangan" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Pihak Terlibat / Saksi</label>
-                                        <textarea name="pihak_terlibat" x-model="formInvestigasi.pihak_terlibat" rows="2" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Kesimpulan Akhir & Rekomendasi</label>
-                                        <textarea name="kesimpulan" x-model="formInvestigasi.kesimpulan" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="mt-6 flex justify-end gap-3 border-t border-slate-100 pt-4">
-                                    <button type="button" @click="showModalEditInvestigasi = false" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition">Batal</button>
-                                    <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-bjm-gold hover:bg-amber-600 rounded-lg transition shadow-md">Simpan Koreksi</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- MENU 5: TINDAK LANJUT -->
@@ -1087,7 +1109,7 @@
                                     </td>
                                     <td class="p-4">
                                         @if($db->lampiran_susulan)
-                                            <a href="{{ asset('storage/' . $db->lampiran_susulan) }}" target="_blank" class="text-xs text-amber-600 hover:underline">Lihat Bukti Baru</a>
+                                            <a href="{{ \Illuminate\Support\Str::startsWith($db->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset('storage/' . $db->lampiran_susulan) : asset('uploads/pengaduan/' . $db->lampiran_susulan) }}" target="_blank" class="text-xs text-amber-600 hover:underline">Lihat Bukti Baru</a>
                                         @else <span class="text-slate-300 italic text-xs">-</span> @endif
                                     </td>
                                     <td class="p-4">
