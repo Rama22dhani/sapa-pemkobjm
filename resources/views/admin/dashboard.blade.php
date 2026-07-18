@@ -73,7 +73,7 @@
             </button>
             <button @click="tab = 'bukti'; sidebarOpen = false" :class="tab === 'bukti' ? 'bg-bjm-gold/10 text-bjm-gold border-l-4 border-bjm-gold' : 'hover:bg-slate-800 hover:text-white border-l-4 border-transparent'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-r-lg text-sm font-medium transition-colors">
                 <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                Data Arsip Lampiran
+                Data Bukti
             </button>
 
             <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6">Eksekusi Kasus</p>
@@ -1077,10 +1077,10 @@
 
                 <!-- MENU 6: BUKTI -->
                 <div x-show="tab === 'bukti'" x-transition.opacity style="display: none;"
-                    x-data="{ showModalEditBukti: false, formBukti: { id: '', kode_tiket: '' } }">
+                    x-data="{ showModalEditBukti: false, formBukti: { id: '', kode_tiket: '', lampiran_bukti_url: '', lampiran_susulan_url: '', bukti_investigasi_url: '' } }">
                     <div class="px-6 py-5 border-b border-slate-200 bg-white shadow-sm flex justify-between items-center">
                         <div>
-                            <h3 class="text-lg font-bold text-slate-800">Manajemen Arsip Bukti Kasus</h3>
+                            <h3 class="text-lg font-bold text-slate-800">Manajemen Data Bukti</h3>
                             <p class="text-xs text-slate-500">Pusat kontrol file fisik temuan pelanggaran pegawai.</p>
                         </div>
                         <a href="{{ route('admin.rekap.cetak', 'bukti') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition">
@@ -1117,10 +1117,30 @@
                                             <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="text-xs text-purple-600 hover:underline">Lihat Hasil Audit</a>
                                         @else <span class="text-slate-300 italic text-xs">-</span> @endif
                                     </td>
-                                    <td class="p-4 text-center pr-6">
-                                        <button @click="showModalEditBukti = true; formBukti = { id: {{ $db->id }}, kode_tiket: '{{ $db->kode_tiket }}' }" class="p-2 bg-slate-100 hover:bg-slate-200 rounded-md transition" title="Kelola Berkas">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                    <td class="p-4 text-center pr-6 flex justify-center items-center gap-2">
+                                        <!-- Tombol Ubah / Kelola -->
+                                        <button @click="showModalEditBukti = true; formBukti = { 
+                                            id: {{ $db->id }}, 
+                                            kode_tiket: '{{ $db->kode_tiket }}',
+                                            lampiran_bukti_url: {{ json_encode($db->lampiran_bukti ? asset('storage/' . $db->lampiran_bukti) : null) }},
+                                            lampiran_susulan_url: {{ json_encode($db->lampiran_susulan ? (\Illuminate\Support\Str::startsWith($db->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset('storage/' . $db->lampiran_susulan) : asset('uploads/pengaduan/' . $db->lampiran_susulan)) : null) }},
+                                            bukti_investigasi_url: {{ json_encode($db->bukti_investigasi ? asset('storage/' . $db->bukti_investigasi) : null) }}
+                                        }" 
+                                            class="inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm"
+                                            title="Kelola Berkas">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </button>
+                                        
+                                        <!-- Tombol Hapus -->
+                                        <form action="{{ route('admin.bukti.destroy', $db->id) }}" method="POST" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus seluruh berkas bukti pada kasus #{{ $db->kode_tiket }}? Tindakan ini permanen.')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                class="inline-flex items-center gap-1 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm"
+                                                title="Hapus Seluruh Berkas">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @empty
@@ -1129,7 +1149,7 @@
                             </tbody>
                         </table>
                     </div>
-
+ 
                     <div x-show="showModalEditBukti" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
                         <div @click.away="showModalEditBukti = false" class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all">
                             <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center">
@@ -1143,17 +1163,40 @@
                                 <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg mb-4 text-xs text-blue-700">
                                     File lama akan tertimpa otomatis oleh unggahan baru Anda. Kosongkan jika tidak ingin mengubah.
                                 </div>
-
+ 
                                 <div class="mb-4">
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Ganti Bukti Pelapor</label>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">Bukti Awal Pelapor</label>
+                                    <template x-if="formBukti.lampiran_bukti_url">
+                                        <div class="mb-2 text-xs">
+                                            <span class="text-slate-500">Berkas saat ini:</span>
+                                            <a :href="formBukti.lampiran_bukti_url" target="_blank" class="text-blue-600 font-semibold hover:underline">Lihat Bukti Awal</a>
+                                        </div>
+                                    </template>
                                     <input type="file" name="lampiran_bukti" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                                 </div>
-
+ 
                                 <div class="mb-4 pt-4 border-t border-slate-100">
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Ganti Foto Investigasi Lapangan</label>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">Bukti Tambahan Pelapor / Admin</label>
+                                    <template x-if="formBukti.lampiran_susulan_url">
+                                        <div class="mb-2 text-xs">
+                                            <span class="text-slate-500">Berkas saat ini:</span>
+                                            <a :href="formBukti.lampiran_susulan_url" target="_blank" class="text-amber-600 font-semibold hover:underline">Lihat Bukti Tambahan</a>
+                                        </div>
+                                    </template>
+                                    <input type="file" name="lampiran_susulan" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100">
+                                </div>
+ 
+                                <div class="mb-4 pt-4 border-t border-slate-100">
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">Bukti Temuan Investigasi</label>
+                                    <template x-if="formBukti.bukti_investigasi_url">
+                                        <div class="mb-2 text-xs">
+                                            <span class="text-slate-500">Berkas saat ini:</span>
+                                            <a :href="formBukti.bukti_investigasi_url" target="_blank" class="text-purple-600 font-semibold hover:underline">Lihat Bukti Investigasi</a>
+                                        </div>
+                                    </template>
                                     <input type="file" name="bukti_investigasi" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
                                 </div>
-
+ 
                                 <div class="mt-8 flex justify-end gap-3">
                                     <button type="button" @click="showModalEditBukti = false" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition">Batal</button>
                                     <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-bjm-gold hover:bg-amber-600 rounded-lg transition shadow-md">Simpan Berkas</button>

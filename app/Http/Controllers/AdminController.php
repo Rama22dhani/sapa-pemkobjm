@@ -456,14 +456,31 @@ class AdminController extends Controller
     public function destroyBukti($id)
     {
         $kasus = Pengaduan::findOrFail($id);
+        
+        // 1. Hapus Lampiran Bukti Awal
         if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
             Storage::disk('public')->delete($kasus->lampiran_bukti);
         }
+        
+        // 2. Hapus Lampiran Bukti Tambahan/Susulan (dari Storage atau public_path)
+        if ($kasus->lampiran_susulan) {
+            $publicPath = public_path('uploads/pengaduan/' . $kasus->lampiran_susulan);
+            if (file_exists($publicPath)) {
+                @unlink($publicPath);
+            }
+            if (Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+                Storage::disk('public')->delete($kasus->lampiran_susulan);
+            }
+        }
+        
+        // 3. Hapus Bukti Investigasi Lapangan
         if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
             Storage::disk('public')->delete($kasus->bukti_investigasi);
         }
+
         $kasus->update([
-            'lampiran_bukti' => null,
+            'lampiran_bukti'    => null,
+            'lampiran_susulan'  => null,
             'bukti_investigasi' => null
         ]);
 
