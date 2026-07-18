@@ -158,28 +158,33 @@ class PengaduanController extends Controller
         return view('lacak', compact('laporan', 'tiket'));
     }
 
-    public function storeTanggapan(Request $request)
+    public function storeInformasiTambahan(Request $request)
     {
+        // 1. Validasi inputan dari form
         $request->validate([
-            'pengaduan_id'       => 'required|exists:pengaduans,id',
-            'kategori_tanggapan' => 'required|string',
-            'pesan'              => 'required|string',
-            'lampiran_tambahan'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'kode_tiket' => 'required|exists:pengaduans,kode_tiket',
+            'isi_pesan' => 'required|string',
+            'lampiran_bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $lampiranPath = null;
-        if ($request->hasFile('lampiran_tambahan')) {
-            $lampiranPath = $request->file('lampiran_tambahan')->store('tanggapans_bukti', 'public');
+        // 2. Cari data kasusnya
+        $pengaduan = Pengaduan::where('kode_tiket', $request->kode_tiket)->firstOrFail();
+
+        // 3. Proses upload file jika pelapor melampirkan file
+        $lampiranPath = $pengaduan->lampiran_susulan; // Pertahankan file lama jika ada
+        if ($request->hasFile('lampiran_bukti')) {
+            $file = $request->file('lampiran_bukti');
+            $filename = time() . '_susulan_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/pengaduan'), $filename);
+            $lampiranPath = $filename;
         }
 
-        \App\Models\Tanggapan::create([
-            'pengaduan_id'       => $request->input('pengaduan_id'),
-            'user_id'            => $request->user()->id,
-            'kategori_tanggapan' => $request->input('kategori_tanggapan'),
-            'pesan'              => $request->input('pesan'),
-            'lampiran_tambahan'  => $lampiranPath,
+        // 4. Update data di tabel pengaduan
+        $pengaduan->update([
+            'pesan_susulan' => $request->isi_pesan,
+            'lampiran_susulan' => $lampiranPath,
         ]);
 
-        return redirect()->back()->with('success', 'Tanggapan dan bukti tambahan berhasil dikirim!');
+        return redirect()->back()->with('success', 'Informasi dan bukti tambahan berhasil disimpan ke dalam data kasus.');
     }
 }

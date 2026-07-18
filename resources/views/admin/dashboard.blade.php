@@ -51,7 +51,7 @@
             <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6">Master Data</p>
             <button @click="tab = 'pegawai'; sidebarOpen = false" :class="tab === 'pegawai' ? 'bg-bjm-gold/10 text-bjm-gold border-l-4 border-bjm-gold' : 'hover:bg-slate-800 hover:text-white border-l-4 border-transparent'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-r-lg text-sm font-medium transition-colors">
                 <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                Data Pegawai
+                Data Akses
             </button>
             <button @click="tab = 'pengguna'; sidebarOpen = false" :class="tab === 'pengguna' ? 'bg-bjm-gold/10 text-bjm-gold border-l-4 border-bjm-gold' : 'hover:bg-slate-800 hover:text-white border-l-4 border-transparent'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-r-lg text-sm font-medium transition-colors">
                 <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -63,14 +63,6 @@
                 <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                 Data Kasus
             </button>
-            <button @click="tab = 'pelanggaran'; sidebarOpen = false" :class="tab === 'pelanggaran' ? 'bg-bjm-gold/10 text-bjm-gold border-l-4 border-bjm-gold' : 'hover:bg-slate-800 hover:text-white border-l-4 border-transparent'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-r-lg text-sm font-medium transition-colors">
-                <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                Data Pelanggaran
-            </button>
-            <button @click="tab = 'tanggapan'; sidebarOpen = false" :class="tab === 'tanggapan' ? 'bg-bjm-gold/10 text-bjm-gold border-l-4 border-bjm-gold' : 'hover:bg-slate-800 hover:text-white border-l-4 border-transparent'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-r-lg text-sm font-medium transition-colors">
-                <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                Data Tanggapan
-            </button>
             <button @click="tab = 'investigasi'; sidebarOpen = false" :class="tab === 'investigasi' ? 'bg-bjm-gold/10 text-bjm-gold border-l-4 border-bjm-gold' : 'hover:bg-slate-800 hover:text-white border-l-4 border-transparent'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-r-lg text-sm font-medium transition-colors">
                 <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 Data Investigasi
@@ -81,7 +73,7 @@
             </button>
             <button @click="tab = 'bukti'; sidebarOpen = false" :class="tab === 'bukti' ? 'bg-bjm-gold/10 text-bjm-gold border-l-4 border-bjm-gold' : 'hover:bg-slate-800 hover:text-white border-l-4 border-transparent'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-r-lg text-sm font-medium transition-colors">
                 <svg class="w-5 h-5 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
-                Data Bukti
+                Data Arsip Lampiran
             </button>
 
             <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-6">Eksekusi Kasus</p>
@@ -258,6 +250,7 @@
                     </div>
                 </div>
 
+                <!-- MENU 1: PEGAWAI -->
                 <div x-show="tab === 'pegawai'" x-transition.opacity style="display: none;" 
                     x-data="{ showModal: false, editMode: false, form: { id: '', name: '', email: '', peran: 'investigator' } }">
                     <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-white">
@@ -352,6 +345,7 @@
                     </div>
                 </div>
 
+                <!-- MENU 2: PELAPOR -->
                 <div x-show="tab === 'pengguna'" x-transition.opacity style="display: none;"
                     x-data="{ showModal: false, editMode: false, form: { id: '', name: '', email: '' } }">
                     <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-white">
@@ -437,12 +431,43 @@
                     </div>
                 </div>
 
+                <!-- MENU 3: DATA KASUS & INFO TAMBAHAN -->
                 <div x-show="tab === 'kasus'" x-transition.opacity style="display: none;"
                     x-data="{ 
                         showModalEditKasus: false, 
                         showModalVerifikasi: false,
-                        formKasus: { id: '', judul_laporan: '', kategori_laporan: '', tanggal_kejadian: '', lokasi_kejadian: '', status: '', isi_laporan: '' },
-                        formVerif: { id: '', judul: '', pelapor: '', keputusan: 'terima', tingkat_pelanggaran: '', investigator_id: '', catatan_verifikator: '' }
+                        showModalInfoTambahan: false,
+                        formKasus: { 
+                            id: '', 
+                            kode_tiket: '',
+                            user_id: '',
+                            nama_pelapor: '',
+                            nip: '',
+                            nomor_hp: '',
+                            email: '',
+                            judul_laporan: '', 
+                            kategori_laporan: '', 
+                            tanggal_kejadian: '', 
+                            lokasi_kejadian: '', 
+                            status: '', 
+                            isi_laporan: '',
+                            tingkat_pelanggaran: '',
+                            catatan_verifikator: '',
+                            alasan_penolakan: '',
+                            investigator_id: '',
+                            pesan_susulan: '',
+                            fakta_lapangan: '',
+                            pihak_terlibat: '',
+                            kesimpulan: '',
+                            tindak_lanjut: '',
+                            pihak_penindak: '',
+                            tanggal_tindak_lanjut: '',
+                            lampiran_bukti_url: '',
+                            lampiran_susulan_url: '',
+                            bukti_investigasi_url: ''
+                        },
+                        formVerif: { id: '', judul: '', pelapor: '', keputusan: 'terima', tingkat_pelanggaran: '', investigator_id: '', catatan_verifikator: '' },
+                        infoTambahan: { id: '', pesan: '', lampiran: null }
                     }">
                     <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-white">
                         <h3 class="text-lg font-bold text-slate-800">Semua Data Laporan Pengaduan Kasus</h3>
@@ -456,7 +481,9 @@
                                 <tr>
                                     <th class="p-4 pl-6">Kode Kasus</th>
                                     <th class="p-4">Pelapor</th>
-                                    <th class="p-4">Judul Laporan</th>
+                                    <th class="p-4 min-w-[200px]">Judul Laporan</th>
+                                    <!-- Tambahan Kolom Tingkat Pelanggaran -->
+                                    <th class="p-4">Tingkat</th>
                                     <th class="p-4">Status</th>
                                     <th class="p-4 text-center pr-6">Aksi</th>
                                 </tr>
@@ -464,9 +491,32 @@
                             <tbody class="divide-y divide-slate-100 text-sm">
                                 @forelse($dataKasus as $k)
                                 <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-4 pl-6 font-mono font-bold text-slate-700">{{ $k->kode_tiket }}</td>
+                                    <td class="p-4 pl-6 font-mono font-bold text-slate-700">
+                                        {{ $k->kode_tiket }}
+                                        <!-- Indikator jika ada pesan susulan -->
+                                        @if($k->pesan_susulan)
+                                            <span class="block mt-1 text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded border border-blue-200 font-bold w-max">
+                                                Ada Info Baru
+                                            </span>
+                                        @endif
+                                    </td>
                                     <td class="p-4 text-slate-700 font-medium">{{ $k->user->name ?? 'Anonim' }}</td>
                                     <td class="p-4 text-slate-600">{{ Str::limit($k->judul_laporan, 30) }}</td>
+                                    
+                                    <!-- Menampilkan Tingkat Pelanggaran yang sudah digabung -->
+                                    <td class="p-4">
+                                        @if($k->tingkat_pelanggaran)
+                                            <span class="px-2 py-1 text-[10px] rounded font-bold border 
+                                                {{ $k->tingkat_pelanggaran == 'Berat' ? 'bg-red-50 text-red-600 border-red-200' : 
+                                                ($k->tingkat_pelanggaran == 'Sedang' ? 'bg-amber-50 text-amber-600 border-amber-200' : 
+                                                'bg-emerald-50 text-emerald-600 border-emerald-200') }}">
+                                                {{ $k->tingkat_pelanggaran }}
+                                            </span>
+                                        @else
+                                            <span class="text-slate-400 italic text-[10px]">-</span>
+                                        @endif
+                                    </td>
+
                                     <td class="p-4">
                                         <span class="px-3 py-1 text-xs rounded-full font-bold border 
                                             {{ $k->status == 'selesai' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 
@@ -476,7 +526,7 @@
                                         </span>
                                     </td>
                                     <td class="p-4 text-center pr-6">
-                                        <div class="flex items-center justify-center gap-1.5">
+                                        <div class="flex items-center justify-center gap-1.5 flex-wrap">
                                             
                                             @if($k->status === 'masuk')
                                                 <button @click='showModalVerifikasi = true; formVerif = {
@@ -487,22 +537,48 @@
                                                     tingkat_pelanggaran: "",
                                                     investigator_id: "",
                                                     catatan_verifikator: ""
-                                                }' class="inline-flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-amber-500 to-bjm-gold hover:from-amber-600 hover:to-amber-700 text-white rounded-md text-[11px] font-black tracking-wide shadow-sm hover:scale-105 transition" title="Verifikasi & Disposisi">
+                                                }' class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-gradient-to-r from-amber-500 to-bjm-gold hover:from-amber-600 hover:to-amber-700 text-white rounded-md text-[11px] font-black tracking-wide shadow-sm hover:scale-105 transition" title="Verifikasi & Disposisi">
                                                     🛡️ VERIFIKASI
                                                 </button>
                                             @endif
 
-                                            <a href="{{ route('admin.show', $k->id) }}" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-md transition" title="Lihat Detail Berkas">
+                                            <a href="{{ route('admin.show', $k->id) }}" class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-md transition" title="Lihat Detail Berkas">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             </a>
                                             <button @click='showModalEditKasus = true; formKasus = { 
-                                                id: {{ $k->id }}, judul_laporan: {{ json_encode($k->judul_laporan) }}, kategori_laporan: {{ json_encode($k->kategori_laporan) }}, tanggal_kejadian: {{ json_encode(\Carbon\Carbon::parse($k->tanggal_kejadian)->format("Y-m-d")) }}, lokasi_kejadian: {{ json_encode($k->lokasi_kejadian) }}, status: {{ json_encode($k->status) }}, isi_laporan: {{ json_encode($k->isi_laporan) }} 
-                                            }' class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-md transition" title="Edit Kasus Manual">
+                                                id: {{ $k->id }}, 
+                                                kode_tiket: {{ json_encode($k->kode_tiket) }},
+                                                user_id: {{ json_encode($k->user_id) }},
+                                                nama_pelapor: {{ json_encode($k->nama_pelapor) }},
+                                                nip: {{ json_encode($k->nip) }},
+                                                nomor_hp: {{ json_encode($k->nomor_hp) }},
+                                                email: {{ json_encode($k->email) }},
+                                                judul_laporan: {{ json_encode($k->judul_laporan) }}, 
+                                                kategori_laporan: {{ json_encode($k->kategori_laporan) }}, 
+                                                tanggal_kejadian: {{ json_encode(\Carbon\Carbon::parse($k->tanggal_kejadian)->format("Y-m-d")) }}, 
+                                                lokasi_kejadian: {{ json_encode($k->lokasi_kejadian) }}, 
+                                                status: {{ json_encode($k->status) }}, 
+                                                isi_laporan: {{ json_encode($k->isi_laporan) }},
+                                                tingkat_pelanggaran: {{ json_encode($k->tingkat_pelanggaran) }},
+                                                catatan_verifikator: {{ json_encode($k->catatan_verifikator) }},
+                                                alasan_penolakan: {{ json_encode($k->alasan_penolakan) }},
+                                                investigator_id: {{ json_encode($k->investigator_id) }},
+                                                pesan_susulan: {{ json_encode($k->pesan_susulan) }},
+                                                fakta_lapangan: {{ json_encode($k->fakta_lapangan) }},
+                                                pihak_terlibat: {{ json_encode($k->pihak_terlibat) }},
+                                                kesimpulan: {{ json_encode($k->kesimpulan) }},
+                                                tindak_lanjut: {{ json_encode($k->tindak_lanjut) }},
+                                                pihak_penindak: {{ json_encode($k->pihak_penindak) }},
+                                                tanggal_tindak_lanjut: {{ json_encode($k->tanggal_tindak_lanjut ? \Carbon\Carbon::parse($k->tanggal_tindak_lanjut)->format("Y-m-d") : null) }},
+                                                lampiran_bukti_url: {{ json_encode($k->lampiran_bukti ? asset("storage/" . $k->lampiran_bukti) : null) }},
+                                                lampiran_susulan_url: {{ json_encode($k->lampiran_susulan ? asset("storage/" . $k->lampiran_susulan) : null) }},
+                                                bukti_investigasi_url: {{ json_encode($k->bukti_investigasi ? asset("storage/" . $k->bukti_investigasi) : null) }}
+                                            }' class="p-1.5 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-md transition" title="Edit Kasus Manual">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             </button>
                                             <form action="{{ route('admin.kasus.destroy', $k->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus kasus ini secara permanen?');">
                                                 @csrf @method('DELETE')
-                                                <button type="submit" class="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-md transition" title="Hapus Permanen">
+                                                <button type="submit" class="p-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-md transition" title="Hapus Permanen">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                 </button>
                                             </form>
@@ -510,12 +586,13 @@
                                     </td>
                                 </tr>
                                 @empty
-                                <tr><td colspan="5" class="p-8 text-center text-slate-500 italic">Belum ada data kasus masuk.</td></tr>
+                                <tr><td colspan="6" class="p-8 text-center text-slate-500 italic">Belum ada data kasus masuk.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
 
+                    <!-- Modal Verifikasi Kasus -->
                     <div x-show="showModalVerifikasi" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;" x-transition>
                         <div @click.away="showModalVerifikasi = false" class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
                             <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
@@ -582,265 +659,219 @@
                         </div>
                     </div>
 
-                    <div x-show="showModalEditKasus" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
-                        <div @click.away="showModalEditKasus = false" class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden transform transition-all max-h-[90vh] flex flex-col">
+                    <!-- Modal Edit Kasus Manual -->
+                    <div x-show="showModalEditKasus" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;" x-transition>
+                        <div @click.away="showModalEditKasus = false" class="bg-white rounded-2xl shadow-xl w-full max-w-4xl overflow-hidden transform transition-all max-h-[95vh] flex flex-col">
                             <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
-                                <h3 class="text-white font-bold text-lg">Koreksi Data Laporan Kasus</h3>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xl">✏️</span>
+                                    <h3 class="text-white font-bold text-lg">Koreksi & Edit Seluruh Data Kasus</h3>
+                                </div>
                                 <button @click="showModalEditKasus = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                             </div>
-                            <form :action="'/admin/kasus/' + formKasus.id" method="POST" class="p-6 overflow-y-auto">
+                            <form :action="'/admin/kasus/' + formKasus.id" method="POST" enctype="multipart/form-data" class="p-6 overflow-y-auto space-y-6">
                                 @csrf
                                 @method('PUT')
                                 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Judul Laporan</label>
-                                        <input type="text" name="judul_laporan" x-model="formKasus.judul_laporan" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Kategori Pelanggaran</label>
-                                        <select name="kategori_laporan" x-model="formKasus.kategori_laporan" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none text-xs">
-                                            <option value="Pungli">Pungli</option>
-                                            <option value="Korupsi">Korupsi</option>
-                                            <option value="Gratifikasi">Gratifikasi / Suap</option>
-                                            <option value="Pelanggaran Disiplin">Pelanggaran Disiplin ASN</option>
-                                            <option value="Benturan Kepentingan">Benturan Kepentingan</option>
-                                            <option value="Penyalahgunaan Wewenang">Penyalahgunaan Wewenang</option>
-                                            <option value="Lainnya">Lainnya</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Tanggal Kejadian</label>
-                                        <input type="date" name="tanggal_kejadian" x-model="formKasus.tanggal_kejadian" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Lokasi Kejadian</label>
-                                        <input type="text" name="lokasi_kejadian" x-model="formKasus.lokasi_kejadian" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none">
+                                <!-- SECTION 1: IDENTITAS KASUS & PELAPOR -->
+                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+                                    <h4 class="text-sm font-bold text-bjm-dark border-b border-slate-200 pb-2 mb-4 flex items-center gap-2">
+                                        <span>👤</span> Identitas Kasus & Pelapor
+                                    </h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Kode Tiket / Kasus <span class="text-red-500">*</span></label>
+                                            <input type="text" name="kode_tiket" x-model="formKasus.kode_tiket" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Akun Pelapor</label>
+                                            <select name="user_id" x-model="formKasus.user_id" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                                <option value="">-- Anonim / Tanpa Akun --</option>
+                                                @foreach($dataPengguna as $usr)
+                                                    <option value="{{ $usr->id }}">{{ $usr->name }} ({{ $usr->email }})</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Nama Pelapor (Manual)</label>
+                                            <input type="text" name="nama_pelapor" x-model="formKasus.nama_pelapor" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">NIP Pelapor</label>
+                                            <input type="text" name="nip" x-model="formKasus.nip" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Nomor HP Pelapor</label>
+                                            <input type="text" name="nomor_hp" x-model="formKasus.nomor_hp" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Email Pelapor</label>
+                                            <input type="email" name="email" x-model="formKasus.email" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="block text-sm font-bold text-slate-700 mb-1">Kronologi / Isi Laporan</label>
-                                    <textarea name="isi_laporan" x-model="formKasus.isi_laporan" rows="4" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
+                                <!-- SECTION 2: DETAIL LAPORAN UTAMA -->
+                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+                                    <h4 class="text-sm font-bold text-bjm-dark border-b border-slate-200 pb-2 mb-4 flex items-center gap-2">
+                                        <span>📝</span> Detail Laporan Utama
+                                    </h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-sm font-bold text-slate-700 mb-1">Judul Laporan <span class="text-red-500">*</span></label>
+                                            <input type="text" name="judul_laporan" x-model="formKasus.judul_laporan" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-bold text-slate-700 mb-1">Kategori Pelanggaran <span class="text-red-500">*</span></label>
+                                            <select name="kategori_laporan" x-model="formKasus.kategori_laporan" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                                <option value="Pungli">Pungli</option>
+                                                <option value="Korupsi">Korupsi</option>
+                                                <option value="Gratifikasi">Gratifikasi / Suap</option>
+                                                <option value="Pelanggaran Disiplin">Pelanggaran Disiplin ASN</option>
+                                                <option value="Benturan Kepentingan">Benturan Kepentingan</option>
+                                                <option value="Penyalahgunaan Wewenang">Penyalahgunaan Wewenang</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-bold text-slate-700 mb-1">Tanggal Kejadian <span class="text-red-500">*</span></label>
+                                            <input type="date" name="tanggal_kejadian" x-model="formKasus.tanggal_kejadian" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-bold text-slate-700 mb-1">Lokasi Kejadian <span class="text-red-500">*</span></label>
+                                            <input type="text" name="lokasi_kejadian" x-model="formKasus.lokasi_kejadian" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">Kronologi / Isi Laporan <span class="text-red-500">*</span></label>
+                                        <textarea name="isi_laporan" x-model="formKasus.isi_laporan" rows="4" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">Lampiran Bukti Awal (Gambar/PDF)</label>
+                                        <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-1">
+                                            <input type="file" name="lampiran_bukti" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+                                            <template x-if="formKasus.lampiran_bukti_url">
+                                                <a :href="formKasus.lampiran_bukti_url" target="_blank" class="text-xs font-bold text-blue-600 hover:underline shrink-0 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 flex items-center gap-1">
+                                                    📎 Lihat Lampiran Saat Ini
+                                                </a>
+                                            </template>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="mb-4 bg-amber-50 p-3 rounded-lg border border-amber-200">
-                                    <label class="block text-sm font-bold text-amber-800 mb-1">Status Kasus (Ubah Manual)</label>
-                                    <select name="status" x-model="formKasus.status" required class="w-full bg-white border border-amber-300 text-amber-900 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none">
-                                        <option value="masuk">Masuk / Menunggu Verifikasi</option>
-                                        <option value="investigasi">Proses Audit</option>
-                                        <option value="selesai">Selesai</option>
-                                        <option value="ditolak">Ditolak</option>
-                                    </select>
-                                    <p class="text-xs text-amber-600 mt-1">*Ubah manual dapat melewati alur disposisi.</p>
+                                <!-- SECTION 3: TAHAP VERIFIKASI & DISPOSISI -->
+                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+                                    <h4 class="text-sm font-bold text-bjm-dark border-b border-slate-200 pb-2 mb-4 flex items-center gap-2">
+                                        <span>🛡️</span> Tahap Verifikasi & Disposisi
+                                    </h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Status Kasus <span class="text-red-500">*</span></label>
+                                            <select name="status" x-model="formKasus.status" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                                <option value="masuk">Masuk / Menunggu Verifikasi</option>
+                                                <option value="investigasi">Proses Audit / Investigasi</option>
+                                                <option value="selesai">Selesai</option>
+                                                <option value="ditolak">Ditolak</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Tingkat Pelanggaran</label>
+                                            <select name="tingkat_pelanggaran" x-model="formKasus.tingkat_pelanggaran" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                                <option value="">-- Belum Ditentukan --</option>
+                                                <option value="Ringan">Ringan (Administrasi/Teguran)</option>
+                                                <option value="Sedang">Sedang (Etika/Disiplin)</option>
+                                                <option value="Berat">Berat (Pidana/Korupsi/Pungli)</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Investigator Lapangan</label>
+                                            <select name="investigator_id" x-model="formKasus.investigator_id" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                                <option value="">-- Belum Ditugaskan --</option>
+                                                @foreach($dataPegawai->where('peran', 'investigator') as $inv)
+                                                    <option value="{{ $inv->id }}">{{ $inv->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Verifikator (Instruksi/Disposisi)</label>
+                                            <textarea name="catatan_verifikator" x-model="formKasus.catatan_verifikator" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Alasan Penolakan (Jika Ditolak)</label>
+                                            <textarea name="alasan_penolakan" x-model="formKasus.alasan_penolakan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="mt-6 flex justify-end gap-3">
-                                    <button type="button" @click="showModalEditKasus = false" class="px-5 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition">Batal</button>
-                                    <button type="submit" class="px-5 py-2 text-sm font-bold text-white bg-bjm-gold hover:bg-amber-600 rounded-lg transition shadow-md">Perbarui Kasus</button>
+                                <!-- SECTION 4: INFORMASI TAMBAHAN SUSULAN -->
+                                <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50">
+                                    <h4 class="text-sm font-bold text-bjm-dark border-b border-slate-200 pb-2 mb-4 flex items-center gap-2">
+                                        <span>💬</span> Informasi Tambahan Susulan (Pelapor)
+                                    </h4>
+                                    <div class="mb-4">
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Pesan Susulan / Informasi Tambahan</label>
+                                        <textarea name="pesan_susulan" x-model="formKasus.pesan_susulan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Lampiran Susulan (File Bukti Baru)</label>
+                                        <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-1">
+                                            <input type="file" name="lampiran_susulan" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200">
+                                            <template x-if="formKasus.lampiran_susulan_url">
+                                                <a :href="formKasus.lampiran_susulan_url" target="_blank" class="text-xs font-bold text-blue-600 hover:underline shrink-0 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200 flex items-center gap-1">
+                                                    📎 Lihat Lampiran Susulan Saat Ini
+                                                </a>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="mt-6 flex justify-end gap-3 sticky bottom-0 bg-white pt-4 border-t border-slate-200">
+                                    <button type="button" @click="showModalEditKasus = false" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition">Batal</button>
+                                    <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-bjm-gold hover:bg-amber-600 rounded-lg transition shadow-md">Simpan Perubahan</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </div>
 
-                <div x-show="tab === 'pelanggaran'" x-transition.opacity style="display: none;"
-                    x-data="{ showModalEditPelanggaran: false, formPelanggaran: { id: '', tingkat_pelanggaran: '', investigator_id: '', catatan_verifikator: '' } }">
-                    <div class="px-6 py-5 border-b border-slate-200 bg-white flex justify-between items-center">
-                        <h3 class="text-lg font-bold text-slate-800">Klasifikasi Tingkat Pelanggaran Kasus</h3>
-                        <a href="{{ route('admin.rekap.cetak', 'pelanggaran') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition">
-                            🖨️ Cetak Rekap PDF
-                        </a>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-200">
-                                <tr>
-                                    <th class="p-4 pl-6">Kode Kasus</th>
-                                    <th class="p-4">Judul Kasus</th>
-                                    <th class="p-4">Tingkat</th>
-                                    <th class="p-4 text-center pr-6">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 text-sm">
-                                @forelse($dataPelanggaran as $dp)
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-4 pl-6 font-mono font-bold text-slate-600">{{ $dp->kode_tiket }}</td>
-                                    <td class="p-4 text-slate-800 font-medium">{{ Str::limit($dp->judul_laporan, 40) }}</td>
-                                    <td class="p-4">
-                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border {{ $dp->tingkat_pelanggaran == 'Berat' ? 'bg-red-50 text-red-600 border-red-200' : ($dp->tingkat_pelanggaran == 'Sedang' ? 'bg-amber-50 text-amber-600 border-amber-200' : ($dp->tingkat_pelanggaran == 'Ringan' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-100 text-slate-500 border-slate-200')) }}">
-                                            {{ $dp->tingkat_pelanggaran ?? 'Belum Ditentukan' }}
-                                        </span>
-                                    </td>
-                                    <td class="p-4 text-center pr-6">
-                                        <div class="flex items-center justify-center gap-2">
-                                            <a href="{{ route('admin.show', $dp->id) }}" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-md transition" title="Lihat Detail">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                            </a>
-                                            <button @click='showModalEditPelanggaran = true; formPelanggaran = { 
-                                                id: {{ $dp->id }}, 
-                                                tingkat_pelanggaran: "{{ $dp->tingkat_pelanggaran }}",
-                                                investigator_id: "{{ $dp->investigator_id }}",
-                                                catatan_verifikator: {{ json_encode($dp->catatan_verifikator) }} 
-                                            }' class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-md transition" title="Ubah Verifikasi">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                            </button>
-                                            <form action="{{ route('admin.pelanggaran.destroy', $dp->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin mereset klasifikasi ini?');">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-md transition" title="Reset Verifikasi">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr><td colspan="4" class="p-8 text-center text-slate-500 italic">Belum ada data pelanggaran terverifikasi.</td></tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div x-show="showModalEditPelanggaran" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
-                        <div @click.away="showModalEditPelanggaran = false" class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden transform transition-all">
-                            <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center">
-                                <h3 class="text-white font-bold text-lg">Ubah Hasil Verifikasi Laporan</h3>
-                                <button @click="showModalEditPelanggaran = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                    <!-- Modal Lihat Info Tambahan (Pengganti Tanggapan) -->
+                    <div x-show="showModalInfoTambahan" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
+                        <div @click.away="showModalInfoTambahan = false" class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+                            <div class="bg-cyan-600 p-5 flex justify-between items-center sticky top-0 z-10">
+                                <h3 class="text-white font-bold text-lg flex items-center gap-2">
+                                    💬 Detail Informasi Tambahan
+                                </h3>
+                                <button @click="showModalInfoTambahan = false" class="text-cyan-100 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                             </div>
-                            <form :action="'/admin/pelanggaran/' + formPelanggaran.id" method="POST" class="p-6">
-                                @csrf
-                                @method('PUT')
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-2">Tingkat Pelanggaran</label>
-                                        <select name="tingkat_pelanggaran" x-model="formPelanggaran.tingkat_pelanggaran" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
-                                            <option value="">-- Pilih Tingkat --</option>
-                                            <option value="Ringan">Ringan (Administrasi)</option>
-                                            <option value="Sedang">Sedang (Etika/Disiplin)</option>
-                                            <option value="Berat">Berat (Pidana/Korupsi)</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-2">Investigator Bertugas</label>
-                                        <select name="investigator_id" x-model="formPelanggaran.investigator_id" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
-                                            <option value="">-- Belum Ditugaskan --</option>
-                                            @foreach($dataPegawai->where('peran', 'investigator') as $inv)
-                                                <option value="{{ $inv->id }}">{{ $inv->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                            
+                            <div class="p-6 overflow-y-auto">
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Keterangan dari Pelapor:</label>
+                                <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4 text-slate-700 text-sm italic">
+                                    "<span x-text="infoTambahan.pesan"></span>"
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Instruksi Verifikator / Catatan Khusus</label>
-                                    <textarea name="catatan_verifikator" x-model="formPelanggaran.catatan_verifikator" rows="3" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
-                                </div>
-
-                                <div class="mt-8 flex justify-end gap-3">
-                                    <button type="button" @click="showModalEditPelanggaran = false" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition">Batal</button>
-                                    <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-bjm-gold hover:bg-amber-600 rounded-lg transition shadow-md">Simpan Pembaruan</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div x-show="tab === 'tanggapan'" x-transition.opacity style="display: none;"
-                    x-data="{ showModalEditTanggapan: false, formTanggapan: { id: '', kategori_tanggapan: '', pesan: '' } }">
-                    <div class="px-6 py-5 border-b border-slate-200 bg-white shadow-sm flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-800">Manajemen Data Tanggapan Pelapor</h3>
-                            <p class="text-xs text-slate-500">Riwayat pesan susulan dan desakan penindakan kasus.</p>
-                        </div>
-                        <a href="{{ route('admin.rekap.cetak', 'tanggapan') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition">
-                            🖨️ Cetak Rekap PDF
-                        </a>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-200">
-                                <tr>
-                                    <th class="p-4 pl-6">Kode Kasus</th>
-                                    <th class="p-4">Pengirim & Kategori</th>
-                                    <th class="p-4">Isi Pesan</th>
-                                    <th class="p-4 text-center pr-6">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 text-sm">
-                                @forelse($dataTanggapan as $tgn)
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-4 pl-6 font-mono font-bold text-slate-700">
-                                        {{ $tgn->pengaduan->kode_tiket ?? 'KASUS DIHAPUS' }}
-                                    </td>
-                                    <td class="p-4">
-                                        <p class="font-bold text-slate-700">{{ $tgn->user->name ?? 'Pelapor' }}</p>
-                                        <span class="inline-block mt-1 px-2 py-0.5 text-[10px] uppercase tracking-wide font-bold rounded bg-slate-100 text-slate-600 border border-slate-200">
-                                            {{ $tgn->kategori_tanggapan ?? 'Pesan / Progres' }}
-                                        </span>
-                                    </td>
-                                    <td class="p-4 text-slate-600">
-                                        <p class="line-clamp-2 italic">"{{ $tgn->pesan }}"</p>
-                                        @if($tgn->lampiran_tambahan)
-                                            <a href="{{ asset('storage/' . $tgn->lampiran_tambahan) }}" target="_blank" class="inline-flex items-center gap-1 mt-2 text-[11px] text-blue-600 hover:text-blue-800 font-semibold">
-                                                📎 Ada Lampiran Susulan
-                                            </a>
-                                        @endif
-                                    </td>
-                                    <td class="p-4 text-center pr-6">
-                                        <div class="flex items-center justify-center gap-2">
-                                            <button @click='showModalEditTanggapan = true; formTanggapan = { 
-                                                id: {{ $tgn->id }}, 
-                                                kategori_tanggapan: {{ json_encode($tgn->kategori_tanggapan) }},
-                                                pesan: {{ json_encode($tgn->pesan) }} 
-                                            }' class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-md transition" title="Edit Pesan">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                            </button>
-                                            <form action="{{ route('admin.tanggapan.destroy', $tgn->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus pesan tanggapan ini permanen?');">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-md transition" title="Hapus">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr><td colspan="4" class="p-12 text-center text-slate-500 italic">Belum ada riwayat pesan/tanggapan.</td></tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div x-show="showModalEditTanggapan" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
-                        <div @click.away="showModalEditTanggapan = false" class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
-                            <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
-                                <h3 class="text-white font-bold text-lg">Koreksi Pesan Tanggapan</h3>
-                                <button @click="showModalEditTanggapan = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-                            </div>
-                            <form :action="'/admin/tanggapan/' + formTanggapan.id" method="POST" class="p-6 overflow-y-auto">
-                                @csrf
-                                @method('PUT')
-                                
-                                <div class="mb-4">
-                                    <label class="block text-sm font-bold text-slate-700 mb-1">Kategori Tanggapan</label>
-                                    <input type="text" name="kategori_tanggapan" x-model="formTanggapan.kategori_tanggapan" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none">
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="block text-sm font-bold text-slate-700 mb-1">Isi Pesan</label>
-                                    <textarea name="pesan" x-model="formTanggapan.pesan" rows="4" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2 focus:border-bjm-gold outline-none"></textarea>
+                                <div x-show="infoTambahan.lampiran" class="mb-6">
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">File Lampiran:</label>
+                                    <a :href="'/storage/' + infoTambahan.lampiran" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-lg text-sm font-bold border border-blue-200 transition">
+                                        📎 Unduh / Lihat File Bukti
+                                    </a>
                                 </div>
 
                                 <div class="mt-6 flex justify-end gap-3 border-t border-slate-100 pt-4">
-                                    <button type="button" @click="showModalEditTanggapan = false" class="px-5 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 rounded-lg transition">Batal</button>
-                                    <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-bjm-gold hover:bg-amber-600 rounded-lg transition shadow-md">Simpan Pembaruan</button>
+                                    <form :action="'/admin/info-tambahan/' + infoTambahan.id" method="POST" onsubmit="return confirm('Yakin ingin menghapus informasi ini secara permanen?');">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="px-4 py-2 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition">Hapus Info Ini</button>
+                                    </form>
+                                    <button type="button" @click="showModalInfoTambahan = false" class="px-5 py-2.5 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition">Tutup</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- MENU 4: INVESTIGASI -->
                 <div x-show="tab === 'investigasi'" x-transition.opacity style="display: none;"
                     x-data="{ showModalEditInvestigasi: false, formInvestigasi: { id: '', fakta_lapangan: '', pihak_terlibat: '', kesimpulan: '' } }">
                     <div class="px-6 py-5 border-b border-slate-200 bg-white flex justify-between items-center">
@@ -928,6 +959,7 @@
                     </div>
                 </div>
 
+                <!-- MENU 5: TINDAK LANJUT -->
                 <div x-show="tab === 'tindaklanjut'" x-transition.opacity style="display: none;"
                     x-data="{ showModalEditTindakLanjut: false, formTindakLanjut: { id: '', pihak_penindak: '', tanggal_tindak_lanjut: '', tindak_lanjut: '' } }">
                     <div class="px-6 py-5 border-b border-slate-200 bg-white shadow-sm flex justify-between items-center">
@@ -1021,8 +1053,9 @@
                     </div>
                 </div>
 
+                <!-- MENU 6: BUKTI -->
                 <div x-show="tab === 'bukti'" x-transition.opacity style="display: none;"
-                    x-data="{ showModalEditBukti: false, formBukti: { id: '' } }">
+                    x-data="{ showModalEditBukti: false, formBukti: { id: '', kode_tiket: '' } }">
                     <div class="px-6 py-5 border-b border-slate-200 bg-white shadow-sm flex justify-between items-center">
                         <div>
                             <h3 class="text-lg font-bold text-slate-800">Manajemen Arsip Bukti Kasus</h3>
@@ -1037,8 +1070,9 @@
                             <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-200">
                                 <tr>
                                     <th class="p-4 pl-6">Kode Kasus</th>
-                                    <th class="p-4">Bukti Awal Pelapor</th>
-                                    <th class="p-4">Bukti Investigasi Lapangan</th>
+                                    <th class="p-4">Bukti Awal</th>
+                                    <th class="p-4">Bukti Tambahan</th>
+                                    <th class="p-4">Bukti Investigasi</th>
                                     <th class="p-4 text-center pr-6">Aksi</th>
                                 </tr>
                             </thead>
@@ -1048,38 +1082,27 @@
                                     <td class="p-4 pl-6 font-mono font-bold text-slate-700">{{ $db->kode_tiket }}</td>
                                     <td class="p-4">
                                         @if($db->lampiran_bukti)
-                                            <a href="{{ asset('storage/' . $db->lampiran_bukti) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200 hover:border-blue-600 rounded-lg text-xs font-bold transition shadow-sm">
-                                                📎 Lihat Berkas Pelapor
-                                            </a>
-                                        @else
-                                            <span class="text-slate-400 italic text-xs">Kosong</span>
-                                        @endif
+                                            <a href="{{ asset('storage/' . $db->lampiran_bukti) }}" target="_blank" class="text-xs text-blue-600 hover:underline">Lihat Bukti</a>
+                                        @else <span class="text-slate-300 italic text-xs">Kosong</span> @endif
+                                    </td>
+                                    <td class="p-4">
+                                        @if($db->lampiran_susulan)
+                                            <a href="{{ asset('storage/' . $db->lampiran_susulan) }}" target="_blank" class="text-xs text-amber-600 hover:underline">Lihat Bukti Baru</a>
+                                        @else <span class="text-slate-300 italic text-xs">-</span> @endif
                                     </td>
                                     <td class="p-4">
                                         @if($db->bukti_investigasi)
-                                            <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 hover:bg-purple-600 text-purple-600 hover:text-white border border-purple-200 hover:border-purple-600 rounded-lg text-xs font-bold transition shadow-sm">
-                                                📷 Foto Temuan Tim
-                                            </a>
-                                        @else
-                                            <span class="text-slate-400 italic text-xs">Kosong</span>
-                                        @endif
+                                            <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="text-xs text-purple-600 hover:underline">Lihat Hasil Audit</a>
+                                        @else <span class="text-slate-300 italic text-xs">-</span> @endif
                                     </td>
                                     <td class="p-4 text-center pr-6">
-                                        <div class="flex items-center justify-center gap-2">
-                                            <button @click="showModalEditBukti = true; formBukti.id = {{ $db->id }}" class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-md transition" title="Ganti Berkas">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-                                            </button>
-                                            <form action="{{ route('admin.bukti.destroy', $db->id) }}" method="POST" class="inline" onsubmit="return confirm('Hapus seluruh berkas bukti pada kasus ini permanen?');">
-                                                @csrf @method('DELETE')
-                                                <button type="submit" class="p-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-md transition" title="Hapus Permanen">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                                </button>
-                                            </form>
-                                        </div>
+                                        <button @click="showModalEditBukti = true; formBukti = { id: {{ $db->id }}, kode_tiket: '{{ $db->kode_tiket }}' }" class="p-2 bg-slate-100 hover:bg-slate-200 rounded-md transition" title="Kelola Berkas">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                                        </button>
                                     </td>
                                 </tr>
                                 @empty
-                                <tr><td colspan="4" class="p-12 text-center text-slate-500 italic">Tidak ada file bukti pelanggaran yang terlampir.</td></tr>
+                                <tr><td colspan="5" class="p-8 text-center text-slate-500 italic">Tidak ada berkas bukti yang terlampir.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -1118,6 +1141,7 @@
                     </div>
                 </div>
 
+                <!-- MENU 7: EKSEKUSI / INPUT TINDAK LANJUT -->
                 <div x-show="tab === 'input_tindaklanjut'" x-transition.opacity style="display: none;">
                     <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-white">
                         <div>
@@ -1153,96 +1177,10 @@
                     </div>
                 </div>
 
-                <div x-show="tab === 'laporan'" x-transition.opacity style="display: none;">
-                    <div class="px-6 py-5 border-b border-slate-200 bg-white flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-800">Pusat Unduh Arsip & Rekapitulasi Kasus</h3>
-                            <p class="text-xs text-slate-500 mt-1">Unduh seluruh berkas laporan pelanggaran pegawai dalam format dokumen PDF resmi.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="p-6 bg-slate-50">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                            
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 text-xl">👥</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Daftar Pegawai Pengawas</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Rekap data Admin & Investigator.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'pegawai') }}" target="_blank" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 text-xl">🙋‍♂️</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Data Akun Pelapor</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Daftar pengguna pelapor terdaftar.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'pengguna') }}" target="_blank" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-3 text-xl">📁</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Rekap Seluruh Kasus</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Arsip lengkap pengaduan masuk.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'kasus') }}" target="_blank" class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mb-3 text-xl">⚠️</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Rekap Pelanggaran</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Hasil verifikasi & klasifikasi kasus.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'pelanggaran') }}" target="_blank" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-cyan-50 text-cyan-600 flex items-center justify-center mb-3 text-xl">💬</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Rekap Tanggapan</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Arsip obrolan & bukti susulan.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'tanggapan') }}" target="_blank" class="w-full py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mb-3 text-xl">🔍</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Rekap Investigasi</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Kertas kerja lapangan penyidik.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'investigasi') }}" target="_blank" class="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mb-3 text-xl">🔨</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Rekap Putusan Final</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Daftar sanksi akhir & eksekusi.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'tindaklanjut') }}" target="_blank" class="w-full py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between items-center text-center hover:shadow-md transition">
-                                <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mb-3 text-xl">📎</div>
-                                <div class="mb-4">
-                                    <h4 class="font-bold text-slate-800 text-sm mb-1">Rekap File Bukti</h4>
-                                    <p class="text-xs text-slate-500 leading-relaxed">Arsip ketersediaan lampiran kasus.</p>
-                                </div>
-                                <a href="{{ route('admin.rekap.cetak', 'bukti') }}" target="_blank" class="w-full py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition text-center shadow-sm">🖨️ Cetak PDF</a>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
+    
     <!-- MESIN PENCARI LIVE (GLOBAL SEARCH) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1250,17 +1188,12 @@
             
             searchInput.addEventListener('keyup', function(e) {
                 const keyword = e.target.value.toLowerCase();
-                // Mengambil seluruh baris data di semua tabel yang ada di Dasbor Admin
                 const rows = document.querySelectorAll('tbody tr');
 
                 rows.forEach(row => {
-                    // Mengabaikan baris pesan kosong (seperti: "Belum ada data kasus masuk")
                     if (row.querySelector('td[colspan]')) return;
-
-                    // Mengambil seluruh teks di dalam satu baris tabel tersebut
                     const rowText = row.textContent.toLowerCase();
                     
-                    // Logika Filter: Tampilkan jika cocok, sembunyikan jika tidak cocok
                     if (rowText.includes(keyword)) {
                         row.style.display = '';
                     } else {

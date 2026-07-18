@@ -31,6 +31,10 @@ class Pengaduan extends Model
         'alasan_penolakan',
         'investigator_id',
         
+        // Data Informasi/Bukti Tambahan (Revisi Pengganti Tabel Tanggapan)
+        'pesan_susulan',
+        'lampiran_susulan',
+        
         // Data Investigator Lama & Baru
         'hasil_investigasi', 
         'fakta_lapangan',
@@ -51,9 +55,6 @@ class Pengaduan extends Model
     {
         return $this->belongsTo(User::class, 'investigator_id');
     }
-
-    public function tanggapans()
-    {
-        return $this->hasMany(Tanggapan::class);
-    }
+    
+    // Fungsi tanggapans() sudah dihapus dari sini
 }

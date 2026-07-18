@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Pengaduan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Tanggapan;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -15,7 +14,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // 1. DATA PEGAWAI (Revisi: Hanya mengambil admin dan investigator)
+        // 1. DATA PEGAWAI (Hanya mengambil admin dan investigator)
         $dataPegawai = User::whereIn('peran', ['admin', 'investigator'])->latest()->get();
 
         // 2. DATA PENGGUNA (PELAPOR)
@@ -24,7 +23,7 @@ class AdminController extends Controller
         // 3. DATA KASUS
         $dataKasus = Pengaduan::latest()->get();
 
-        // 4. DATA TINGKAT PELANGGARAN 
+        // 4. DATA TINGKAT PELANGGARAN (Diambil dari tabel pengaduan)
         $dataPelanggaran = Pengaduan::whereNotNull('tingkat_pelanggaran')->latest()->get();
 
         // 5. DATA BUKTI
@@ -43,19 +42,19 @@ class AdminController extends Controller
                                     ->latest()
                                     ->get();
 
-        // 7. ANTREAN INPUT TINDAK LANJUT (Kasus sudah diinvestigasi, menunggu sanksi Admin)
+        // 7. ANTREAN INPUT TINDAK LANJUT
         $kasusPerluTindakLanjut = Pengaduan::whereNotNull('kesimpulan')
                                         ->whereNull('tindak_lanjut')
                                         ->latest()
                                         ->get();
 
-        // 8. DATA TINDAK LANJUT (Data arsip sanksi yang SUDAH diinput oleh Admin)
+        // 8. DATA TINDAK LANJUT
         $dataTindakLanjut = Pengaduan::whereNotNull('tindak_lanjut')
                                     ->latest()
                                     ->get();
 
-        // 9. DATA TANGGAPAN (Menu ke-6 Layanan Pengaduan)
-        $dataTanggapan = Tanggapan::with(['pengaduan', 'user'])
+        // 9. DATA INFORMASI TAMBAHAN (Revisi Pengganti Tanggapan)
+        $dataInfoTambahan = Pengaduan::whereNotNull('pesan_susulan')
                                     ->latest()
                                     ->get();
 
@@ -68,17 +67,14 @@ class AdminController extends Controller
             'dataInvestigasi',
             'kasusPerluTindakLanjut',
             'dataTindakLanjut',
-            'dataTanggapan'
+            'dataInfoTambahan'
         ));
     }
 
     // FUNGSI MENAMPILKAN BERKAS KASUS (DETAIL ADMIN)
     public function show($id)
     {
-        // Ambil data pengaduan berdasarkan ID
         $pengaduan = Pengaduan::findOrFail($id);
-        
-        // Lempar ke tampilan admin.detail
         return view('admin.detail', compact('pengaduan'));
     }
 
@@ -102,8 +98,7 @@ class AdminController extends Controller
             'tindak_lanjut'         => 'required|string',
         ]);
 
-        /** @var \App\Models\Pengaduan $kasus */
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
 
         $kasus->update(array_merge($validatedData, [
             'status' => 'selesai'
@@ -119,7 +114,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'peran' => 'required|in:admin,investigator', // Revisi: petugas_verifikasi dihapus
+            'peran' => 'required|in:admin,investigator',
         ]);
 
         User::create([
@@ -139,7 +134,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,'.$pegawai->id,
-            'peran' => 'required|in:admin,investigator', // Revisi: petugas_verifikasi dihapus
+            'peran' => 'required|in:admin,investigator',
         ]);
 
         $data = [
@@ -222,40 +217,107 @@ class AdminController extends Controller
 
     public function updateKasus(Request $request, $id)
     {
+        $kasus = Pengaduan::findOrFail($id);
+
         $request->validate([
-            'judul_laporan' => 'required|string|max:255',
-            'kategori_laporan' => 'required|string',
-            'tanggal_kejadian' => 'required|date',
-            'lokasi_kejadian' => 'required|string|max:255',
-            'isi_laporan' => 'required|string',
-            'status' => 'required|string',
+            'kode_tiket'            => 'required|string|max:255|unique:pengaduans,kode_tiket,' . $kasus->id,
+            'user_id'               => 'nullable|exists:users,id',
+            'nama_pelapor'          => 'nullable|string|max:255',
+            'nip'                   => 'nullable|string|max:255',
+            'nomor_hp'              => 'nullable|string|max:255',
+            'email'                 => 'nullable|email|max:255',
+            'judul_laporan'         => 'required|string|max:255',
+            'kategori_laporan'      => 'required|string',
+            'tanggal_kejadian'      => 'required|date',
+            'lokasi_kejadian'       => 'required|string|max:255',
+            'isi_laporan'           => 'required|string',
+            'status'                => 'required|string|in:masuk,verifikasi,investigasi,selesai,ditolak',
+            'tingkat_pelanggaran'   => 'nullable|string|in:Ringan,Sedang,Berat',
+            'catatan_verifikator'   => 'nullable|string',
+            'alasan_penolakan'      => 'nullable|string',
+            'investigator_id'       => 'nullable|exists:users,id',
+            'pesan_susulan'         => 'nullable|string',
+            'hasil_investigasi'     => 'nullable|string',
+            'fakta_lapangan'        => 'nullable|string',
+            'pihak_terlibat'        => 'nullable|string',
+            'kesimpulan'            => 'nullable|string',
+            'tindak_lanjut'         => 'nullable|string',
+            'pihak_penindak'        => 'nullable|string',
+            'tanggal_tindak_lanjut' => 'nullable|date',
+            'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
-        $kasus->update([
-            'judul_laporan' => $request->judul_laporan,
-            'kategori_laporan' => $request->kategori_laporan,
-            'tanggal_kejadian' => $request->tanggal_kejadian,
-            'lokasi_kejadian' => $request->lokasi_kejadian,
-            'isi_laporan' => $request->isi_laporan,
-            'status' => $request->status,
-        ]);
+        $data = [
+            'kode_tiket'            => $request->kode_tiket,
+            'user_id'               => $request->user_id,
+            'nama_pelapor'          => $request->nama_pelapor,
+            'nip'                   => $request->nip,
+            'nomor_hp'              => $request->nomor_hp,
+            'email'                 => $request->email,
+            'judul_laporan'         => $request->judul_laporan,
+            'kategori_laporan'      => $request->kategori_laporan,
+            'tanggal_kejadian'      => $request->tanggal_kejadian,
+            'lokasi_kejadian'       => $request->lokasi_kejadian,
+            'isi_laporan'           => $request->isi_laporan,
+            'status'                => $request->status,
+            'tingkat_pelanggaran'   => $request->tingkat_pelanggaran,
+            'catatan_verifikator'   => $request->catatan_verifikator,
+            'alasan_penolakan'      => $request->alasan_penolakan,
+            'investigator_id'       => $request->investigator_id,
+            'pesan_susulan'         => $request->pesan_susulan,
+            'hasil_investigasi'     => $request->hasil_investigasi,
+            'fakta_lapangan'        => $request->fakta_lapangan,
+            'pihak_terlibat'        => $request->pihak_terlibat,
+            'kesimpulan'            => $request->kesimpulan,
+            'tindak_lanjut'         => $request->tindak_lanjut,
+            'pihak_penindak'        => $request->pihak_penindak,
+            'tanggal_tindak_lanjut' => $request->tanggal_tindak_lanjut,
+        ];
 
-        return redirect()->back()->with('success', 'Data Kasus berhasil diperbarui!');
+        // Handle file uploads
+        if ($request->hasFile('lampiran_bukti')) {
+            if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
+                Storage::disk('public')->delete($kasus->lampiran_bukti);
+            }
+            $data['lampiran_bukti'] = $request->file('lampiran_bukti')->store('bukti_pengaduan', 'public');
+        }
+
+        if ($request->hasFile('lampiran_susulan')) {
+            if ($kasus->lampiran_susulan && Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+                Storage::disk('public')->delete($kasus->lampiran_susulan);
+            }
+            $data['lampiran_susulan'] = $request->file('lampiran_susulan')->store('bukti_susulan', 'public');
+        }
+
+        if ($request->hasFile('bukti_investigasi')) {
+            if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
+                Storage::disk('public')->delete($kasus->bukti_investigasi);
+            }
+            $data['bukti_investigasi'] = $request->file('bukti_investigasi')->store('bukti_investigasi', 'public');
+        }
+
+        $kasus->update($data);
+
+        return redirect()->back()->with('success', 'Seluruh data kasus dan lampiran berhasil diperbarui!');
     }
 
     public function destroyKasus($id)
     {
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
         if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
             Storage::disk('public')->delete($kasus->lampiran_bukti);
         }
         if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
             Storage::disk('public')->delete($kasus->bukti_investigasi);
         }
+        if ($kasus->lampiran_susulan && Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+            Storage::disk('public')->delete($kasus->lampiran_susulan);
+        }
         $kasus->delete();
 
-        return redirect()->back()->with('success', 'Data Kasus beserta buktinya berhasil dihapus permanen!');
+        return redirect()->back()->with('success', 'Data Kasus beserta seluruh buktinya berhasil dihapus permanen!');
     }
 
     public function updatePelanggaran(Request $request, $id)
@@ -266,7 +328,7 @@ class AdminController extends Controller
             'catatan_verifikator' => 'nullable|string',
         ]);
 
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
         $kasus->update([
             'tingkat_pelanggaran' => $request->tingkat_pelanggaran,
             'investigator_id' => $request->investigator_id,
@@ -278,7 +340,7 @@ class AdminController extends Controller
 
     public function destroyPelanggaran($id)
     {
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
         $kasus->update([
             'tingkat_pelanggaran' => null,
             'investigator_id'     => null,
@@ -297,7 +359,7 @@ class AdminController extends Controller
             'kesimpulan' => 'required|string',
         ]);
 
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
         $kasus->update([
             'fakta_lapangan' => $request->fakta_lapangan,
             'pihak_terlibat' => $request->pihak_terlibat,
@@ -309,7 +371,7 @@ class AdminController extends Controller
 
     public function destroyInvestigasi($id)
     {
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
         if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
             Storage::disk('public')->delete($kasus->bukti_investigasi);
         }
@@ -327,13 +389,13 @@ class AdminController extends Controller
 
     public function destroyTindakLanjut($id)
     {
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
         
         $kasus->update([
             'pihak_penindak'        => null,
             'tanggal_tindak_lanjut' => null,
             'tindak_lanjut'         => null,
-            'status'                => 'selesai', 
+            'status'                => 'investigasi', // Lebih aman dikembalikan ke investigasi
         ]);
 
         return redirect()->back()->with('success', 'Keputusan Tindak Lanjut berhasil dibatalkan. Data dikembalikan ke tabel Antrean Input Tindak Lanjut.');
@@ -342,19 +404,30 @@ class AdminController extends Controller
     public function updateBukti(Request $request, $id)
     {
         $request->validate([
-            'lampiran_bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran_bukti'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran_susulan'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', 
             'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        /** @var \App\Models\Pengaduan $kasus */
         $kasus = \App\Models\Pengaduan::findOrFail($id);
 
+        // 1. Update Bukti Awal Pelapor
         if ($request->hasFile('lampiran_bukti')) {
             if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
                 Storage::disk('public')->delete($kasus->lampiran_bukti);
             }
             $kasus->lampiran_bukti = $request->file('lampiran_bukti')->store('bukti_pengaduan', 'public');
         }
+
+        // 2. Update Bukti Tambahan (Revisi Baru)
+        if ($request->hasFile('lampiran_susulan')) {
+            if ($kasus->lampiran_susulan && Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+                Storage::disk('public')->delete($kasus->lampiran_susulan);
+            }
+            $kasus->lampiran_susulan = $request->file('lampiran_susulan')->store('bukti_susulan', 'public');
+        }
+
+        // 3. Update Bukti Investigasi
         if ($request->hasFile('bukti_investigasi')) {
             if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
                 Storage::disk('public')->delete($kasus->bukti_investigasi);
@@ -364,13 +437,12 @@ class AdminController extends Controller
 
         $kasus->save();
 
-        return redirect()->back()->with('success', 'File bukti berhasil diganti/diperbarui!');
+        return redirect()->back()->with('success', 'File bukti berhasil diperbarui!');
     }
 
     public function destroyBukti($id)
     {
-        /** @var \App\Models\Pengaduan $kasus */
-        $kasus = \App\Models\Pengaduan::findOrFail($id);
+        $kasus = Pengaduan::findOrFail($id);
         if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
             Storage::disk('public')->delete($kasus->lampiran_bukti);
         }
@@ -385,38 +457,41 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Seluruh file bukti pada kasus ini berhasil dihapus permanen!');
     }
 
-    public function updateTanggapan(Request $request, $id)
+    // REVISI: Fungsi Tanggapan diubah menjadi Informasi Tambahan
+    public function updateInfoTambahan(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'kategori_tanggapan' => 'required|string|max:255',
-            'pesan' => 'required|string',
+            'pesan_susulan' => 'required|string',
         ]);
 
-        $tanggapan = \App\Models\Tanggapan::findOrFail($id);
-        $tanggapan->update($validatedData);
+        $kasus = Pengaduan::findOrFail($id);
+        $kasus->update($validatedData);
 
-        return redirect()->back()->with('success', 'Pesan tanggapan berhasil diperbarui!');
+        return redirect()->back()->with('success', 'Informasi tambahan berhasil diperbarui!');
     }
 
-    public function destroyTanggapan($id)
+    public function destroyInfoTambahan($id)
     {
-        $tanggapan = \App\Models\Tanggapan::findOrFail($id);
-        if ($tanggapan->lampiran_tambahan && Storage::disk('public')->exists($tanggapan->lampiran_tambahan)) {
-            Storage::disk('public')->delete($tanggapan->lampiran_tambahan);
+        $kasus = Pengaduan::findOrFail($id);
+        
+        if ($kasus->lampiran_susulan && Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+            Storage::disk('public')->delete($kasus->lampiran_susulan);
         }
 
-        $tanggapan->delete();
+        $kasus->update([
+            'pesan_susulan' => null,
+            'lampiran_susulan' => null,
+        ]);
 
-        return redirect()->back()->with('success', 'Tanggapan beserta lampirannya berhasil dihapus permanen!');
+        return redirect()->back()->with('success', 'Informasi tambahan beserta lampirannya berhasil dihapus permanen!');
     }
 
     // FUNGSI CETAK PDF DETAIL KASUS
     public function cetakPdf($id)
     {
-        $pengaduan = \App\Models\Pengaduan::with(['user', 'investigator'])->findOrFail($id);
-        $pdf = pdf::loadView('admin.pdf_detail', compact('pengaduan'));
+        $pengaduan = Pengaduan::with(['user', 'investigator'])->findOrFail($id);
+        $pdf = Pdf::loadView('admin.pdf_detail', compact('pengaduan'));
 
-        // Fitur Pratinjau Diaktifkan
         return $pdf->stream('Laporan_SAPA_PEMKO_'. $pengaduan->kode_tiket . '.pdf', ['Attachment' => false]);
     }
 
@@ -429,36 +504,36 @@ class AdminController extends Controller
         switch ($kategori) {
             case 'kasus':
                 $title = "LAPORAN REKAPITULASI DATA KASUS";
-                $data = \App\Models\Pengaduan::with('user')->latest()->get();
+                $data = Pengaduan::with('user')->latest()->get();
                 break;
             case 'pelanggaran':
-                $title = "LAPORAN REKAPITULASI DATA PELANGGARAN";
-                $data = \App\Models\Pengaduan::whereNotNull('tingkat_pelanggaran')->latest()->get();
+                $title = "LAPORAN REKAPITULASI DATA TINGKAT PELANGGARAN";
+                $data = Pengaduan::whereNotNull('tingkat_pelanggaran')->latest()->get();
                 break;
             case 'investigasi':
                 $title = "LAPORAN REKAPITULASI DATA HASIL INVESTIGASI";
-                $data = \App\Models\Pengaduan::whereNotNull('fakta_lapangan')->latest()->get();
+                $data = Pengaduan::whereNotNull('fakta_lapangan')->latest()->get();
                 break;
             case 'tindaklanjut':
                 $title = "LAPORAN REKAPITULASI DATA TINDAK LANJUT";
-                $data = \App\Models\Pengaduan::whereNotNull('tindak_lanjut')->latest()->get();
+                $data = Pengaduan::whereNotNull('tindak_lanjut')->latest()->get();
                 break;
             case 'bukti':
                 $title = "LAPORAN REKAPITULASI ARSIP LAMPIRAN BUKTI";
-                $data = \App\Models\Pengaduan::whereNotNull('lampiran_bukti')->orWhereNotNull('bukti_investigasi')->latest()->get();
+                $data = Pengaduan::whereNotNull('lampiran_bukti')->orWhereNotNull('bukti_investigasi')->latest()->get();
                 break;
             case 'tanggapan':
-                $title = "LAPORAN REKAPITULASI DATA TANGGAPAN PELAPOR";
-                $data = \App\Models\Tanggapan::with(['pengaduan', 'user'])->latest()->get();
+                // REVISI: Mengambil data dari tabel pengaduan yang ada pesan susulannya
+                $title = "LAPORAN REKAPITULASI DATA INFORMASI TAMBAHAN PELAPOR";
+                $data = Pengaduan::whereNotNull('pesan_susulan')->with('user')->latest()->get();
                 break;
             case 'pegawai':
                 $title = "LAPORAN REKAPITULASI DATA PEGAWAI INTERNAL";
-                // Revisi: Hanya memuat admin & investigator
-                $data = \App\Models\User::whereIn('peran', ['admin', 'investigator'])->latest()->get();
+                $data = User::whereIn('peran', ['admin', 'investigator'])->latest()->get();
                 break;
             case 'pengguna':
                 $title = "LAPORAN REKAPITULASI DATA PELAPOR";
-                $data = \App\Models\User::where('peran', 'pelapor')->orWhereNull('peran')->latest()->get();
+                $data = User::where('peran', 'pelapor')->orWhereNull('peran')->latest()->get();
                 break;
 
             default:
@@ -467,7 +542,6 @@ class AdminController extends Controller
 
         $pdf = Pdf::loadView('admin.pdf_rekap', compact('data', 'title', 'kategori'));
         
-        // Fitur Pratinjau Diaktifkan
         return $pdf->stream('Rekap_' . $kategori . '_' . date('Ymd') . '.pdf', ['Attachment' => false]);
     }
 

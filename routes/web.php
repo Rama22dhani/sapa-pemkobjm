@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     // 1. AREA PELAPOR 
     Route::get('/pelapor/dashboard', [PengaduanController::class, 'index'])->name('pelapor.dashboard');
     Route::post('/pelapor/kirim', [PengaduanController::class, 'store'])->name('pelapor.store');
-    Route::post('/pelapor/tanggapan', [PengaduanController::class, 'storeTanggapan'])->name('pelapor.tanggapan.store');
+    Route::post('/pelapor/informasi-tambahan', [PengaduanController::class, 'storeInformasiTambahan'])->name('pelapor.informasi.store');
 
     // 2. AREA INVESTIGATOR 
     Route::middleware('peran:investigator')->group(function () {

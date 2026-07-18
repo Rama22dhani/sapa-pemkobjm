@@ -69,7 +69,6 @@
                 <p class="text-slate-300 text-sm md:text-base">Pantau proses penindakan kasus Anda atau sampaikan indikasi pelanggaran baru.</p>
             </div>
             
-            <!-- REVISI: Tombol kini mengarah langsung ke halaman create.blade.php -->
             <a href="{{ route('pelapor.create') }}" 
                 class="relative z-10 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-bold text-white text-sm shadow-md transition transform hover:-translate-y-0.5 w-full md:w-auto bg-bjm-gold hover:bg-amber-600">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -125,7 +124,7 @@
             <div class="px-5 py-4 border-b border-slate-100 bg-slate-50">
                 <h3 class="font-bold text-bjm-blue text-sm flex items-center gap-2">
                     <svg class="w-4 h-4 text-bjm-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Riwayat Pelaporan Kasus & Tanggapan
+                    Riwayat Pelaporan Kasus & Info Tambahan
                 </h3>
             </div>
             
@@ -163,49 +162,45 @@
                             </td>
                             <td class="p-3 text-center pr-5 flex items-center justify-center gap-2">
                                 <button @click="openChat = !openChat" class="flex items-center gap-1 text-bjm-blue hover:text-white font-bold text-[11px] bg-slate-100 hover:bg-bjm-blue px-2.5 py-1.5 rounded-lg transition shadow-sm border border-slate-200">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                    Pesan (<span x-text="{{ $laporan->tanggapans->count() }}"></span>)
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                                    Tambah Data
                                 </button>
                                 <a href="{{ route('lacak', ['kode_tiket' => $laporan->kode_tiket]) }}" class="text-blue-600 hover:text-blue-800 font-bold text-[11px] hover:underline transition whitespace-nowrap">Lacak &rarr;</a>
                             </td>
                         </tr>
                         
+                        <!-- Panel Formulir Tambah Data yang bisa disembunyikan/ditampilkan -->
                         <tr x-show="openChat" style="display: none;" x-transition class="bg-slate-50 border-t border-slate-100 whitespace-normal">
                             <td colspan="5" class="p-4 md:p-6 shadow-inner">
-                                <div class="max-w-3xl mx-auto bg-white rounded-xl border border-slate-200 p-5 md:p-6 shadow-sm">
+                                <div class="max-w-2xl mx-auto bg-white rounded-xl border border-slate-200 p-5 md:p-6 shadow-sm">
                                     <h4 class="text-slate-800 font-bold text-sm md:text-base mb-1">
-                                        Kirim Bukti / Pesan Susulan Kasus: <span class="text-bjm-gold font-mono">{{ $laporan->kode_tiket }}</span>
+                                        Formulir Informasi Tambahan Kasus: <span class="text-bjm-gold font-mono">{{ $laporan->kode_tiket }}</span>
                                     </h4>
-                                    <p class="text-slate-500 text-xs mb-4">Tambahkan keterangan, bukti baru, atau tanyakan progres investigasi.</p>
+                                    <p class="text-slate-500 text-xs mb-5">Gunakan fasilitas ini untuk melampirkan keterangan baru atau bukti dokumen pendukung tambahan.</p>
                                     
-                                    <form action="{{ route('pelapor.tanggapan.store') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('pelapor.informasi.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" name="pengaduan_id" value="{{ $laporan->id }}">
+                                        <input type="hidden" name="kode_tiket" value="{{ $laporan->kode_tiket }}">
                                         
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                            <div>
-                                                <label class="block text-[10px] text-slate-600 font-bold uppercase mb-1.5">Tujuan Pesan <span class="text-red-500">*</span></label>
-                                                <select name="kategori_tanggapan" required class="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-lg px-3 py-2 focus:border-bjm-gold outline-none text-xs transition">
-                                                    <option value="">-- Pilih Tujuan --</option>
-                                                    <option value="Menanyakan Progres">Menanyakan Progres Audit</option>
-                                                    <option value="Informasi Tambahan">Bukti / Informasi Tambahan</option>
-                                                    <option value="Desakan Penanganan">Desakan Penanganan Kasus</option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label class="block text-[10px] text-slate-600 font-bold uppercase mb-1.5">Lampiran Bukti Susulan (Opsional)</label>
-                                                <input type="file" name="lampiran_tambahan" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-blue-50 file:text-blue-700 bg-slate-50 border border-slate-300 rounded-lg"/>
-                                            </div>
+                                        <div class="mb-4">
+                                            <label class="block text-[10px] text-slate-600 font-bold uppercase mb-1.5">Lampiran Dokumen Bukti (Opsional)</label>
+                                            <input type="file" name="lampiran_bukti" accept=".pdf,.jpg,.jpeg,.png" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-blue-50 file:text-blue-700 bg-slate-50 border border-slate-300 rounded-lg"/>
+                                            <p class="text-[9px] text-slate-400 mt-1">* Format yang didukung: JPG, PNG, PDF. Maksimal 2MB.</p>
                                         </div>
 
-                                        <label class="block text-[10px] text-slate-600 font-bold uppercase mb-1.5">Isi Pesan <span class="text-red-500">*</span></label>
-                                        <textarea name="pesan" required rows="2" placeholder="Tuliskan keterangan detail pesan susulan..." 
-                                            class="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-lg px-3 py-2 focus:border-bjm-gold outline-none transition text-xs mb-4"></textarea>
+                                        <label class="block text-[10px] text-slate-600 font-bold uppercase mb-1.5">Detail Informasi Tambahan <span class="text-red-500">*</span></label>
+                                        <textarea name="isi_pesan" required rows="3" placeholder="Uraikan informasi atau data tambahan yang ingin Anda sertakan pada kasus ini..." 
+                                            class="w-full bg-slate-50 border border-slate-300 text-slate-800 rounded-lg px-3 py-2 focus:border-bjm-gold outline-none transition text-xs mb-5"></textarea>
                                         
-                                        <div class="flex justify-end">
+                                        <div class="flex justify-end gap-2">
+                                            <!-- Tombol Batal untuk menutup panel -->
+                                            <button type="button" @click="openChat = false" class="bg-slate-200 hover:bg-slate-300 text-slate-600 px-4 py-2 rounded-lg font-bold text-xs transition">
+                                                Batal
+                                            </button>
+                                            
                                             <button type="submit" class="bg-bjm-gold hover:bg-amber-600 text-white px-5 py-2 rounded-lg font-bold text-xs transition flex items-center gap-2 shadow-sm">
-                                                Kirim Pesan
-                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                                                Simpan Data Tambahan
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                                             </button>
                                         </div>
                                     </form>
