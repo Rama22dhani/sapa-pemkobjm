@@ -56,7 +56,7 @@
         </div>
     </nav>
 
-    <section class="relative min-h-[95vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-bjm-blue" style="background-image: url('{{ asset("images/bg-menara.jpg") }}'); background-size: cover; background-position: center; background-attachment: fixed;">
+    <section class="relative min-h-[95vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-bjm-blue" style="background-image: url('{{ asset("images/pemko-balai-kota.png") }}'); background-size: cover; background-position: center; background-attachment: fixed;">
         
         <div class="absolute inset-0 bg-bjm-blue/80 mix-blend-multiply z-0"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-bjm-blue via-bjm-blue/40 to-transparent z-0"></div>
