@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Pegawai;
 use App\Models\Pengaduan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,10 +15,13 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // 1. DATA PEGAWAI (Hanya mengambil admin dan investigator)
+        // 1. DATA AKSES (Sebelumnya bernama Data Pegawai)
         $dataPegawai = User::whereIn('peran', ['admin', 'investigator'])->latest()->get();
 
-        // 2. DATA PENGGUNA (PELAPOR)
+        // 1-B. MASTER DATA PEGAWAI (Profil Fisik Kepegawaian Baru)
+        $dataMasterPegawai = \App\Models\Pegawai::with('user')->latest()->get();
+
+        // 2. DATA PELAPOR
         $dataPengguna = User::where('peran', 'pelapor')->latest()->get();
 
         // 3. DATA KASUS
@@ -60,6 +64,7 @@ class AdminController extends Controller
 
         return view('admin.dashboard', compact(
             'dataPegawai', 
+            'dataMasterPegawai', 
             'dataPengguna', 
             'dataKasus', 
             'dataPelanggaran', 
@@ -565,6 +570,10 @@ class AdminController extends Controller
                 $title = "LAPORAN REKAPITULASI DATA PELAPOR";
                 $data = User::where('peran', 'pelapor')->orWhereNull('peran')->latest()->get();
                 break;
+            case 'master_pegawai':
+                $title = "LAPORAN REKAPITULASI DATA PEGAWAI (PROFIL FISIK)";
+                $data = Pegawai::with('user')->latest()->get();
+                break;
 
             default:
                 return redirect()->back()->with('error', 'Kategori rekapitulasi tidak valid!');
@@ -602,5 +611,48 @@ class AdminController extends Controller
         }
 
         return redirect()->back()->with('success', $pesan);
+    }
+
+    // CRUD MASTER DATA PEGAWAI (PROFIL FISIK)
+    public function storeMasterPegawai(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => 'nullable|exists:users,id',
+            'nip' => 'required|string|unique:pegawais,nip',
+            'nama_pegawai' => 'required|string|max:255',
+            'status_kepegawaian' => 'required|in:PNS,PPPK,CPNS,Honorer',
+            'asal_instansi' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'nomor_hp' => 'nullable|string|max:20',
+            'status_aktif' => 'required|in:Aktif,Nonaktif',
+        ]);
+
+        Pegawai::create($validated);
+        return redirect()->back()->with('success', 'Master Data Pegawai berhasil ditambahkan!');
+    }
+
+    public function updateMasterPegawai(Request $request, $id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        $validated = $request->validate([
+            'user_id' => 'nullable|exists:users,id',
+            'nip' => 'required|string|unique:pegawais,nip,'.$id,
+            'nama_pegawai' => 'required|string|max:255',
+            'status_kepegawaian' => 'required|in:PNS,PPPK,CPNS,Honorer',
+            'asal_instansi' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'nomor_hp' => 'nullable|string|max:20',
+            'status_aktif' => 'required|in:Aktif,Nonaktif',
+        ]);
+
+        $pegawai->update($validated);
+        return redirect()->back()->with('success', 'Master Data Pegawai berhasil diperbarui!');
+    }
+
+    public function destroyMasterPegawai($id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        $pegawai->delete();
+        return redirect()->back()->with('success', 'Master Data Pegawai berhasil dihapus!');
     }
 }

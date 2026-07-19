@@ -91,6 +91,46 @@
             </tbody>
         </table>
 
+    @elseif($kategori == 'master_pegawai')
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">No</th>
+                    <th style="width: 25%;">NIP & Nama</th>
+                    <th style="width: 20%;">Instansi & Status</th>
+                    <th style="width: 25%;">Jabatan</th>
+                    <th style="width: 25%;">Akun Terhubung</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($data as $index => $d)
+                    <tr>
+                        <td class="center">{{ $index + 1 }}</td>
+                        <td>
+                            <strong>{{ $d->nama_pegawai }}</strong><br>
+                            <span style="font-size: 9px; color: #555;">{{ $d->nip }}</span>
+                        </td>
+                        <td>
+                            {{ $d->asal_instansi }}<br>
+                            <span style="font-size: 9px; color: #555;">{{ $d->status_kepegawaian }}</span>
+                        </td>
+                        <td>{{ $d->jabatan }}</td>
+                        <td class="center">
+                            @if($d->user)
+                                {{ $d->user->name }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada master data pegawai.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
     @else
         <table class="data-table">
             <thead>
@@ -99,8 +139,8 @@
                         <th style="width: 5%;">No</th>
                         <th style="width: 20%;">Tiket Kasus</th>
                         <th style="width: 20%;">Nama Pengirim</th>
-                        <th style="width: 20%;">Kategori Pesan</th>
-                        <th style="width: 35%;">Isi Tanggapan Susulan</th>
+                        <th style="width: 20%;">Keterangan</th>
+                        <th style="width: 35%;">Isi Informasi Tambahan</th>
                     </tr>
                 @else
                     <tr>
@@ -132,10 +172,10 @@
                     <tr>
                         <td class="center">{{ $index + 1 }}</td>
                         @if($kategori == 'tanggapan')
-                            <td style="font-family: monospace; font-weight: bold;">{{ $d->pengaduan->kode_tiket ?? 'DIHAPUS' }}</td>
-                            <td>{{ $d->user->name ?? 'Pelapor' }}</td>
-                            <td>{{ $d->kategori_tanggapan ?? 'Pesan Umum' }}</td>
-                            <td><em>"{{ $d->pesan }}"</em></td>
+                            <td style="font-family: monospace; font-weight: bold;">{{ $d->kode_tiket }}</td>
+                            <td>{{ $d->user->name ?? $d->nama_pelapor ?? 'Pelapor' }}</td>
+                            <td>Informasi Susulan</td>
+                            <td><em>"{{ $d->pesan_susulan }}"</em></td>
                         @else
                             <td style="font-family: monospace; font-weight: bold;">{{ $d->kode_tiket }}</td>
                             <td>{{ $d->judul_laporan }}</td>

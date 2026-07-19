@@ -96,10 +96,14 @@ Route::middleware('auth')->group(function () {
             ->name('admin.kasus.cetak');
         Route::get('/admin/rekap/{kategori}', [App\Http\Controllers\AdminController::class, 'cetakRekap'])
             ->name('admin.rekap.cetak');
-        // CRUD MASTER DATA PEGAWAI INTERNAL
+        // CRUD MASTER DATA AKSES INTERNAL
         Route::post('/admin/pegawai', [AdminController::class, 'storePegawai'])->name('admin.pegawai.store');
         Route::put('/admin/pegawai/{id}', [AdminController::class, 'updatePegawai'])->name('admin.pegawai.update');
         Route::delete('/admin/pegawai/{id}', [AdminController::class, 'destroyPegawai'])->name('admin.pegawai.destroy');
+        // CRUD Master Data Pegawai
+        Route::post('/admin/master-pegawai', [AdminController::class, 'storeMasterPegawai'])->name('admin.master_pegawai.store');
+        Route::put('/admin/master-pegawai/{id}', [AdminController::class, 'updateMasterPegawai'])->name('admin.master_pegawai.update');
+        Route::delete('/admin/master-pegawai/{id}', [AdminController::class, 'destroyMasterPegawai'])->name('admin.master_pegawai.destroy');
         // CRUD MASTER DATA PELAPOR
         Route::post('/admin/pengguna', [AdminController::class, 'storePengguna'])->name('admin.pengguna.store');
         Route::put('/admin/pengguna/{id}', [AdminController::class, 'updatePengguna'])->name('admin.pengguna.update');
