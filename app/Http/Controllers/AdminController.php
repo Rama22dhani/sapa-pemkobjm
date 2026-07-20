@@ -98,18 +98,52 @@ class AdminController extends Controller
     public function updateTindakLanjut(Request $request, $id)
     {
         $validatedData = $request->validate([
+            'judul_laporan'         => 'sometimes|required|string|max:255',
+            'kategori_laporan'      => 'sometimes|required|string',
+            'tanggal_kejadian'      => 'sometimes|required|date',
+            'lokasi_kejadian'       => 'sometimes|required|string|max:255',
+            'isi_laporan'           => 'sometimes|required|string',
+            'tingkat_pelanggaran'   => 'nullable|string',
+            'investigator_id'       => 'nullable|exists:users,id',
+            'fakta_lapangan'        => 'nullable|string',
+            'pihak_terlibat'        => 'nullable|string',
+            'kesimpulan'            => 'nullable|string',
             'pihak_penindak'        => 'required|string',
             'tanggal_tindak_lanjut' => 'required|date',
             'tindak_lanjut'         => 'required|string',
+            'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
         $kasus = Pengaduan::findOrFail($id);
+
+        if ($request->hasFile('lampiran_bukti')) {
+            if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
+                Storage::disk('public')->delete($kasus->lampiran_bukti);
+            }
+            $validatedData['lampiran_bukti'] = $request->file('lampiran_bukti')->store('bukti_pengaduan', 'public');
+        }
+
+        if ($request->hasFile('lampiran_susulan')) {
+            if ($kasus->lampiran_susulan && Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+                Storage::disk('public')->delete($kasus->lampiran_susulan);
+            }
+            $validatedData['lampiran_susulan'] = $request->file('lampiran_susulan')->store('bukti_susulan', 'public');
+        }
+
+        if ($request->hasFile('bukti_investigasi')) {
+            if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
+                Storage::disk('public')->delete($kasus->bukti_investigasi);
+            }
+            $validatedData['bukti_investigasi'] = $request->file('bukti_investigasi')->store('bukti_investigasi', 'public');
+        }
 
         $kasus->update(array_merge($validatedData, [
             'status' => 'selesai'
         ]));
 
-        return redirect()->route('admin.dashboard')->with('success', 'Data Tindak Lanjut / Keputusan berhasil disimpan!');
+        return redirect()->route('admin.dashboard')->with('success', 'Data Tindak Lanjut / Keputusan beserta file bukti berhasil disimpan!');
     }
 
     // CRUD MASTER DATA PEGAWAI

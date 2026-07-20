@@ -1135,11 +1135,13 @@
                             🖨️ Cetak Rekap
                         </a>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto mt-4">
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-200">
                                 <tr>
                                     <th class="p-4 pl-6">Kode Kasus</th>
+                                    <th class="p-4 min-w-[200px]">Judul Laporan</th>
+                                    <th class="p-4">Tingkat</th>
                                     <th class="p-4">Instansi Penindak</th>
                                     <th class="p-4">Tanggal Eksekusi</th>
                                     <th class="p-4 text-center pr-6">Aksi</th>
@@ -1149,26 +1151,52 @@
                                 @forelse($dataTindakLanjut as $dt)
                                 <tr class="hover:bg-slate-50 transition">
                                     <td class="p-4 pl-6 font-mono font-bold text-slate-700">{{ $dt->kode_tiket }}</td>
+                                    <td class="p-4 text-slate-600">{{ Str::limit($dt->judul_laporan, 40) }}</td>
+                                    <td class="p-4">
+                                        @if($dt->tingkat_pelanggaran)
+                                            <span class="px-2.5 py-1 text-[10px] uppercase rounded font-bold border 
+                                                {{ $dt->tingkat_pelanggaran == 'Berat' ? 'bg-red-50 text-red-600 border-red-200' : 
+                                                ($dt->tingkat_pelanggaran == 'Sedang' ? 'bg-amber-50 text-amber-600 border-amber-200' : 
+                                                'bg-emerald-50 text-emerald-600 border-emerald-200') }}">
+                                                {{ $dt->tingkat_pelanggaran }}
+                                            </span>
+                                        @else
+                                            <span class="text-slate-400 italic text-[10px]">-</span>
+                                        @endif
+                                    </td>
                                     <td class="p-4 text-slate-700 font-medium">{{ $dt->pihak_penindak ?? '-' }}</td>
                                     <td class="p-4 text-slate-600">
                                         {{ $dt->tanggal_tindak_lanjut ? \Carbon\Carbon::parse($dt->tanggal_tindak_lanjut)->format('d M Y') : '-' }}
                                     </td>
                                     <td class="p-4 text-center pr-6">
-                                        <div class="flex items-center justify-center gap-2">
-                                            <a href="{{ route('admin.show', $dt->id) }}" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-all shadow-sm" title="Lihat Detail">
+                                        <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                                            <a href="{{ route('admin.show', $dt->id) }}" class="p-2 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-all shadow-sm" title="Lihat Detail Berkas">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             </a>
                                             <button @click='showModalEditTindakLanjut = true; formTindakLanjut = { 
                                                 id: {{ $dt->id }}, 
+                                                judul_laporan: {{ json_encode($dt->judul_laporan) }},
+                                                kategori_laporan: {{ json_encode($dt->kategori_laporan) }},
+                                                tanggal_kejadian: "{{ $dt->tanggal_kejadian ? \Carbon\Carbon::parse($dt->tanggal_kejadian)->format('Y-m-d') : '' }}",
+                                                lokasi_kejadian: {{ json_encode($dt->lokasi_kejadian) }},
+                                                isi_laporan: {{ json_encode($dt->isi_laporan) }},
+                                                tingkat_pelanggaran: {{ json_encode($dt->tingkat_pelanggaran) }},
+                                                investigator_id: {{ json_encode($dt->investigator_id) }},
+                                                fakta_lapangan: {{ json_encode($dt->fakta_lapangan) }},
+                                                pihak_terlibat: {{ json_encode($dt->pihak_terlibat) }},
+                                                kesimpulan: {{ json_encode($dt->kesimpulan) }},
                                                 pihak_penindak: {{ json_encode($dt->pihak_penindak) }},
                                                 tanggal_tindak_lanjut: "{{ $dt->tanggal_tindak_lanjut ? \Carbon\Carbon::parse($dt->tanggal_tindak_lanjut)->format('Y-m-d') : '' }}",
-                                                tindak_lanjut: {{ json_encode($dt->tindak_lanjut) }} 
+                                                tindak_lanjut: {{ json_encode($dt->tindak_lanjut) }},
+                                                lampiran_bukti_url: {{ json_encode($dt->lampiran_bukti ? asset('storage/' . $dt->lampiran_bukti) : null) }},
+                                                lampiran_susulan_url: {{ json_encode($dt->lampiran_susulan ? (\Illuminate\Support\Str::startsWith($dt->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset('storage/' . $dt->lampiran_susulan) : asset('uploads/pengaduan/' . $dt->lampiran_susulan)) : null) }},
+                                                bukti_investigasi_url: {{ json_encode($dt->bukti_investigasi ? asset('storage/' . $dt->bukti_investigasi) : null) }}
                                             }' class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white rounded-lg transition-all shadow-sm" title="Edit Keputusan">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             </button>
                                             <form action="{{ route('admin.tindaklanjut.destroy', $dt->id) }}" method="POST" class="inline" onsubmit="return confirm('Batalkan keputusan ini? Status kasus akan kembali ke tahap Investigasi.');">
                                                 @csrf @method('DELETE')
-                                                <button type="submit" class="p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all shadow-sm" title="Batalkan">
+                                                <button type="submit" class="p-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all shadow-sm" title="Batalkan Keputusan">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                 </button>
                                             </form>
@@ -1176,7 +1204,7 @@
                                     </td>
                                 </tr>
                                 @empty
-                                <tr><td colspan="4" class="p-12 text-center text-slate-500 italic">Belum ada data tindak lanjut yang diinput.</td></tr>
+                                <tr><td colspan="5" class="p-12 text-center text-slate-500 italic bg-slate-50 rounded-xl border border-dashed border-slate-300">Belum ada data tindak lanjut yang diinput.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -1188,24 +1216,131 @@
                                 <h3 class="text-white font-bold text-lg">Koreksi Data Keputusan Tindak Lanjut</h3>
                                 <button @click="showModalEditTindakLanjut = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
                             </div>
-                            <form :action="'/admin/tindaklanjut/' + formTindakLanjut.id" method="POST" class="p-6 overflow-y-auto">
+                            <form :action="'/admin/tindaklanjut/' + formTindakLanjut.id" method="POST" enctype="multipart/form-data" class="p-6 overflow-y-auto">
                                 @csrf
                                 @method('PUT')
                                 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                    <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Pihak Penindak / Instansi</label>
-                                        <input type="text" name="pihak_penindak" x-model="formTindakLanjut.pihak_penindak" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
+                                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl mb-4">
+                                    <h4 class="text-xs font-bold text-slate-500 uppercase mb-3 border-b border-slate-200 pb-2">1. Data Kasus Laporan</h4>
+                                    <div class="mb-3">
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Judul Laporan</label>
+                                        <input type="text" name="judul_laporan" x-model="formTindakLanjut.judul_laporan" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Kategori</label>
+                                            <select name="kategori_laporan" x-model="formTindakLanjut.kategori_laporan" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                                <option value="Pelayanan Publik">Pelayanan Publik</option>
+                                                <option value="Infrastruktur">Infrastruktur</option>
+                                                <option value="Korupsi">Korupsi</option>
+                                                <option value="Disiplin Pegawai">Disiplin Pegawai</option>
+                                                <option value="Lainnya">Lainnya</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Tgl Kejadian</label>
+                                            <input type="date" name="tanggal_kejadian" x-model="formTindakLanjut.tanggal_kejadian" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Tingkat Pelanggaran</label>
+                                            <select name="tingkat_pelanggaran" x-model="formTindakLanjut.tingkat_pelanggaran" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                                <option value="">-- Kosong --</option>
+                                                <option value="Ringan">Ringan</option>
+                                                <option value="Sedang">Sedang</option>
+                                                <option value="Berat">Berat</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Lokasi Kejadian</label>
+                                        <input type="text" name="lokasi_kejadian" x-model="formTindakLanjut.lokasi_kejadian" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-bold text-slate-700 mb-1">Tanggal Eksekusi</label>
-                                        <input type="date" name="tanggal_tindak_lanjut" x-model="formTindakLanjut.tanggal_tindak_lanjut" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Kronologi Kejadian</label>
+                                        <textarea name="isi_laporan" x-model="formTindakLanjut.isi_laporan" rows="3" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                 </div>
 
-                                <div class="mb-4">
-                                    <label class="block text-sm font-bold text-slate-700 mb-1">Detail Keputusan & Sanksi</label>
-                                    <textarea name="tindak_lanjut" x-model="formTindakLanjut.tindak_lanjut" rows="4" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
+                                <div class="bg-blue-50/50 border border-blue-100 p-4 rounded-xl mb-4">
+                                    <h4 class="text-xs font-bold text-blue-600 uppercase mb-3 border-b border-blue-200 pb-2">2. Hasil Investigasi</h4>
+                                    <div class="mb-3">
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Investigator Terkait</label>
+                                        <select name="investigator_id" x-model="formTindakLanjut.investigator_id" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                            <option value="">-- Pilih Investigator --</option>
+                                            @foreach($dataPegawai->where('peran', 'investigator') as $inv)
+                                                <option value="{{ $inv->id }}">{{ $inv->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Fakta Lapangan</label>
+                                            <textarea name="fakta_lapangan" x-model="formTindakLanjut.fakta_lapangan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Pihak Terlibat</label>
+                                            <textarea name="pihak_terlibat" x-model="formTindakLanjut.pihak_terlibat" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Kesimpulan Tim Investigasi</label>
+                                        <textarea name="kesimpulan" x-model="formTindakLanjut.kesimpulan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="bg-emerald-50/50 border border-emerald-100 p-4 rounded-xl mb-2">
+                                    <h4 class="text-xs font-bold text-emerald-600 uppercase mb-3 border-b border-emerald-200 pb-2">3. Keputusan & Tindak Lanjut Eksekusi</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Pihak Penindak / Instansi</label>
+                                            <input type="text" name="pihak_penindak" x-model="formTindakLanjut.pihak_penindak" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal Eksekusi</label>
+                                            <input type="date" name="tanggal_tindak_lanjut" x-model="formTindakLanjut.tanggal_tindak_lanjut" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">Detail Keputusan & Sanksi</label>
+                                        <textarea name="tindak_lanjut" x-model="formTindakLanjut.tindak_lanjut" rows="3" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="bg-purple-50/50 border border-purple-100 p-4 rounded-xl mb-2">
+                                    <h4 class="text-xs font-bold text-purple-600 uppercase mb-3 border-b border-purple-200 pb-2">4. Pembaruan File Bukti</h4>
+                                    <div class="mb-3 text-xs text-purple-700 bg-purple-100 p-2 rounded text-center font-medium">Kosongkan jika tidak ada file yang ingin diganti.</div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="mb-3">
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Bukti Awal Pelapor</label>
+                                            <template x-if="formTindakLanjut.lampiran_bukti_url">
+                                                <div class="mb-2 text-[10px]">
+                                                    <span class="text-slate-500">Saat ini:</span>
+                                                    <a :href="formTindakLanjut.lampiran_bukti_url" target="_blank" class="text-blue-600 font-semibold hover:underline">Lihat File</a>
+                                                </div>
+                                            </template>
+                                            <input type="file" name="lampiran_bukti" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Bukti Tambahan</label>
+                                            <template x-if="formTindakLanjut.lampiran_susulan_url">
+                                                <div class="mb-2 text-[10px]">
+                                                    <span class="text-slate-500">Saat ini:</span>
+                                                    <a :href="formTindakLanjut.lampiran_susulan_url" target="_blank" class="text-amber-600 font-semibold hover:underline">Lihat File</a>
+                                                </div>
+                                            </template>
+                                            <input type="file" name="lampiran_susulan" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                                        </div>
+                                        <div class="md:col-span-2 mb-2">
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">Bukti Temuan Investigasi</label>
+                                            <template x-if="formTindakLanjut.bukti_investigasi_url">
+                                                <div class="mb-2 text-[10px]">
+                                                    <span class="text-slate-500">Saat ini:</span>
+                                                    <a :href="formTindakLanjut.bukti_investigasi_url" target="_blank" class="text-purple-600 font-semibold hover:underline">Lihat File</a>
+                                                </div>
+                                            </template>
+                                            <input type="file" name="bukti_investigasi" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="mt-6 flex justify-end gap-3 border-t border-slate-100 pt-4">
