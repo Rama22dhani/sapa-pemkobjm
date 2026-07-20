@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aplikasi Manajemen Pelaporan dan Pelanggaran Pegawai - Pemko Banjarmasin</title>
+    <title>Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai - Pemko Banjarmasin</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -35,7 +35,7 @@
         <div class="flex items-center gap-4">
             <img src="{{ asset('images/logo-bjm.png') }}" alt="Pemko Banjarmasin" class="w-12 h-auto drop-shadow-lg">
             <div>
-                <h1 class="text-white font-extrabold text-lg sm:text-xl leading-none tracking-tight">MANAJEMEN PELAPORAN PEGAWAI</h1>
+                <h1 class="text-white font-extrabold text-lg sm:text-xl leading-none tracking-tight">MANAJEMEN PELANGGARAN DAN PELAPORAN PEGAWAI</h1>
                 <p class="text-gray-300 text-[10px] sm:text-xs font-medium tracking-widest uppercase mt-1">Pemerintah Kota Banjarmasin</p>
             </div>
         </div>

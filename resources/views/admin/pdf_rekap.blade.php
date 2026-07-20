@@ -6,13 +6,14 @@
         body { font-family: Arial, sans-serif; font-size: 11px; line-height: 1.4; color: #333; }
         
         /* STYLE KHUSUS KOP SURAT */
-        .kop-surat { width: 100%; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; border-collapse: collapse; }
+        .kop-surat { width: 100%; padding-bottom: 5px; border-collapse: collapse; }
         .kop-surat td { border: none; padding: 0; vertical-align: middle; }
-        .kop-surat h2 { font-size: 18px; margin: 0; text-transform: uppercase; font-weight: bold; }
-        .kop-surat h3 { font-size: 14px; margin: 4px 0 0 0; font-weight: bold; }
-        .kop-surat p { font-size: 11px; margin: 4px 0 0 0; font-style: italic; color: #555; }
+        .kop-surat h2 { font-size: 13px; margin: 0; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+        .kop-surat h1 { font-size: 15px; margin: 2px 0; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; white-space: nowrap; }
+        .kop-surat p { font-size: 9.5px; margin: 1px 0 0 0; color: #333; line-height: 1.3; }
+        .garis-kop { border-top: 2.5px solid #000; border-bottom: 1px solid #000; height: 1.5px; margin-bottom: 20px; margin-top: 4px; }
 
-        .title { text-align: center; font-weight: bold; font-size: 12px; margin-bottom: 15px; text-transform: uppercase; text-decoration: underline; }
+        .title { text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 15px; text-transform: uppercase; text-decoration: underline; }
         
         /* STYLE TABEL DATA REKAP */
         table.data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
@@ -26,16 +27,18 @@
 
     <table class="kop-surat">
         <tr>
-            <td style="width: 15%; text-align: center;">
-                <img src="{{ public_path('images/logo-bjm.png') }}" alt="Logo Banjarmasin" style="width: 70px; height: auto;">
+            <td style="width: 10%; text-align: center;">
+                <img src="{{ public_path('images/logo-bjm.png') }}" alt="Logo Banjarmasin" style="width: 60px; height: auto;">
             </td>
-            <td style="width: 85%; text-align: center; padding-right: 15%;">
+            <td style="width: 90%; text-align: center; padding-right: 10%;">
                 <h2>PEMERINTAH KOTA BANJARMASIN</h2>
-                <h3>MANAJEMEN PELAPORAN DAN PELANGGARAN PEGAWAI</h3>
-                <p>Dokumen Arsip Rekapitulasi Data Sistem</p>
+                <h1>MANAJEMEN PELAPORAN DAN PELANGGARAN PEGAWAI</h1>
+                <p>Alamat : Jalan R. E. Martadinata No. 1 - Banjarmasin 70111<br>
+                Website : banjarmasinkota.go.id, Email : inspektorat@banjarmasinkota.go.id</p>
             </td>
         </tr>
     </table>
+    <div class="garis-kop"></div>
 
     <div class="title">{{ $title }}</div>
 
@@ -148,12 +151,10 @@
                         <th style="width: 15%;">No Tiket</th>
                         <th style="width: 25%;">Judul Laporan / Kasus</th>
                         @if($kategori == 'kasus')
-                            <th style="width: 20%;">Nama Pelapor</th>
-                            <th style="width: 15%;">Tgl Masuk</th>
-                            <th style="width: 15%;">Status</th>
-                        @elseif($kategori == 'pelanggaran')
+                            <th style="width: 15%;">Nama Pelapor</th>
+                            <th style="width: 12%;">Tgl Masuk</th>
                             <th style="width: 15%;">Tingkat</th>
-                            <th style="width: 40%;">Catatan Tim Verifikator</th>
+                            <th style="width: 13%;">Status</th>
                         @elseif($kategori == 'investigasi')
                             <th style="width: 25%;">Fakta Lapangan</th>
                             <th style="width: 30%;">Kesimpulan Akhir</th>
@@ -183,10 +184,8 @@
                             @if($kategori == 'kasus')
                                 <td>{{ $d->user->name ?? 'Anonim' }}</td>
                                 <td class="center">{{ \Carbon\Carbon::parse($d->created_at)->format('d/m/Y') }}</td>
-                                <td class="center" style="font-weight: bold; text-transform: uppercase;">{{ $d->status }}</td>
-                            @elseif($kategori == 'pelanggaran')
                                 <td class="center" style="font-weight: bold;">{{ $d->tingkat_pelanggaran ?? '-' }}</td>
-                                <td>{{ $d->catatan_verifikator ?? '-' }}</td>
+                                <td class="center" style="font-weight: bold; text-transform: uppercase;">{{ $d->status }}</td>
                             @elseif($kategori == 'investigasi')
                                 <td>{{ $d->fakta_lapangan ?? '-' }}</td>
                                 <td>{{ $d->kesimpulan ?? '-' }}</td>
@@ -215,11 +214,13 @@
     <br><br>
     <table style="border-collapse: collapse; border: none; width: 100%;">
         <tr>
-            <td style="border: none; width: 65%;"></td>
-            <td style="border: none; width: 35%; text-align: center;">
+            <td style="border: none; width: 60%;"></td>
+            <td style="border: none; width: 40%; text-align: center;">
                 Banjarmasin, {{ \Carbon\Carbon::now()->format('d F Y') }}<br>
-                Administrator Sistem,<br><br><br><br><br>
-                <strong>{{ Auth::user()->name }}</strong>
+                Mengetahui,<br>
+                <strong>Kepala Inspektorat Kota Banjarmasin</strong><br><br><br><br><br>
+                <strong>(...................................................)</strong><br>
+                NIP. ........................................
             </td>
         </tr>
     </table>

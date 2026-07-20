@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dasbor Pelapor - Aplikasi Manajemen Pelaporan Pegawai</title>
+    <title>Dasbor Pelapor - Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
                 <img src="{{ asset('images/logo-bjm.png') }}" alt="Pemko Banjarmasin" class="w-10 h-auto">
                 
                 <div>
-                    <h1 class="text-bjm-blue font-bold text-sm md:text-base tracking-wide leading-tight">MANAJEMEN PELAPORAN PEGAWAI</h1>
+                    <h1 class="text-bjm-blue font-bold text-sm md:text-base tracking-wide leading-tight">MANAJEMEN PELANGGARAN DAN PELAPORAN PEGAWAI</h1>
                     <p class="text-slate-500 text-[9px] uppercase font-bold tracking-widest hidden sm:block">PORTAL PELAPORAN PELANGGARAN PEMKO</p>
                 </div>
             </div>

@@ -123,6 +123,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->lampiran_bukti);
             }
             $validatedData['lampiran_bukti'] = $request->file('lampiran_bukti')->store('bukti_pengaduan', 'public');
+        } elseif ($request->input('delete_lampiran_bukti') == '1') {
+            if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
+                Storage::disk('public')->delete($kasus->lampiran_bukti);
+            }
+            $validatedData['lampiran_bukti'] = null;
         }
 
         if ($request->hasFile('lampiran_susulan')) {
@@ -130,6 +135,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->lampiran_susulan);
             }
             $validatedData['lampiran_susulan'] = $request->file('lampiran_susulan')->store('bukti_susulan', 'public');
+        } elseif ($request->input('delete_lampiran_susulan') == '1') {
+            if ($kasus->lampiran_susulan && Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+                Storage::disk('public')->delete($kasus->lampiran_susulan);
+            }
+            $validatedData['lampiran_susulan'] = null;
         }
 
         if ($request->hasFile('bukti_investigasi')) {
@@ -137,6 +147,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->bukti_investigasi);
             }
             $validatedData['bukti_investigasi'] = $request->file('bukti_investigasi')->store('bukti_investigasi', 'public');
+        } elseif ($request->input('delete_bukti_investigasi') == '1') {
+            if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
+                Storage::disk('public')->delete($kasus->bukti_investigasi);
+            }
+            $validatedData['bukti_investigasi'] = null;
         }
 
         $kasus->update(array_merge($validatedData, [
@@ -321,6 +336,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->lampiran_bukti);
             }
             $data['lampiran_bukti'] = $request->file('lampiran_bukti')->store('bukti_pengaduan', 'public');
+        } elseif ($request->input('delete_lampiran_bukti') == '1') {
+            if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
+                Storage::disk('public')->delete($kasus->lampiran_bukti);
+            }
+            $data['lampiran_bukti'] = null;
         }
 
         if ($request->hasFile('lampiran_susulan')) {
@@ -328,6 +348,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->lampiran_susulan);
             }
             $data['lampiran_susulan'] = $request->file('lampiran_susulan')->store('bukti_susulan', 'public');
+        } elseif ($request->input('delete_lampiran_susulan') == '1') {
+            if ($kasus->lampiran_susulan && Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+                Storage::disk('public')->delete($kasus->lampiran_susulan);
+            }
+            $data['lampiran_susulan'] = null;
         }
 
         if ($request->hasFile('bukti_investigasi')) {
@@ -335,6 +360,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->bukti_investigasi);
             }
             $data['bukti_investigasi'] = $request->file('bukti_investigasi')->store('bukti_investigasi', 'public');
+        } elseif ($request->input('delete_bukti_investigasi') == '1') {
+            if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
+                Storage::disk('public')->delete($kasus->bukti_investigasi);
+            }
+            $data['bukti_investigasi'] = null;
         }
 
         $kasus->update($data);
@@ -414,6 +444,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->bukti_investigasi);
             }
             $dataUpdate['bukti_investigasi'] = $request->file('bukti_investigasi')->store('bukti_investigasi', 'public');
+        } elseif ($request->input('delete_bukti_investigasi') == '1') {
+            if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
+                Storage::disk('public')->delete($kasus->bukti_investigasi);
+            }
+            $dataUpdate['bukti_investigasi'] = null;
         }
 
         $kasus->update($dataUpdate);
@@ -469,6 +504,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->lampiran_bukti);
             }
             $kasus->lampiran_bukti = $request->file('lampiran_bukti')->store('bukti_pengaduan', 'public');
+        } elseif ($request->input('delete_lampiran_bukti') == '1') {
+            if ($kasus->lampiran_bukti && Storage::disk('public')->exists($kasus->lampiran_bukti)) {
+                Storage::disk('public')->delete($kasus->lampiran_bukti);
+            }
+            $kasus->lampiran_bukti = null;
         }
 
         // 2. Update Bukti Tambahan (Revisi Baru)
@@ -477,6 +517,17 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->lampiran_susulan);
             }
             $kasus->lampiran_susulan = $request->file('lampiran_susulan')->store('bukti_susulan', 'public');
+        } elseif ($request->input('delete_lampiran_susulan') == '1') {
+            if ($kasus->lampiran_susulan) {
+                $publicPath = public_path('uploads/pengaduan/' . $kasus->lampiran_susulan);
+                if (file_exists($publicPath)) {
+                    @unlink($publicPath);
+                }
+                if (Storage::disk('public')->exists($kasus->lampiran_susulan)) {
+                    Storage::disk('public')->delete($kasus->lampiran_susulan);
+                }
+            }
+            $kasus->lampiran_susulan = null;
         }
 
         // 3. Update Bukti Investigasi
@@ -485,6 +536,11 @@ class AdminController extends Controller
                 Storage::disk('public')->delete($kasus->bukti_investigasi);
             }
             $kasus->bukti_investigasi = $request->file('bukti_investigasi')->store('bukti_investigasi', 'public');
+        } elseif ($request->input('delete_bukti_investigasi') == '1') {
+            if ($kasus->bukti_investigasi && Storage::disk('public')->exists($kasus->bukti_investigasi)) {
+                Storage::disk('public')->delete($kasus->bukti_investigasi);
+            }
+            $kasus->bukti_investigasi = null;
         }
 
         $kasus->save();
@@ -575,10 +631,7 @@ class AdminController extends Controller
                 $title = "LAPORAN REKAPITULASI DATA KASUS";
                 $data = Pengaduan::with('user')->latest()->get();
                 break;
-            case 'pelanggaran':
-                $title = "LAPORAN REKAPITULASI DATA TINGKAT PELANGGARAN";
-                $data = Pengaduan::whereNotNull('tingkat_pelanggaran')->latest()->get();
-                break;
+
             case 'investigasi':
                 $title = "LAPORAN REKAPITULASI DATA HASIL INVESTIGASI";
                 $data = Pengaduan::whereNotNull('fakta_lapangan')->latest()->get();
@@ -605,7 +658,7 @@ class AdminController extends Controller
                 $data = User::where('peran', 'pelapor')->orWhereNull('peran')->latest()->get();
                 break;
             case 'master_pegawai':
-                $title = "LAPORAN REKAPITULASI DATA PEGAWAI (PROFIL FISIK)";
+                $title = "LAPORAN REKAPITULASI DATA PEGAWAI";
                 $data = Pegawai::with('user')->latest()->get();
                 break;
 
