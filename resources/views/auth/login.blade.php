@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Masuk - Aplikasi Manajemen Pelaporan Pegawai</title>
+    <title>Masuk - Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
             <img src="{{ asset('images/logo-bjm.png') }}" alt="Logo Banjarmasin" class="w-20 h-auto mx-auto drop-shadow-md mb-5 hover:scale-105 transition-transform duration-300">
             <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-1">Selamat Datang</h2>
             <p class="text-xs text-slate-500 font-medium leading-relaxed px-4">
-                Aplikasi Manajemen Pelaporan dan Pelanggaran Pegawai Kota Banjarmasin
+                Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai Kota Banjarmasin
             </p>
         </div>
 

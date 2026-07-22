@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Konfirmasi Sandi - Aplikasi Manajemen Pelaporan Pegawai</title>
+    <title>Konfirmasi Sandi - Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai</title>
 
     <!-- Font Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

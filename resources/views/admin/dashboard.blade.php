@@ -625,7 +625,7 @@
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-200">
                                 <tr>
-                                    <th class="p-4 pl-6">Kode Tiket</th>
+                                    <th class="p-4 pl-6">Kode Kasus</th>
                                     <th class="p-4">Pelapor</th>
                                     <th class="p-4 min-w-[200px]">Judul Laporan</th>
                                     <th class="p-4">Tingkat</th>
@@ -901,18 +901,25 @@
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Lampiran Bukti Awal (Gambar/PDF)</label>
                                         <input type="hidden" name="delete_lampiran_bukti" x-model="formKasus.delete_lampiran_bukti">
-                                        <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-1">
-                                            <input type="file" name="lampiran_bukti" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 transition">
+                                        <div class="mt-1 space-y-2">
                                             <template x-if="formKasus.lampiran_bukti_url">
-                                                <div class="flex items-center gap-2">
-                                                    <a :href="formKasus.lampiran_bukti_url" target="_blank" class="text-xs font-bold text-blue-600 hover:underline shrink-0 bg-blue-50 px-3 py-2 rounded-lg border border-blue-200 flex items-center gap-1 shadow-sm">
-                                                        📎 Lihat Lampiran Saat Ini
-                                                    </a>
-                                                    <button type="button" @click="formKasus.lampiran_bukti_url = null; formKasus.delete_lampiran_bukti = 1" class="p-1.5 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded-lg transition-all shadow-sm shrink-0" title="Hapus File Ini">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-blue-50/80 border border-blue-200 rounded-lg">
+                                                    <div class="flex items-center gap-2 min-w-0">
+                                                        <span class="text-xs font-semibold text-blue-800">File Saat Ini:</span>
+                                                        <a :href="formKasus.lampiran_bukti_url" target="_blank" class="text-xs font-bold text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 truncate">
+                                                            📎 Lihat Lampiran Saat Ini
+                                                        </a>
+                                                    </div>
+                                                    <button type="button" @click="formKasus.lampiran_bukti_url = null; formKasus.delete_lampiran_bukti = 1" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:text-white bg-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-md transition-all shadow-sm shrink-0 flex items-center gap-1.5" title="Hapus File Ini">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                        <span>Hapus</span>
                                                     </button>
                                                 </div>
                                             </template>
+                                            <div>
+                                                <input type="file" name="lampiran_bukti" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 transition">
+                                                <p x-show="formKasus.lampiran_bukti_url" class="text-[11px] text-slate-500 mt-1 italic">*Pilih file baru jika ingin mengganti lampiran saat ini.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -975,18 +982,25 @@
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Lampiran Susulan (File Bukti Baru)</label>
                                         <input type="hidden" name="delete_lampiran_susulan" x-model="formKasus.delete_lampiran_susulan">
-                                        <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center mt-1">
-                                            <input type="file" name="lampiran_susulan" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 transition">
+                                        <div class="mt-1 space-y-2">
                                             <template x-if="formKasus.lampiran_susulan_url">
-                                                <div class="flex items-center gap-2">
-                                                    <a :href="formKasus.lampiran_susulan_url" target="_blank" class="text-xs font-bold text-amber-600 hover:underline shrink-0 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200 flex items-center gap-1 shadow-sm">
-                                                        📎 Lihat Lampiran Susulan Saat Ini
-                                                    </a>
-                                                    <button type="button" @click="formKasus.lampiran_susulan_url = null; formKasus.delete_lampiran_susulan = 1" class="p-1.5 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded-lg transition-all shadow-sm shrink-0" title="Hapus File Ini">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-amber-50/80 border border-amber-200 rounded-lg">
+                                                    <div class="flex items-center gap-2 min-w-0">
+                                                        <span class="text-xs font-semibold text-amber-800">File Saat Ini:</span>
+                                                        <a :href="formKasus.lampiran_susulan_url" target="_blank" class="text-xs font-bold text-amber-600 hover:text-amber-800 hover:underline flex items-center gap-1 truncate">
+                                                            📎 Lihat Lampiran Susulan Saat Ini
+                                                        </a>
+                                                    </div>
+                                                    <button type="button" @click="formKasus.lampiran_susulan_url = null; formKasus.delete_lampiran_susulan = 1" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:text-white bg-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-md transition-all shadow-sm shrink-0 flex items-center gap-1.5" title="Hapus File Ini">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                                        <span>Hapus</span>
                                                     </button>
                                                 </div>
                                             </template>
+                                            <div>
+                                                <input type="file" name="lampiran_susulan" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 transition">
+                                                <p x-show="formKasus.lampiran_susulan_url" class="text-[11px] text-slate-500 mt-1 italic">*Pilih file baru jika ingin mengganti lampiran susulan saat ini.</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

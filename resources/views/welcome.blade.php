@@ -70,7 +70,7 @@
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                     </span>
-                    <span class="text-gray-300 text-xs font-semibold tracking-wide uppercase">Sistem Pelaporan Internal Pemko</span>
+                    <span class="text-gray-300 text-xs font-semibold tracking-wide uppercase">Manajemen Pelaporan Internal Pemko</span>
                 </div>
                 
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight">

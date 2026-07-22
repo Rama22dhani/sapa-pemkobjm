@@ -129,7 +129,7 @@
 
                         <a href="{{ route('investigator.show', $kasus->id) }}" class="block w-full bg-bjm-gold hover:bg-amber-600 text-white text-center font-bold py-3.5 rounded-xl transition shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                            Mulai Investigasi
+                            Masukkan Hasil Investigasi
                         </a>
                     </div>
                 </div>

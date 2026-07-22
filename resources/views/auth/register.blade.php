@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Daftar Akun - Manajemen Pelaporan dan Pelanggaran</title>
+    <title>Daftar Akun - Manajemen Pelanggaran dan Pelaporan Pegawai</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@
         <div class="bg-slate-50 px-8 pt-8 pb-5 text-center border-b border-slate-100">
             <img src="{{ asset('images/logo-bjm.png') }}" alt="Logo Banjarmasin" class="w-16 h-auto mx-auto drop-shadow-md mb-3">
             <h2 class="text-2xl font-extrabold text-slate-800 tracking-tight">Daftar Akun Pelapor</h2>
-            <p class="text-xs text-slate-500 mt-1.5 font-medium">Aplikasi Manajemen Pelaporan dan Pelanggaran Pegawai<br>Pemerintah Kota Banjarmasin</p>
+            <p class="text-xs text-slate-500 mt-1.5 font-medium">Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai<br>Pemerintah Kota Banjarmasin</p>
         </div>
 
         <div class="px-8 py-6">
