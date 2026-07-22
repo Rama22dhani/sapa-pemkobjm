@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Exports\PengaduanExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -33,6 +35,7 @@ class AdminController extends Controller
         // 5. DATA BUKTI
         $dataBukti = Pengaduan::where(function($q) {
                                 $q->whereNotNull('lampiran_bukti')
+                                ->orWhereNotNull('lampiran_susulan')
                                 ->orWhereNotNull('bukti_investigasi');
                             })
                             ->latest()
@@ -499,9 +502,9 @@ class AdminController extends Controller
     public function updateBukti(Request $request, $id)
     {
         $request->validate([
-            'lampiran_bukti'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'lampiran_susulan'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', 
-            'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran_bukti'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'lampiran_susulan'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', 
+            'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
         $kasus = \App\Models\Pengaduan::findOrFail($id);
@@ -650,7 +653,11 @@ class AdminController extends Controller
                 break;
             case 'bukti':
                 $title = "LAPORAN REKAPITULASI ARSIP LAMPIRAN BUKTI";
-                $data = Pengaduan::whereNotNull('lampiran_bukti')->orWhereNotNull('bukti_investigasi')->latest()->get();
+                $data = Pengaduan::where(function($q) {
+                    $q->whereNotNull('lampiran_bukti')
+                      ->orWhereNotNull('lampiran_susulan')
+                      ->orWhereNotNull('bukti_investigasi');
+                })->latest()->get();
                 break;
             case 'tanggapan':
                 // REVISI: Mengambil data dari tabel pengaduan yang ada pesan susulannya
@@ -677,6 +684,11 @@ class AdminController extends Controller
         $pdf = Pdf::loadView('admin.pdf_rekap', compact('data', 'title', 'kategori'));
         
         return $pdf->stream('Rekap_' . $kategori . '_' . date('Ymd') . '.pdf', ['Attachment' => false]);
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new PengaduanExport, 'Data-Pengaduan-Pemko-' . date('Y-m-d') . '.xlsx');
     }
 
     // FUNGSI KHUSUS: ADMIN EKSEKUSI VERIFIKASI & DISPOSISI KASUS
@@ -715,6 +727,10 @@ class AdminController extends Controller
             'user_id' => 'nullable|exists:users,id',
             'nip' => 'required|string|unique:pegawais,nip',
             'nama_pegawai' => 'required|string|max:255',
+            'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
+            'tempat_lahir' => 'nullable|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'alamat' => 'nullable|string',
             'status_kepegawaian' => 'required|in:PNS,PPPK,CPNS,Honorer',
             'asal_instansi' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',
@@ -733,6 +749,10 @@ class AdminController extends Controller
             'user_id' => 'nullable|exists:users,id',
             'nip' => 'required|string|unique:pegawais,nip,'.$id,
             'nama_pegawai' => 'required|string|max:255',
+            'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
+            'tempat_lahir' => 'nullable|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'alamat' => 'nullable|string',
             'status_kepegawaian' => 'required|in:PNS,PPPK,CPNS,Honorer',
             'asal_instansi' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',

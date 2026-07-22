@@ -10,6 +10,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         tailwind.config = {
@@ -210,7 +211,7 @@
                         <div class="absolute top-0 right-0 w-64 h-64 bg-bjm-gold/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
                         <div class="relative z-10">
                             <h2 class="text-2xl font-bold text-slate-800 mb-2">Selamat Datang di Portal Pengawasan 👋</h2>
-                            <p class="text-slate-600 mb-8 max-w-2xl">Ini adalah pusat kendali Aplikasi Manajemen Pelaporan dan Pelanggaran Pegawai Pemerintah Kota Banjarmasin. Kelola pengaduan, pantau investigasi, dan tindak lanjuti kasus ASN dari satu portal terpadu.</p>
+                            <p class="text-slate-600 mb-8 max-w-2xl">Ini adalah pusat kendali Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai Pemerintah Kota Banjarmasin. Kelola pengaduan, pantau investigasi, dan tindak lanjuti kasus ASN dari satu portal terpadu.</p>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
                                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 shadow-sm">
@@ -254,7 +255,7 @@
 
                 <!-- MENU 0: MASTER DATA PEGAWAI (BARU) -->
                 <div x-show="tab === 'master_pegawai'" x-transition.opacity style="display: none;" 
-                    x-data="{ showModalMaster: false, editModeMaster: false, formMaster: { id: '', user_id: '', nip: '', nama_pegawai: '', status_kepegawaian: 'PNS', asal_instansi: '', jabatan: '', nomor_hp: '', status_aktif: 'Aktif' } }">
+                    x-data="{ showModalMaster: false, editModeMaster: false, formMaster: { id: '', user_id: '', nip: '', nama_pegawai: '', jenis_kelamin: 'Laki-laki', tempat_lahir: '', tanggal_lahir: '', alamat: '', status_kepegawaian: 'PNS', asal_instansi: '', jabatan: '', nomor_hp: '', status_aktif: 'Aktif' } }">
                     <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-white">
                         <div>
                             <h3 class="text-lg font-bold text-slate-800">Master Data Pegawai</h3>
@@ -264,7 +265,7 @@
                             <a href="{{ route('admin.rekap.cetak', 'master_pegawai') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-bold shadow-md transition-all transform hover:scale-105">
                                 🖨️ Cetak Pegawai
                             </a>
-                            <button @click="showModalMaster = true; editModeMaster = false; formMaster = { id: '', user_id: '', nip: '', nama_pegawai: '', status_kepegawaian: 'PNS', asal_instansi: '', jabatan: '', nomor_hp: '', status_aktif: 'Aktif' }" class="bg-gradient-to-r from-bjm-gold to-amber-500 hover:from-amber-600 hover:to-amber-600 text-white text-sm font-bold px-5 py-2.5 rounded-lg flex items-center gap-2 transition-all transform hover:scale-105 shadow-md shadow-amber-500/20">
+                            <button @click="showModalMaster = true; editModeMaster = false; formMaster = { id: '', user_id: '', nip: '', nama_pegawai: '', jenis_kelamin: 'Laki-laki', tempat_lahir: '', tanggal_lahir: '', alamat: '', status_kepegawaian: 'PNS', asal_instansi: '', jabatan: '', nomor_hp: '', status_aktif: 'Aktif' }" class="bg-gradient-to-r from-bjm-gold to-amber-500 hover:from-amber-600 hover:to-amber-600 text-white text-sm font-bold px-5 py-2.5 rounded-lg flex items-center gap-2 transition-all transform hover:scale-105 shadow-md shadow-amber-500/20">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                                 Tambah Data Pegawai
                             </button>
@@ -276,6 +277,7 @@
                                 <tr>
                                     <th class="p-4 pl-6">NIP</th>
                                     <th class="p-4">Nama</th>
+                                    <th class="p-4">Jenis Kelamin</th>
                                     <th class="p-4">Status</th>
                                     <th class="p-4">Instansi</th>
                                     <th class="p-4">Jabatan</th>
@@ -288,6 +290,7 @@
                                 <tr class="hover:bg-slate-50 transition">
                                     <td class="p-4 pl-6 font-mono text-slate-600">{{ $mp->nip }}</td>
                                     <td class="p-4 font-bold text-slate-800">{{ $mp->nama_pegawai }}</td>
+                                    <td class="p-4 text-slate-700">{{ $mp->jenis_kelamin ?? '-' }}</td>
                                     <td class="p-4">
                                         <span class="px-2.5 py-1 rounded text-[10px] uppercase font-bold border {{ $mp->status_kepegawaian == 'PNS' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-100 text-slate-700 border-slate-200' }}">{{ $mp->status_kepegawaian }}</span>
                                     </td>
@@ -307,7 +310,7 @@
                                     <td class="p-4 text-center pr-6">
                                         <div class="flex items-center justify-center gap-2">
                                             <button @click="showModalMaster = true; editModeMaster = true; formMaster = { 
-                                                id: '{{ $mp->id }}', user_id: '{{ $mp->user_id }}', nip: '{{ $mp->nip }}', nama_pegawai: '{{ addslashes($mp->nama_pegawai) }}', status_kepegawaian: '{{ $mp->status_kepegawaian }}', asal_instansi: '{{ addslashes($mp->asal_instansi) }}', jabatan: '{{ addslashes($mp->jabatan) }}', nomor_hp: '{{ $mp->nomor_hp }}', status_aktif: '{{ $mp->status_aktif }}' 
+                                                id: '{{ $mp->id }}', user_id: '{{ $mp->user_id }}', nip: '{{ $mp->nip }}', nama_pegawai: '{{ addslashes($mp->nama_pegawai) }}', jenis_kelamin: '{{ $mp->jenis_kelamin }}', tempat_lahir: '{{ addslashes($mp->tempat_lahir) }}', tanggal_lahir: '{{ $mp->tanggal_lahir }}', alamat: '{{ addslashes(preg_replace('/\r|\n/', ' ', $mp->alamat)) }}', status_kepegawaian: '{{ $mp->status_kepegawaian }}', asal_instansi: '{{ addslashes($mp->asal_instansi) }}', jabatan: '{{ addslashes($mp->jabatan) }}', nomor_hp: '{{ $mp->nomor_hp }}', status_aktif: '{{ $mp->status_aktif }}' 
                                             }" class="p-2 bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white rounded-lg transition-all shadow-sm" title="Edit Data">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                             </button>
@@ -343,6 +346,26 @@
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
                                         <input type="text" name="nama_pegawai" x-model="formMaster.nama_pegawai" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">Jenis Kelamin</label>
+                                        <select name="jenis_kelamin" x-model="formMaster.jenis_kelamin" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
+                                            <option value="">-- Pilih Jenis Kelamin --</option>
+                                            <option value="Laki-laki">Laki-laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">Tempat Lahir</label>
+                                        <input type="text" name="tempat_lahir" x-model="formMaster.tempat_lahir" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">Tanggal Lahir</label>
+                                        <input type="date" name="tanggal_lahir" x-model="formMaster.tanggal_lahir" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none">
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-bold text-slate-700 mb-1">Alamat Lengkap</label>
+                                        <textarea name="alamat" x-model="formMaster.alamat" rows="2" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Status Kepegawaian <span class="text-red-500">*</span></label>
@@ -1681,6 +1704,22 @@
                                     </div>
                                     <a href="{{ route('admin.rekap.cetak', 'kasus') }}" target="_blank" class="w-full text-center inline-flex justify-center items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition shadow-sm">
                                         🖨️ Cetak Rekap Kasus
+                                    </a>
+                                </div>
+
+                                <!-- Card: Ekspor Excel -->
+                                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-3">
+                                            <div class="p-2.5 bg-green-50 text-green-600 rounded-lg text-lg">
+                                                🟩
+                                            </div>
+                                            <h4 class="font-bold text-slate-800 text-sm">Ekspor Data (Excel)</h4>
+                                        </div>
+                                        <p class="text-xs text-slate-500 leading-relaxed mb-5">Unduh data mentah seluruh pengaduan ke dalam format Microsoft Excel (.xlsx) untuk diolah lebih lanjut.</p>
+                                    </div>
+                                    <a href="{{ route('admin.kasus.export.excel') }}" class="w-full text-center inline-flex justify-center items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-bold transition shadow-sm">
+                                        📊 Unduh Excel (.xlsx)
                                     </a>
                                 </div>
 

@@ -96,6 +96,8 @@ Route::middleware('auth')->group(function () {
             ->name('admin.kasus.cetak');
         Route::get('/admin/rekap/{kategori}', [App\Http\Controllers\AdminController::class, 'cetakRekap'])
             ->name('admin.rekap.cetak');
+        Route::get('/admin/kasus/export/excel', [App\Http\Controllers\AdminController::class, 'exportExcel'])
+            ->name('admin.kasus.export.excel');
         // CRUD MASTER DATA AKSES INTERNAL
         Route::post('/admin/pegawai', [AdminController::class, 'storePegawai'])->name('admin.pegawai.store');
         Route::put('/admin/pegawai/{id}', [AdminController::class, 'updatePegawai'])->name('admin.pegawai.update');

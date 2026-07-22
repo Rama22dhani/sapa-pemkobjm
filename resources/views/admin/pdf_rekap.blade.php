@@ -21,6 +21,12 @@
         table.data-table th { background-color: #f2f2f2; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 10px; }
         
         .center { text-align: center; }
+
+        @if($kategori == 'master_pegawai')
+            @page { size: A4 landscape; }
+        @else
+            @page { size: A4 portrait; }
+        @endif
     </style>
 </head>
 <body>
@@ -32,7 +38,7 @@
             </td>
             <td style="width: 90%; text-align: center; padding-right: 10%;">
                 <h2>PEMERINTAH KOTA BANJARMASIN</h2>
-                <h1>MANAJEMEN PELAPORAN DAN PELANGGARAN PEGAWAI</h1>
+                <h1>MANAJEMEN PELANGGARAN DAN PELAPORAN PEGAWAI</h1>
                 <p>Alamat : Jalan R. E. Martadinata No. 1 - Banjarmasin 70111<br>
                 Website : banjarmasinkota.go.id, Email : inspektorat@banjarmasinkota.go.id</p>
             </td>
@@ -98,27 +104,33 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th style="width: 3%; font-size: 9px;">No</th>
-                    <th style="width: 15%; font-size: 9px;">NIP</th>
-                    <th style="width: 20%; font-size: 9px;">Nama</th>
-                    <th style="width: 12%; font-size: 9px;">Status</th>
-                    <th style="width: 20%; font-size: 9px;">Instansi</th>
-                    <th style="width: 15%; font-size: 9px;">Jabatan</th>
-                    <th style="width: 15%; font-size: 9px;">Akun Terhubung</th>
+                    <th style="width: 3%; font-size: 8px;">No</th>
+                    <th style="width: 11%; font-size: 8px;">NIP</th>
+                    <th style="width: 14%; font-size: 8px;">Nama</th>
+                    <th style="width: 9%; font-size: 8px;">Jenis Kelamin</th>
+                    <th style="width: 10%; font-size: 8px;">TTL</th>
+                    <th style="width: 16%; font-size: 8px;">Alamat</th>
+                    <th style="width: 9%; font-size: 8px;">Status</th>
+                    <th style="width: 11%; font-size: 8px;">Instansi</th>
+                    <th style="width: 10%; font-size: 8px;">Jabatan</th>
+                    <th style="width: 7%; font-size: 8px;">Akun</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($data as $index => $d)
                     <tr>
-                        <td class="center" style="font-size: 10px;">{{ $index + 1 }}</td>
-                        <td style="font-size: 10px; color: #555;">{{ $d->nip }}</td>
-                        <td style="font-size: 10px;"><strong>{{ $d->nama_pegawai }}</strong></td>
-                        <td style="font-size: 10px;">{{ $d->status_kepegawaian }}</td>
-                        <td style="font-size: 10px;">{{ $d->asal_instansi }}</td>
-                        <td style="font-size: 10px;">{{ $d->jabatan }}</td>
-                        <td class="center" style="font-size: 10px;">
+                        <td class="center" style="font-size: 9px;">{{ $index + 1 }}</td>
+                        <td style="font-size: 9px; color: #555;">{{ $d->nip }}</td>
+                        <td style="font-size: 9px;"><strong>{{ $d->nama_pegawai }}</strong></td>
+                        <td style="font-size: 9px;">{{ $d->jenis_kelamin ?? '-' }}</td>
+                        <td style="font-size: 9px;">{{ $d->tempat_lahir ? $d->tempat_lahir . ', ' : '' }}{{ $d->tanggal_lahir ? \Carbon\Carbon::parse($d->tanggal_lahir)->format('d-m-Y') : '-' }}</td>
+                        <td style="font-size: 9px;">{{ $d->alamat ?? '-' }}</td>
+                        <td style="font-size: 9px;">{{ $d->status_kepegawaian }}</td>
+                        <td style="font-size: 9px;">{{ $d->asal_instansi }}</td>
+                        <td style="font-size: 9px;">{{ $d->jabatan }}</td>
+                        <td class="center" style="font-size: 9px;">
                             @if($d->user)
-                                {{ $d->user->name }}
+                                Terhubung
                             @else
                                 -
                             @endif
@@ -126,7 +138,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada master data pegawai.</td>
+                        <td colspan="10" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada master data pegawai.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -160,8 +172,9 @@
                             <th style="width: 25%;">Instansi Penindak</th>
                             <th style="width: 30%;">Sanksi / Keputusan Final</th>
                         @elseif($kategori == 'bukti')
-                            <th style="width: 28%;">Status Bukti Pelapor</th>
-                            <th style="width: 27%;">Status Bukti Investigasi</th>
+                            <th style="width: 18%;">Bukti Awal</th>
+                            <th style="width: 18%;">Bukti Tambahan</th>
+                            <th style="width: 19%;">Bukti Investigasi</th>
                         @endif
                     </tr>
                 @endif
@@ -195,6 +208,9 @@
                                     {{ $d->lampiran_bukti ? '[ADA] Tersedia File' : '[-] Tidak Ada' }}
                                 </td>
                                 <td class="center" style="font-weight: bold;">
+                                    {{ $d->lampiran_susulan ? '[ADA] Tersedia File' : '[-] Tidak Ada' }}
+                                </td>
+                                <td class="center" style="font-weight: bold;">
                                     {{ $d->bukti_investigasi ? '[ADA] Tersedia Foto' : '[-] Tidak Ada' }}
                                 </td>
                             @endif
@@ -202,7 +218,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada arsip data untuk kategori rekapitulasi ini.</td>
+                        <td colspan="6" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada arsip data untuk kategori rekapitulasi ini.</td>
                     </tr>
                 @endforelse
             </tbody>

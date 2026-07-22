@@ -34,7 +34,7 @@
             <!-- padding-right 15% ditambahkan agar teks benar-benar di tengah kertas, seimbang dengan logo di kiri -->
             <td style="width: 85%; text-align: center; padding-right: 15%;">
                 <h2>PEMERINTAH KOTA BANJARMASIN</h2>
-                <h3>MANAJEMEN PELAPORAN DAN PELANGGARAN PEGAWAI</h3>
+                <h3>MANAJEMEN PELANGGARAN DAN PELAPORAN PEGAWAI</h3>
                 <p>Dokumen Laporan Hasil Investigasi & Tindak Lanjut</p>
             </td>
         </tr>
@@ -45,70 +45,92 @@
         Nomor Tiket: {{ $pengaduan->kode_tiket }}
     </div>
 
-    <div class="section-title">A. INFORMASI PELAPOR & KASUS AWAL</div>
+    <div class="section-title">1. IDENTITAS PELAPOR & DATA KASUS</div>
     <table class="data-table">
         <tr>
-            <th>Tanggal Laporan Masuk</th>
-            <td>{{ \Carbon\Carbon::parse($pengaduan->created_at)->format('d F Y H:i') }} WITA</td>
+            <th>Identitas Pelapor</th>
+            <td>{{ $pengaduan->nama_pelapor ?? 'Anonim' }} ({{ $pengaduan->nomor_hp ?? '-' }} | {{ $pengaduan->email ?? '-' }}) {{ $pengaduan->nip ? '- NIP: '.$pengaduan->nip : '' }}</td>
         </tr>
         <tr>
-            <th>Nama Pelapor</th>
-            <td>{{ $pengaduan->user->name ?? 'Anonim' }}</td>
+            <th>Judul Laporan</th>
+            <td>{{ $pengaduan->judul_laporan }}</td>
         </tr>
         <tr>
-            <th>Kategori</th>
-            <td>{{ $pengaduan->kategori_laporan }}</td>
+            <th>Kategori & Waktu Kejadian</th>
+            <td>{{ $pengaduan->kategori_laporan }} | {{ \Carbon\Carbon::parse($pengaduan->tanggal_kejadian)->format('d F Y') }}</td>
         </tr>
         <tr>
-            <th>Waktu & Lokasi Kejadian</th>
-            <td>{{ \Carbon\Carbon::parse($pengaduan->tanggal_kejadian)->format('d F Y') }} di {{ $pengaduan->lokasi_kejadian }}</td>
+            <th>Lokasi Kejadian</th>
+            <td>{{ $pengaduan->lokasi_kejadian }}</td>
+        </tr>
+        <tr>
+            <th>Tingkat Pelanggaran</th>
+            <td>{{ $pengaduan->tingkat_pelanggaran ?? 'Belum Ditentukan' }}</td>
         </tr>
         <tr>
             <th>Kronologi Laporan</th>
             <td>{{ $pengaduan->isi_laporan }}</td>
         </tr>
+        @if($pengaduan->pesan_susulan)
+        <tr>
+            <th>Informasi Tambahan Pelapor</th>
+            <td><em>"{{ $pengaduan->pesan_susulan }}"</em></td>
+        </tr>
+        @endif
     </table>
 
-    <div class="section-title">B. HASIL VERIFIKASI & INVESTIGASI</div>
+    <div class="section-title">2. HASIL INVESTIGASI LAPANGAN</div>
     <table class="data-table">
         <tr>
-            <th>Tingkat Pelanggaran</th>
-            <td>{{ $pengaduan->tingkat_pelanggaran ?? 'Belum ditentukan' }}</td>
-        </tr>
-        <tr>
-            <th>Investigator Bertugas</th>
-            <td>{{ $pengaduan->investigator->name ?? 'Belum ada' }}</td>
+            <th>Investigator Lapangan</th>
+            <td>{{ $pengaduan->investigator->name ?? 'Belum Ditugaskan' }}</td>
         </tr>
         <tr>
             <th>Fakta Lapangan</th>
-            <td>{{ $pengaduan->fakta_lapangan ?? 'Belum ada data' }}</td>
+            <td>{{ $pengaduan->fakta_lapangan ?? '-' }}</td>
         </tr>
         <tr>
-            <th>Pihak Terlibat / Saksi</th>
-            <td>{{ $pengaduan->pihak_terlibat ?? 'Belum ada data' }}</td>
+            <th>Pihak Terkait / Saksi</th>
+            <td>{{ $pengaduan->pihak_terlibat ?? '-' }}</td>
         </tr>
         <tr>
-            <th>Kesimpulan Investigasi</th>
-            <td>{{ $pengaduan->kesimpulan ?? 'Belum ada data' }}</td>
+            <th>Kesimpulan & Rekomendasi</th>
+            <td>{{ $pengaduan->kesimpulan ?? '-' }}</td>
         </tr>
     </table>
 
-    <div class="section-title">C. KEPUTUSAN & TINDAK LANJUT</div>
+    <div class="section-title">3. ARSIP BUKTI TERLAMPIR</div>
     <table class="data-table">
         <tr>
-            <th>Pihak Penindak / Instansi</th>
+            <th>Status Bukti Awal</th>
+            <td>{{ $pengaduan->lampiran_bukti ? 'Tersedia [Terlampir di Sistem]' : 'Tidak Ada Bukti Awal' }}</td>
+        </tr>
+        <tr>
+            <th>Status Bukti Tambahan</th>
+            <td>{{ $pengaduan->lampiran_susulan ? 'Tersedia [Terlampir di Sistem]' : 'Tidak Ada Bukti Tambahan' }}</td>
+        </tr>
+        <tr>
+            <th>Status Bukti Temuan (Investigasi)</th>
+            <td>{{ $pengaduan->bukti_investigasi ? 'Tersedia [Terlampir di Sistem]' : 'Tidak Ada Bukti Investigasi' }}</td>
+        </tr>
+    </table>
+
+    <div class="section-title">4. KEPUTUSAN & EKSEKUSI TINDAK LANJUT</div>
+    <table class="data-table">
+        <tr>
+            <th>Instansi Penindak</th>
             <td>{{ $pengaduan->pihak_penindak ?? '-' }}</td>
         </tr>
         <tr>
-            <th>Tanggal Eksekusi</th>
+            <th>Tanggal Eksekusi Keputusan</th>
             <td>{{ $pengaduan->tanggal_tindak_lanjut ? \Carbon\Carbon::parse($pengaduan->tanggal_tindak_lanjut)->format('d F Y') : '-' }}</td>
         </tr>
         <tr>
-            <th>Sanksi / Keputusan Akhir</th>
-            <td>{{ $pengaduan->tindak_lanjut ?? 'Belum ada keputusan' }}</td>
+            <th>Detail Sanksi / Tindak Lanjut</th>
+            <td>{{ $pengaduan->tindak_lanjut ?? '-' }}</td>
         </tr>
         <tr>
-            <th>Status Kasus Saat Ini</th>
+            <th>Status Kasus Akhir</th>
             <td style="text-transform: uppercase; font-weight: bold;">{{ $pengaduan->status }}</td>
         </tr>
     </table>
@@ -117,8 +139,15 @@
     <!-- TABEL TANDA TANGAN (Tanpa Border) -->
     <table style="border-collapse: collapse; border: none; margin-top: 40px; width: 100%;">
         <tr>
-            <td style="border: none; width: 60%;"></td>
-            <td style="border: none; width: 40%; text-align: center;">
+            <td style="border: none; width: 33%; text-align: center; vertical-align: bottom;">
+                Pelapor,<br><br><br><br><br><br>
+                <strong>{{ $pengaduan->nama_pelapor ?? '_______________________' }}</strong>
+            </td>
+            <td style="border: none; width: 33%; text-align: center; vertical-align: bottom;">
+                Investigator Lapangan,<br><br><br><br><br><br>
+                <strong>{{ $pengaduan->investigator->name ?? '_______________________' }}</strong>
+            </td>
+            <td style="border: none; width: 34%; text-align: center; vertical-align: bottom;">
                 Banjarmasin, {{ \Carbon\Carbon::now()->format('d F Y') }}<br>
                 Administrator Sistem,<br><br><br><br><br>
                 <strong>{{ Auth::user()->name }}</strong>

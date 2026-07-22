@@ -79,7 +79,7 @@
                 </h1>
                 
                 <p class="text-gray-300 text-base sm:text-lg lg:text-xl max-w-xl leading-relaxed">
-                    Aplikasi Manajemen Pelaporan dan Pelanggaran Pegawai di lingkungan Pemerintah Kota Banjarmasin. Laporkan indikasi pelanggaran secara rahasia, profesional, dan terpantau.
+                    Aplikasi Manajemen Pelanggaran dan Pelaporan Pegawai di lingkungan Pemerintah Kota Banjarmasin. Laporkan indikasi pelanggaran secara rahasia, profesional, dan terpantau.
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
@@ -231,7 +231,7 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="text-center md:text-left">
-                    <h2 class="text-xl sm:text-2xl font-extrabold mb-1 tracking-tight">APLIKASI MANAJEMEN PELAPORAN DAN PELANGGARAN PEGAWAI</h2>
+                    <h2 class="text-xl sm:text-2xl font-extrabold mb-1 tracking-tight">APLIKASI MANAJEMEN PELANGGARAN DAN PELAPORAN PEGAWAI</h2>
                     <p class="text-gray-400 text-sm">Pemerintah Kota Banjarmasin</p>
                 </div>
                 

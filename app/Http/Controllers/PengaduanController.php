@@ -42,7 +42,7 @@ class PengaduanController extends Controller
             'tanggal_kejadian'  => 'required|date',
             'lokasi_kejadian'   => 'required',
             'kategori_laporan'  => 'required',
-            'lampiran_bukti'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran_bukti'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'kategori_lainnya'  => 'required_if:kategori_laporan,Lainnya|nullable|string|max:200',
         ]);
 
@@ -116,7 +116,7 @@ class PengaduanController extends Controller
             'fakta_lapangan'    => 'required|string',
             'pihak_terlibat'    => 'required|string',
             'kesimpulan'        => 'required|string',
-            'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', 
+            'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', 
         ]);
 
         $pengaduan = Pengaduan::findOrFail($id);
@@ -164,7 +164,7 @@ class PengaduanController extends Controller
         $request->validate([
             'kode_tiket' => 'required|exists:pengaduans,kode_tiket',
             'isi_pesan' => 'required|string',
-            'lampiran_bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'lampiran_bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
         ]);
 
         // 2. Cari data kasusnya
