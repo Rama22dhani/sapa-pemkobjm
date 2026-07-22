@@ -114,7 +114,14 @@ class AdminController extends Controller
             'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'kategori_lainnya'      => 'nullable|string|max:200',
         ]);
+
+        if ($request->kategori_laporan === 'Lainnya' && $request->filled('kategori_lainnya')) {
+            if (isset($validatedData['isi_laporan']) && !str_contains($validatedData['isi_laporan'], '⚠️ [SPESIFIKASI KATEGORI]:')) {
+                $validatedData['isi_laporan'] = "⚠️ [SPESIFIKASI KATEGORI]: " . strtoupper($request->kategori_lainnya) . "\n--------------------------------------------------\n" . $validatedData['isi_laporan'];
+            }
+        }
 
         $kasus = Pengaduan::findOrFail($id);
 
@@ -301,6 +308,7 @@ class AdminController extends Controller
             'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
             'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'kategori_lainnya'      => 'nullable|string|max:200',
         ]);
 
         $data = [
@@ -314,7 +322,7 @@ class AdminController extends Controller
             'kategori_laporan'      => $request->kategori_laporan,
             'tanggal_kejadian'      => $request->tanggal_kejadian,
             'lokasi_kejadian'       => $request->lokasi_kejadian,
-            'isi_laporan'           => $request->isi_laporan,
+            'isi_laporan'           => ($request->kategori_laporan === 'Lainnya' && $request->filled('kategori_lainnya') && !str_contains($request->isi_laporan, '⚠️ [SPESIFIKASI KATEGORI]:')) ? "⚠️ [SPESIFIKASI KATEGORI]: " . strtoupper($request->kategori_lainnya) . "\n--------------------------------------------------\n" . $request->isi_laporan : $request->isi_laporan,
             'status'                => $request->status,
             'tingkat_pelanggaran'   => $request->tingkat_pelanggaran,
             'catatan_verifikator'   => $request->catatan_verifikator,

@@ -98,27 +98,25 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th style="width: 5%;">No</th>
-                    <th style="width: 25%;">NIP & Nama</th>
-                    <th style="width: 20%;">Instansi & Status</th>
-                    <th style="width: 25%;">Jabatan</th>
-                    <th style="width: 25%;">Akun Terhubung</th>
+                    <th style="width: 3%; font-size: 9px;">No</th>
+                    <th style="width: 15%; font-size: 9px;">NIP</th>
+                    <th style="width: 20%; font-size: 9px;">Nama</th>
+                    <th style="width: 12%; font-size: 9px;">Status</th>
+                    <th style="width: 20%; font-size: 9px;">Instansi</th>
+                    <th style="width: 15%; font-size: 9px;">Jabatan</th>
+                    <th style="width: 15%; font-size: 9px;">Akun Terhubung</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($data as $index => $d)
                     <tr>
-                        <td class="center">{{ $index + 1 }}</td>
-                        <td>
-                            <strong>{{ $d->nama_pegawai }}</strong><br>
-                            <span style="font-size: 9px; color: #555;">{{ $d->nip }}</span>
-                        </td>
-                        <td>
-                            {{ $d->asal_instansi }}<br>
-                            <span style="font-size: 9px; color: #555;">{{ $d->status_kepegawaian }}</span>
-                        </td>
-                        <td>{{ $d->jabatan }}</td>
-                        <td class="center">
+                        <td class="center" style="font-size: 10px;">{{ $index + 1 }}</td>
+                        <td style="font-size: 10px; color: #555;">{{ $d->nip }}</td>
+                        <td style="font-size: 10px;"><strong>{{ $d->nama_pegawai }}</strong></td>
+                        <td style="font-size: 10px;">{{ $d->status_kepegawaian }}</td>
+                        <td style="font-size: 10px;">{{ $d->asal_instansi }}</td>
+                        <td style="font-size: 10px;">{{ $d->jabatan }}</td>
+                        <td class="center" style="font-size: 10px;">
                             @if($d->user)
                                 {{ $d->user->name }}
                             @else
@@ -128,7 +126,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada master data pegawai.</td>
+                        <td colspan="7" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada master data pegawai.</td>
                     </tr>
                 @endforelse
             </tbody>

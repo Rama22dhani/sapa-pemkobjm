@@ -274,8 +274,10 @@
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold tracking-wider border-b border-slate-200">
                                 <tr>
-                                    <th class="p-4 pl-6">NIP & Nama</th>
-                                    <th class="p-4">Status & Instansi</th>
+                                    <th class="p-4 pl-6">NIP</th>
+                                    <th class="p-4">Nama</th>
+                                    <th class="p-4">Status</th>
+                                    <th class="p-4">Instansi</th>
                                     <th class="p-4">Jabatan</th>
                                     <th class="p-4 text-center">Akun Terhubung</th>
                                     <th class="p-4 text-center pr-6">Aksi</th>
@@ -284,14 +286,12 @@
                             <tbody class="divide-y divide-slate-100 text-sm">
                                 @foreach($dataMasterPegawai as $mp)
                                 <tr class="hover:bg-slate-50 transition">
-                                    <td class="p-4 pl-6">
-                                        <p class="font-bold text-slate-800">{{ $mp->nama_pegawai }}</p>
-                                        <p class="text-xs text-slate-500 mt-1 font-mono">{{ $mp->nip }}</p>
-                                    </td>
+                                    <td class="p-4 pl-6 font-mono text-slate-600">{{ $mp->nip }}</td>
+                                    <td class="p-4 font-bold text-slate-800">{{ $mp->nama_pegawai }}</td>
                                     <td class="p-4">
                                         <span class="px-2.5 py-1 rounded text-[10px] uppercase font-bold border {{ $mp->status_kepegawaian == 'PNS' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-slate-100 text-slate-700 border-slate-200' }}">{{ $mp->status_kepegawaian }}</span>
-                                        <p class="text-xs text-slate-600 mt-1.5">{{ $mp->asal_instansi }}</p>
                                     </td>
+                                    <td class="p-4 text-xs text-slate-600">{{ $mp->asal_instansi }}</td>
                                     <td class="p-4 text-slate-700">{{ $mp->jabatan }}</td>
                                     <td class="p-4 text-center">
                                         @if($mp->user)
@@ -869,14 +869,21 @@
                                         <div>
                                             <label class="block text-sm font-bold text-slate-700 mb-1">Kategori Pelanggaran <span class="text-red-500">*</span></label>
                                             <select name="kategori_laporan" x-model="formKasus.kategori_laporan" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
-                                                <option value="Pungli">Pungli</option>
+                                                <option value="">-- Pilih Klasifikasi Terdekat --</option>
+                                                <option value="Pungli">Pungli (Pungutan Liar)</option>
                                                 <option value="Korupsi">Korupsi</option>
                                                 <option value="Gratifikasi">Gratifikasi / Suap</option>
                                                 <option value="Pelanggaran Disiplin">Pelanggaran Disiplin ASN</option>
-                                                <option value="Benturan Kepentingan">Benturan Kepentingan</option>
-                                                <option value="Penyalahgunaan Wewenang">Penyalahgunaan Wewenang</option>
-                                                <option value="Lainnya">Lainnya</option>
+                                                <option value="Benturan Kepentingan">Benturan Kepentingan (Nepotisme)</option>
+                                                <option value="Penyalahgunaan Wewenang">Penyalahgunaan Wewenang & Aset</option>
+                                                <option value="Lainnya">Lainnya (Tulis manual)</option>
                                             </select>
+                                            <div x-show="formKasus.kategori_laporan === 'Lainnya'" x-transition class="mt-3 bg-amber-50 p-4 rounded-xl border border-amber-200 shadow-inner">
+                                                <label class="block text-xs font-black text-amber-900 uppercase mb-1.5">
+                                                    Tuliskan Jenis Pelanggaran <span class="text-red-600">*</span>
+                                                </label>
+                                                <input type="text" name="kategori_lainnya" x-model="formKasus.kategori_lainnya" :required="formKasus.kategori_laporan === 'Lainnya'" class="w-full bg-white border border-amber-300 rounded-lg px-4 py-2.5 text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-bjm-gold placeholder:font-normal placeholder:text-slate-400" placeholder="Ketik jenis pelanggaran di sini...">
+                                            </div>
                                         </div>
                                         <div>
                                             <label class="block text-sm font-bold text-slate-700 mb-1">Tanggal Kejadian <span class="text-red-500">*</span></label>
@@ -1254,12 +1261,21 @@
                                         <div>
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Kategori</label>
                                             <select name="kategori_laporan" x-model="formTindakLanjut.kategori_laporan" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none">
-                                                <option value="Pelayanan Publik">Pelayanan Publik</option>
-                                                <option value="Infrastruktur">Infrastruktur</option>
+                                                <option value="">-- Pilih Klasifikasi Terdekat --</option>
+                                                <option value="Pungli">Pungli (Pungutan Liar)</option>
                                                 <option value="Korupsi">Korupsi</option>
-                                                <option value="Disiplin Pegawai">Disiplin Pegawai</option>
-                                                <option value="Lainnya">Lainnya</option>
+                                                <option value="Gratifikasi">Gratifikasi / Suap</option>
+                                                <option value="Pelanggaran Disiplin">Pelanggaran Disiplin ASN</option>
+                                                <option value="Benturan Kepentingan">Benturan Kepentingan (Nepotisme)</option>
+                                                <option value="Penyalahgunaan Wewenang">Penyalahgunaan Wewenang & Aset</option>
+                                                <option value="Lainnya">Lainnya (Tulis manual)</option>
                                             </select>
+                                            <div x-show="formTindakLanjut.kategori_laporan === 'Lainnya'" x-transition class="mt-3 bg-amber-50 p-4 rounded-xl border border-amber-200 shadow-inner">
+                                                <label class="block text-xs font-black text-amber-900 uppercase mb-1.5">
+                                                    Tuliskan Jenis Pelanggaran <span class="text-red-600">*</span>
+                                                </label>
+                                                <input type="text" name="kategori_lainnya" x-model="formTindakLanjut.kategori_lainnya" :required="formTindakLanjut.kategori_laporan === 'Lainnya'" class="w-full bg-white border border-amber-300 rounded-lg px-4 py-2.5 text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-bjm-gold placeholder:font-normal placeholder:text-slate-400" placeholder="Ketik jenis pelanggaran di sini...">
+                                            </div>
                                         </div>
                                         <div>
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Tgl Kejadian</label>
