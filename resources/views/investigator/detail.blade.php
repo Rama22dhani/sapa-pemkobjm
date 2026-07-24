@@ -225,7 +225,7 @@
                                             <p class="text-[11px] font-semibold text-emerald-600 mt-0.5">✔ File siap diunggah saat Anda menyimpan laporan</p>
                                         </div>
 
-                                        <input id="dropzone-file" type="file" name="bukti_investigasi" class="hidden" accept=".jpg,.jpeg,.png,.pdf" />
+                                        <input id="dropzone-file" type="file" name="bukti_investigasi" class="hidden" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" />
                                     </label>
                                 </div>
                             </div>

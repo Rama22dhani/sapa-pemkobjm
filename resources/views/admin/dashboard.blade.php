@@ -24,6 +24,20 @@
                     }
                 }
             }
+        };
+
+        function getFileBadgeInfo(url) {
+            if (!url) return { icon: '📁', label: 'File', class: 'bg-slate-100 text-slate-700 border-slate-300' };
+            const cleanUrl = url.split('?')[0].split('#')[0];
+            const ext = cleanUrl.split('.').pop().toLowerCase();
+            if (ext === 'pdf') {
+                return { icon: '📄', label: 'PDF', class: 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100' };
+            } else if (['doc', 'docx'].includes(ext)) {
+                return { icon: '📝', label: 'Word', class: 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100' };
+            } else if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+                return { icon: '📷', label: 'Foto', class: 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100' };
+            }
+            return { icon: '📁', label: 'File', class: 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200' };
         }
     </script>
 </head>
@@ -829,7 +843,7 @@
 
                     <!-- Modal Edit Kasus Manual -->
                     <div x-show="showModalEditKasus" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;" x-transition>
-                        <div @click.away="showModalEditKasus = false" class="bg-white rounded-2xl shadow-xl w-full max-w-4xl overflow-hidden transform transition-all max-h-[95vh] flex flex-col">
+                        <div @click.away="showModalEditKasus = false" class="bg-white rounded-2xl shadow-xl w-full max-w-5xl overflow-hidden transform transition-all max-h-[95vh] flex flex-col">
                             <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xl">✏️</span>
@@ -919,18 +933,19 @@
                                     </div>
                                     <div class="mb-4">
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Kronologi / Isi Laporan <span class="text-red-500">*</span></label>
-                                        <textarea name="isi_laporan" x-model="formKasus.isi_laporan" rows="4" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        <textarea name="isi_laporan" x-model="formKasus.isi_laporan" rows="6" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Lampiran Bukti Awal (Gambar/PDF)</label>
                                         <input type="hidden" name="delete_lampiran_bukti" x-model="formKasus.delete_lampiran_bukti">
                                         <div class="mt-1 space-y-2">
                                             <template x-if="formKasus.lampiran_bukti_url">
-                                                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-blue-50/80 border border-blue-200 rounded-lg">
+                                                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-lg border transition-all" :class="getFileBadgeInfo(formKasus.lampiran_bukti_url).class">
                                                     <div class="flex items-center gap-2 min-w-0">
-                                                        <span class="text-xs font-semibold text-blue-800">File Saat Ini:</span>
-                                                        <a :href="formKasus.lampiran_bukti_url" target="_blank" class="text-xs font-bold text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 truncate">
-                                                            📎 Lihat Lampiran Saat Ini
+                                                        <span class="text-xs font-semibold">File Saat Ini:</span>
+                                                        <a :href="formKasus.lampiran_bukti_url" target="_blank" class="text-xs font-bold hover:underline flex items-center gap-1.5 truncate">
+                                                            <span x-text="getFileBadgeInfo(formKasus.lampiran_bukti_url).icon"></span>
+                                                            <span x-text="'Lihat Lampiran ' + getFileBadgeInfo(formKasus.lampiran_bukti_url).label"></span>
                                                         </a>
                                                     </div>
                                                     <button type="button" @click="formKasus.lampiran_bukti_url = null; formKasus.delete_lampiran_bukti = 1" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:text-white bg-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-md transition-all shadow-sm shrink-0 flex items-center gap-1.5" title="Hapus File Ini">
@@ -984,11 +999,11 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Catatan Verifikator (Instruksi/Disposisi)</label>
-                                            <textarea name="catatan_verifikator" x-model="formKasus.catatan_verifikator" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                            <textarea name="catatan_verifikator" x-model="formKasus.catatan_verifikator" rows="4" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                         </div>
                                         <div>
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Alasan Penolakan (Jika Ditolak)</label>
-                                            <textarea name="alasan_penolakan" x-model="formKasus.alasan_penolakan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                            <textarea name="alasan_penolakan" x-model="formKasus.alasan_penolakan" rows="4" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -1000,18 +1015,19 @@
                                     </h4>
                                     <div class="mb-4">
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Pesan Susulan / Informasi Tambahan</label>
-                                        <textarea name="pesan_susulan" x-model="formKasus.pesan_susulan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        <textarea name="pesan_susulan" x-model="formKasus.pesan_susulan" rows="4" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Lampiran Susulan (File Bukti Baru)</label>
                                         <input type="hidden" name="delete_lampiran_susulan" x-model="formKasus.delete_lampiran_susulan">
                                         <div class="mt-1 space-y-2">
                                             <template x-if="formKasus.lampiran_susulan_url">
-                                                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 bg-amber-50/80 border border-amber-200 rounded-lg">
+                                                <div class="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-lg border transition-all" :class="getFileBadgeInfo(formKasus.lampiran_susulan_url).class">
                                                     <div class="flex items-center gap-2 min-w-0">
-                                                        <span class="text-xs font-semibold text-amber-800">File Saat Ini:</span>
-                                                        <a :href="formKasus.lampiran_susulan_url" target="_blank" class="text-xs font-bold text-amber-600 hover:text-amber-800 hover:underline flex items-center gap-1 truncate">
-                                                            📎 Lihat Lampiran Susulan Saat Ini
+                                                        <span class="text-xs font-semibold">File Saat Ini:</span>
+                                                        <a :href="formKasus.lampiran_susulan_url" target="_blank" class="text-xs font-bold hover:underline flex items-center gap-1.5 truncate">
+                                                            <span x-text="getFileBadgeInfo(formKasus.lampiran_susulan_url).icon"></span>
+                                                            <span x-text="'Lihat Lampiran ' + getFileBadgeInfo(formKasus.lampiran_susulan_url).label"></span>
                                                         </a>
                                                     </div>
                                                     <button type="button" @click="formKasus.lampiran_susulan_url = null; formKasus.delete_lampiran_susulan = 1" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:text-white bg-white hover:bg-red-600 border border-red-200 hover:border-red-600 rounded-md transition-all shadow-sm shrink-0 flex items-center gap-1.5" title="Hapus File Ini">
@@ -1129,7 +1145,7 @@
                     </div>
 
                     <div x-show="showModalEditInvestigasi" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
-                        <div @click.away="showModalEditInvestigasi = false" class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden transform transition-all max-h-[90vh] flex flex-col">
+                        <div @click.away="showModalEditInvestigasi = false" class="bg-white rounded-2xl shadow-xl w-full max-w-4xl overflow-hidden transform transition-all max-h-[92vh] flex flex-col">
                             <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
                                 <h3 class="text-white font-bold text-lg">Edit Kertas Kerja Investigasi</h3>
                                 <button @click="showModalEditInvestigasi = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -1150,15 +1166,15 @@
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Fakta di Lapangan <span class="text-red-500">*</span></label>
-                                        <textarea name="fakta_lapangan" x-model="formInvestigasi.fakta_lapangan" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
+                                        <textarea name="fakta_lapangan" x-model="formInvestigasi.fakta_lapangan" rows="6" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Pihak Terlibat / Saksi <span class="text-red-500">*</span></label>
-                                        <textarea name="pihak_terlibat" x-model="formInvestigasi.pihak_terlibat" rows="2" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
+                                        <textarea name="pihak_terlibat" x-model="formInvestigasi.pihak_terlibat" rows="4" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Kesimpulan Akhir & Rekomendasi <span class="text-red-500">*</span></label>
-                                        <textarea name="kesimpulan" x-model="formInvestigasi.kesimpulan" rows="3" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
+                                        <textarea name="kesimpulan" x-model="formInvestigasi.kesimpulan" rows="6" required class="w-full bg-slate-50 border border-slate-300 rounded-lg px-4 py-2.5 focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-bold text-slate-700 mb-1">Lampiran Bukti Temuan Lapangan (Gambar/PDF)</label>
@@ -1167,8 +1183,9 @@
                                             <input type="file" name="bukti_investigasi" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-200 file:text-slate-700 hover:file:bg-slate-300 transition">
                                             <template x-if="formInvestigasi.bukti_investigasi_url">
                                                 <div class="flex items-center gap-2">
-                                                    <a :href="formInvestigasi.bukti_investigasi_url" target="_blank" class="text-xs font-bold text-purple-600 hover:underline shrink-0 bg-purple-50 px-3 py-2 rounded-lg border border-purple-200 flex items-center gap-1 shadow-sm">
-                                                        📎 Lihat Bukti Temuan Saat Ini
+                                                    <a :href="formInvestigasi.bukti_investigasi_url" target="_blank" :class="getFileBadgeInfo(formInvestigasi.bukti_investigasi_url).class" class="text-xs font-bold shrink-0 px-3 py-2 rounded-lg border flex items-center gap-1.5 shadow-sm transition-all hover:underline">
+                                                        <span x-text="getFileBadgeInfo(formInvestigasi.bukti_investigasi_url).icon"></span>
+                                                        <span x-text="'Lihat Berkas ' + getFileBadgeInfo(formInvestigasi.bukti_investigasi_url).label + ' Saat Ini'"></span>
                                                     </a>
                                                     <button type="button" @click="formInvestigasi.bukti_investigasi_url = null; formInvestigasi.delete_bukti_investigasi = 1" class="p-1.5 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded-lg transition-all shadow-sm shrink-0" title="Hapus File Ini">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -1279,7 +1296,7 @@
                     </div>
 
                     <div x-show="showModalEditTindakLanjut" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
-                        <div @click.away="showModalEditTindakLanjut = false" class="bg-white rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+                        <div @click.away="showModalEditTindakLanjut = false" class="bg-white rounded-2xl shadow-xl w-full max-w-4xl overflow-hidden transform transition-all flex flex-col max-h-[92vh]">
                             <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center sticky top-0 z-10">
                                 <h3 class="text-white font-bold text-lg">Koreksi Data Keputusan Tindak Lanjut</h3>
                                 <button @click="showModalEditTindakLanjut = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -1352,16 +1369,16 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                                         <div>
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Fakta Lapangan</label>
-                                            <textarea name="fakta_lapangan" x-model="formTindakLanjut.fakta_lapangan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                            <textarea name="fakta_lapangan" x-model="formTindakLanjut.fakta_lapangan" rows="4" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                         </div>
                                         <div>
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Pihak Terlibat</label>
-                                            <textarea name="pihak_terlibat" x-model="formTindakLanjut.pihak_terlibat" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                            <textarea name="pihak_terlibat" x-model="formTindakLanjut.pihak_terlibat" rows="4" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                         </div>
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Kesimpulan Tim Investigasi</label>
-                                        <textarea name="kesimpulan" x-model="formTindakLanjut.kesimpulan" rows="2" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        <textarea name="kesimpulan" x-model="formTindakLanjut.kesimpulan" rows="4" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                 </div>
 
@@ -1379,7 +1396,7 @@
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-700 mb-1">Detail Keputusan & Sanksi</label>
-                                        <textarea name="tindak_lanjut" x-model="formTindakLanjut.tindak_lanjut" rows="3" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
+                                        <textarea name="tindak_lanjut" x-model="formTindakLanjut.tindak_lanjut" rows="6" required class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-bjm-gold outline-none"></textarea>
                                     </div>
                                 </div>
 
@@ -1393,13 +1410,16 @@
                                             <template x-if="formTindakLanjut.lampiran_bukti_url">
                                                 <div class="mb-2 text-[10px] flex items-center gap-2">
                                                     <span class="text-slate-500">Saat ini:</span>
-                                                    <a :href="formTindakLanjut.lampiran_bukti_url" target="_blank" class="text-blue-600 font-semibold hover:underline bg-blue-50 px-2 py-1 rounded">Lihat File</a>
+                                                    <a :href="formTindakLanjut.lampiran_bukti_url" target="_blank" :class="getFileBadgeInfo(formTindakLanjut.lampiran_bukti_url).class" class="font-bold hover:underline px-2.5 py-1 rounded border inline-flex items-center gap-1.5">
+                                                        <span x-text="getFileBadgeInfo(formTindakLanjut.lampiran_bukti_url).icon"></span>
+                                                        <span x-text="'Lihat Berkas ' + getFileBadgeInfo(formTindakLanjut.lampiran_bukti_url).label"></span>
+                                                    </a>
                                                     <button type="button" @click="formTindakLanjut.lampiran_bukti_url = null; formTindakLanjut.delete_lampiran_bukti = 1" class="p-1 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded transition-all shadow-sm shrink-0" title="Hapus File Ini">
                                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                     </button>
                                                 </div>
                                             </template>
-                                            <input type="file" name="lampiran_bukti" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                                            <input type="file" name="lampiran_bukti" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
                                         </div>
                                         <div class="mb-3">
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Bukti Tambahan</label>
@@ -1407,13 +1427,16 @@
                                             <template x-if="formTindakLanjut.lampiran_susulan_url">
                                                 <div class="mb-2 text-[10px] flex items-center gap-2">
                                                     <span class="text-slate-500">Saat ini:</span>
-                                                    <a :href="formTindakLanjut.lampiran_susulan_url" target="_blank" class="text-amber-600 font-semibold hover:underline bg-amber-50 px-2 py-1 rounded">Lihat File</a>
+                                                    <a :href="formTindakLanjut.lampiran_susulan_url" target="_blank" :class="getFileBadgeInfo(formTindakLanjut.lampiran_susulan_url).class" class="font-bold hover:underline px-2.5 py-1 rounded border inline-flex items-center gap-1.5">
+                                                        <span x-text="getFileBadgeInfo(formTindakLanjut.lampiran_susulan_url).icon"></span>
+                                                        <span x-text="'Lihat Berkas ' + getFileBadgeInfo(formTindakLanjut.lampiran_susulan_url).label"></span>
+                                                    </a>
                                                     <button type="button" @click="formTindakLanjut.lampiran_susulan_url = null; formTindakLanjut.delete_lampiran_susulan = 1" class="p-1 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded transition-all shadow-sm shrink-0" title="Hapus File Ini">
                                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                     </button>
                                                 </div>
                                             </template>
-                                            <input type="file" name="lampiran_susulan" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                                            <input type="file" name="lampiran_susulan" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
                                         </div>
                                         <div class="md:col-span-2 mb-2">
                                             <label class="block text-xs font-bold text-slate-700 mb-1">Bukti Temuan Investigasi</label>
@@ -1421,13 +1444,16 @@
                                             <template x-if="formTindakLanjut.bukti_investigasi_url">
                                                 <div class="mb-2 text-[10px] flex items-center gap-2">
                                                     <span class="text-slate-500">Saat ini:</span>
-                                                    <a :href="formTindakLanjut.bukti_investigasi_url" target="_blank" class="text-purple-600 font-semibold hover:underline bg-purple-50 px-2 py-1 rounded">Lihat File</a>
+                                                    <a :href="formTindakLanjut.bukti_investigasi_url" target="_blank" :class="getFileBadgeInfo(formTindakLanjut.bukti_investigasi_url).class" class="font-bold hover:underline px-2.5 py-1 rounded border inline-flex items-center gap-1.5">
+                                                        <span x-text="getFileBadgeInfo(formTindakLanjut.bukti_investigasi_url).icon"></span>
+                                                        <span x-text="'Lihat Berkas ' + getFileBadgeInfo(formTindakLanjut.bukti_investigasi_url).label"></span>
+                                                    </a>
                                                     <button type="button" @click="formTindakLanjut.bukti_investigasi_url = null; formTindakLanjut.delete_bukti_investigasi = 1" class="p-1 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded transition-all shadow-sm shrink-0" title="Hapus File Ini">
                                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                                     </button>
                                                 </div>
                                             </template>
-                                            <input type="file" name="bukti_investigasi" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
+                                            <input type="file" name="bukti_investigasi" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200">
                                         </div>
                                     </div>
                                 </div>
@@ -1470,17 +1496,51 @@
                                     <td class="p-4 pl-6 font-mono font-bold text-slate-700">{{ $db->kode_tiket }}</td>
                                     <td class="p-4">
                                         @if($db->lampiran_bukti)
-                                            <a href="{{ asset('storage/' . $db->lampiran_bukti) }}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline inline-flex items-center gap-1 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200">📎 Lihat</a>
+                                            @php
+                                                $extBukti = strtolower(pathinfo($db->lampiran_bukti, PATHINFO_EXTENSION));
+                                            @endphp
+                                            @if($extBukti === 'pdf')
+                                                <a href="{{ asset('storage/' . $db->lampiran_bukti) }}" target="_blank" class="text-xs font-bold text-rose-600 hover:underline inline-flex items-center gap-1 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200" title="Dokumen PDF">📄 PDF</a>
+                                            @elseif(in_array($extBukti, ['doc', 'docx']))
+                                                <a href="{{ asset('storage/' . $db->lampiran_bukti) }}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline inline-flex items-center gap-1 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200" title="Dokumen Word">📝 Word</a>
+                                            @elseif(in_array($extBukti, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                                <a href="{{ asset('storage/' . $db->lampiran_bukti) }}" target="_blank" class="text-xs font-bold text-emerald-600 hover:underline inline-flex items-center gap-1 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200" title="Gambar / Foto">🖼️ Foto</a>
+                                            @else
+                                                <a href="{{ asset('storage/' . $db->lampiran_bukti) }}" target="_blank" class="text-xs font-bold text-slate-600 hover:underline inline-flex items-center gap-1 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200" title="Berkas File">📁 File</a>
+                                            @endif
                                         @else <span class="text-slate-400 italic text-xs">-</span> @endif
                                     </td>
                                     <td class="p-4">
                                         @if($db->lampiran_susulan)
-                                            <a href="{{ \Illuminate\Support\Str::startsWith($db->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset('storage/' . $db->lampiran_susulan) : asset('uploads/pengaduan/' . $db->lampiran_susulan) }}" target="_blank" class="text-xs font-bold text-amber-600 hover:underline inline-flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">📎 Susulan</a>
+                                            @php
+                                                $extSusulan = strtolower(pathinfo($db->lampiran_susulan, PATHINFO_EXTENSION));
+                                                $urlSusulan = \Illuminate\Support\Str::startsWith($db->lampiran_susulan, ['bukti_susulan/', 'bukti_pengaduan/']) ? asset('storage/' . $db->lampiran_susulan) : asset('uploads/pengaduan/' . $db->lampiran_susulan);
+                                            @endphp
+                                            @if($extSusulan === 'pdf')
+                                                <a href="{{ $urlSusulan }}" target="_blank" class="text-xs font-bold text-rose-600 hover:underline inline-flex items-center gap-1 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200" title="Dokumen PDF">📄 PDF</a>
+                                            @elseif(in_array($extSusulan, ['doc', 'docx']))
+                                                <a href="{{ $urlSusulan }}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline inline-flex items-center gap-1 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200" title="Dokumen Word">📝 Word</a>
+                                            @elseif(in_array($extSusulan, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                                <a href="{{ $urlSusulan }}" target="_blank" class="text-xs font-bold text-amber-600 hover:underline inline-flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200" title="Gambar / Foto">🖼️ Foto</a>
+                                            @else
+                                                <a href="{{ $urlSusulan }}" target="_blank" class="text-xs font-bold text-slate-600 hover:underline inline-flex items-center gap-1 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200" title="Berkas File">📁 File</a>
+                                            @endif
                                         @else <span class="text-slate-400 italic text-xs">-</span> @endif
                                     </td>
                                     <td class="p-4">
                                         @if($db->bukti_investigasi)
-                                            <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="text-xs font-bold text-purple-600 hover:underline inline-flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-lg border border-purple-200">📷 Audit</a>
+                                            @php
+                                                $extInv = strtolower(pathinfo($db->bukti_investigasi, PATHINFO_EXTENSION));
+                                            @endphp
+                                            @if($extInv === 'pdf')
+                                                <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="text-xs font-bold text-rose-600 hover:underline inline-flex items-center gap-1 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200" title="Dokumen PDF">📄 PDF</a>
+                                            @elseif(in_array($extInv, ['doc', 'docx']))
+                                                <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="text-xs font-bold text-blue-600 hover:underline inline-flex items-center gap-1 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-200" title="Dokumen Word">📝 Word</a>
+                                            @elseif(in_array($extInv, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                                <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="text-xs font-bold text-purple-600 hover:underline inline-flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-lg border border-purple-200" title="Gambar / Foto">📷 Foto</a>
+                                            @else
+                                                <a href="{{ asset('storage/' . $db->bukti_investigasi) }}" target="_blank" class="text-xs font-bold text-slate-600 hover:underline inline-flex items-center gap-1 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200" title="Berkas File">📁 File</a>
+                                            @endif
                                         @else <span class="text-slate-400 italic text-xs">-</span> @endif
                                     </td>
                                     <td class="p-4 text-center pr-6 flex justify-center items-center gap-2">
@@ -1515,7 +1575,7 @@
                     </div>
  
                     <div x-show="showModalEditBukti" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4" style="display: none;">
-                        <div @click.away="showModalEditBukti = false" class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden transform transition-all">
+                        <div @click.away="showModalEditBukti = false" class="bg-white rounded-2xl shadow-xl w-full max-w-xl overflow-hidden transform transition-all">
                             <div class="bg-bjm-dark p-5 border-b-4 border-bjm-gold flex justify-between items-center">
                                 <h3 class="text-white font-bold text-lg">Perbarui Berkas Bukti</h3>
                                 <button @click="showModalEditBukti = false" class="text-slate-300 hover:text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -1534,13 +1594,16 @@
                                     <template x-if="formBukti.lampiran_bukti_url">
                                         <div class="mb-2 text-xs flex items-center gap-2">
                                             <span class="text-slate-500">Berkas saat ini:</span>
-                                            <a :href="formBukti.lampiran_bukti_url" target="_blank" class="text-blue-600 font-semibold hover:underline">Lihat Bukti Awal</a>
+                                            <a :href="formBukti.lampiran_bukti_url" target="_blank" :class="getFileBadgeInfo(formBukti.lampiran_bukti_url).class" class="font-bold hover:underline px-3 py-1 rounded border inline-flex items-center gap-1.5 shadow-sm">
+                                                <span x-text="getFileBadgeInfo(formBukti.lampiran_bukti_url).icon"></span>
+                                                <span x-text="'Lihat Berkas ' + getFileBadgeInfo(formBukti.lampiran_bukti_url).label"></span>
+                                            </a>
                                             <button type="button" @click="formBukti.lampiran_bukti_url = null; formBukti.delete_lampiran_bukti = 1" class="p-1 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded transition-all shadow-sm shrink-0" title="Hapus File Ini">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </div>
                                     </template>
-                                    <input type="file" name="lampiran_bukti" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                                    <input type="file" name="lampiran_bukti" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
                                 </div>
  
                                 <div class="mb-4 pt-4 border-t border-slate-100">
@@ -1549,13 +1612,16 @@
                                     <template x-if="formBukti.lampiran_susulan_url">
                                         <div class="mb-2 text-xs flex items-center gap-2">
                                             <span class="text-slate-500">Berkas saat ini:</span>
-                                            <a :href="formBukti.lampiran_susulan_url" target="_blank" class="text-amber-600 font-semibold hover:underline">Lihat Bukti Tambahan</a>
+                                            <a :href="formBukti.lampiran_susulan_url" target="_blank" :class="getFileBadgeInfo(formBukti.lampiran_susulan_url).class" class="font-bold hover:underline px-3 py-1 rounded border inline-flex items-center gap-1.5 shadow-sm">
+                                                <span x-text="getFileBadgeInfo(formBukti.lampiran_susulan_url).icon"></span>
+                                                <span x-text="'Lihat Berkas ' + getFileBadgeInfo(formBukti.lampiran_susulan_url).label"></span>
+                                            </a>
                                             <button type="button" @click="formBukti.lampiran_susulan_url = null; formBukti.delete_lampiran_susulan = 1" class="p-1 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded transition-all shadow-sm shrink-0" title="Hapus File Ini">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </div>
                                     </template>
-                                    <input type="file" name="lampiran_susulan" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 transition">
+                                    <input type="file" name="lampiran_susulan" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 transition">
                                 </div>
  
                                 <div class="mb-4 pt-4 border-t border-slate-100">
@@ -1564,13 +1630,16 @@
                                     <template x-if="formBukti.bukti_investigasi_url">
                                         <div class="mb-2 text-xs flex items-center gap-2">
                                             <span class="text-slate-500">Berkas saat ini:</span>
-                                            <a :href="formBukti.bukti_investigasi_url" target="_blank" class="text-purple-600 font-semibold hover:underline">Lihat Bukti Investigasi</a>
+                                            <a :href="formBukti.bukti_investigasi_url" target="_blank" :class="getFileBadgeInfo(formBukti.bukti_investigasi_url).class" class="font-bold hover:underline px-3 py-1 rounded border inline-flex items-center gap-1.5 shadow-sm">
+                                                <span x-text="getFileBadgeInfo(formBukti.bukti_investigasi_url).icon"></span>
+                                                <span x-text="'Lihat Berkas ' + getFileBadgeInfo(formBukti.bukti_investigasi_url).label"></span>
+                                            </a>
                                             <button type="button" @click="formBukti.bukti_investigasi_url = null; formBukti.delete_bukti_investigasi = 1" class="p-1 text-red-600 hover:text-white bg-red-50 hover:bg-red-500 border border-red-200 rounded transition-all shadow-sm shrink-0" title="Hapus File Ini">
                                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </div>
                                     </template>
-                                    <input type="file" name="bukti_investigasi" accept=".jpg,.jpeg,.png,.pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
+                                    <input type="file" name="bukti_investigasi" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 transition">
                                 </div>
  
                                 <div class="mt-8 flex justify-end gap-3">

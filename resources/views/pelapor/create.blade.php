@@ -140,8 +140,8 @@
                         <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
                         Unggah File Bukti (Foto/Dokumen)
                     </label>
-                    <p class="text-[11px] text-blue-600/70 font-semibold mb-3">Format: JPG, PNG, PDF. Maksimal ukuran: 2MB.</p>
-                    <input type="file" name="lampiran_bukti" class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-white border border-blue-200 rounded-xl shadow-sm transition-all"/>
+                    <p class="text-[11px] text-blue-600/70 font-semibold mb-3">Format: JPG, PNG, PDF, DOC, DOCX. Maksimal ukuran: 5MB.</p>
+                    <input type="file" name="lampiran_bukti" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="block w-full text-sm text-slate-600 file:mr-4 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 bg-white border border-blue-200 rounded-xl shadow-sm transition-all"/>
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-slate-200 mt-6">

@@ -13,15 +13,17 @@
         .kop-surat p { font-size: 9.5px; margin: 1px 0 0 0; color: #333; line-height: 1.3; }
         .garis-kop { border-top: 2.5px solid #000; border-bottom: 1px solid #000; height: 1.5px; margin-bottom: 20px; margin-top: 4px; }
 
-        .title { text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 15px; text-transform: uppercase; text-decoration: underline; }
+        .title { text-align: center; font-weight: bold; font-size: 12px; margin-bottom: 15px; text-transform: uppercase; text-decoration: underline; }
         
         /* STYLE TABEL DATA REKAP */
         table.data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        table.data-table th, table.data-table td { padding: 7px 5px; border: 1px solid #333; text-align: left; vertical-align: top; }
-        table.data-table th { background-color: #f2f2f2; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 10px; }
+        table.data-table th, table.data-table td { padding: 7px 6px; border: 1px solid #333; text-align: left; vertical-align: top; }
+        table.data-table th { background-color: #f2f2f2; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 9.5px; }
         
         .center { text-align: center; }
-
+        .ttd-box { page-break-inside: avoid; margin-top: 25px; width: 100%; border-collapse: collapse; }
+        .ttd-box td { border: none; }
+        
         @if($kategori == 'master_pegawai')
             @page { size: A4 landscape; }
         @else
@@ -53,9 +55,9 @@
             <thead>
                 <tr>
                     <th style="width: 5%;">No</th>
-                    <th style="width: 35%;">Nama Pegawai</th>
-                    <th style="width: 30%;">Alamat Email</th>
-                    <th style="width: 30%;">Peran / Jabatan</th>
+                    <th style="width: 35%;">Nama Pengguna / Akses</th>
+                    <th style="width: 35%;">Alamat Email (Login)</th>
+                    <th style="width: 25%;">Peran Sistem</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,7 +70,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada data pegawai terdaftar.</td>
+                        <td colspan="4" class="center" style="font-style: italic; color: #777; padding: 15px;">Belum ada akun pengawas terdaftar.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -90,7 +92,7 @@
                         <td class="center">{{ $index + 1 }}</td>
                         <td><strong>{{ $d->name }}</strong></td>
                         <td>{{ $d->email }}</td>
-                        <td class="center">{{ \Carbon\Carbon::parse($d->created_at)->format('d M Y') }}</td>
+                        <td class="center">{{ \Carbon\Carbon::parse($d->created_at)->locale('id')->isoFormat('D MMMM Y') }}</td>
                     </tr>
                 @empty
                     <tr>
@@ -120,12 +122,12 @@
                 @forelse($data as $index => $d)
                     <tr>
                         <td class="center" style="font-size: 9px;">{{ $index + 1 }}</td>
-                        <td style="font-size: 9px; color: #555;">{{ $d->nip }}</td>
+                        <td style="font-size: 9px; color: #444;">{{ $d->nip }}</td>
                         <td style="font-size: 9px;"><strong>{{ $d->nama_pegawai }}</strong></td>
                         <td style="font-size: 9px;">{{ $d->jenis_kelamin ?? '-' }}</td>
                         <td style="font-size: 9px;">{{ $d->tempat_lahir ? $d->tempat_lahir . ', ' : '' }}{{ $d->tanggal_lahir ? \Carbon\Carbon::parse($d->tanggal_lahir)->format('d-m-Y') : '-' }}</td>
                         <td style="font-size: 9px;">{{ $d->alamat ?? '-' }}</td>
-                        <td style="font-size: 9px;">{{ $d->status_kepegawaian }}</td>
+                        <td class="center" style="font-size: 9px;">{{ $d->status_kepegawaian }}</td>
                         <td style="font-size: 9px;">{{ $d->asal_instansi }}</td>
                         <td style="font-size: 9px;">{{ $d->jabatan }}</td>
                         <td class="center" style="font-size: 9px;">
@@ -204,15 +206,38 @@
                                 <td>{{ $d->pihak_penindak ?? '-' }}</td>
                                 <td>{{ $d->tindak_lanjut ?? '-' }}</td>
                             @elseif($kategori == 'bukti')
-                                <td class="center" style="font-weight: bold;">
-                                    {{ $d->lampiran_bukti ? '[ADA] Tersedia File' : '[-] Tidak Ada' }}
-                                </td>
-                                <td class="center" style="font-weight: bold;">
-                                    {{ $d->lampiran_susulan ? '[ADA] Tersedia File' : '[-] Tidak Ada' }}
-                                </td>
-                                <td class="center" style="font-weight: bold;">
-                                    {{ $d->bukti_investigasi ? '[ADA] Tersedia Foto' : '[-] Tidak Ada' }}
-                                </td>
+                                @php
+                                    $extBukti = $d->lampiran_bukti ? strtolower(pathinfo($d->lampiran_bukti, PATHINFO_EXTENSION)) : '';
+                                    $extSusulan = $d->lampiran_susulan ? strtolower(pathinfo($d->lampiran_susulan, PATHINFO_EXTENSION)) : '';
+                                    $extInvestigasi = $d->bukti_investigasi ? strtolower(pathinfo($d->bukti_investigasi, PATHINFO_EXTENSION)) : '';
+
+                                    $labelBukti = '[-] Tidak Ada';
+                                    if ($d->lampiran_bukti) {
+                                        if ($extBukti === 'pdf') $labelBukti = '[ADA] Tersedia PDF';
+                                        elseif (in_array($extBukti, ['doc', 'docx'])) $labelBukti = '[ADA] Tersedia Word';
+                                        elseif (in_array($extBukti, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) $labelBukti = '[ADA] Tersedia Foto';
+                                        else $labelBukti = '[ADA] Tersedia File';
+                                    }
+
+                                    $labelSusulan = '[-] Tidak Ada';
+                                    if ($d->lampiran_susulan) {
+                                        if ($extSusulan === 'pdf') $labelSusulan = '[ADA] Tersedia PDF';
+                                        elseif (in_array($extSusulan, ['doc', 'docx'])) $labelSusulan = '[ADA] Tersedia Word';
+                                        elseif (in_array($extSusulan, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) $labelSusulan = '[ADA] Tersedia Foto';
+                                        else $labelSusulan = '[ADA] Tersedia File';
+                                    }
+
+                                    $labelInvestigasi = '[-] Tidak Ada';
+                                    if ($d->bukti_investigasi) {
+                                        if ($extInvestigasi === 'pdf') $labelInvestigasi = '[ADA] Tersedia PDF';
+                                        elseif (in_array($extInvestigasi, ['doc', 'docx'])) $labelInvestigasi = '[ADA] Tersedia Word';
+                                        elseif (in_array($extInvestigasi, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) $labelInvestigasi = '[ADA] Tersedia Foto';
+                                        else $labelInvestigasi = '[ADA] Tersedia File';
+                                    }
+                                @endphp
+                                <td class="center" style="font-weight: bold;">{{ $labelBukti }}</td>
+                                <td class="center" style="font-weight: bold;">{{ $labelSusulan }}</td>
+                                <td class="center" style="font-weight: bold;">{{ $labelInvestigasi }}</td>
                             @endif
                         @endif
                     </tr>
@@ -225,16 +250,15 @@
         </table>
     @endif
 
-    <br><br>
-    <table style="border-collapse: collapse; border: none; width: 100%;">
+    <table class="ttd-box">
         <tr>
-            <td style="border: none; width: 60%;"></td>
-            <td style="border: none; width: 40%; text-align: center;">
-                Banjarmasin, {{ \Carbon\Carbon::now()->format('d F Y') }}<br>
+            <td style="width: 55%;"></td>
+            <td style="width: 45%; text-align: center; font-size: 11px; line-height: 1.5;">
+                Banjarmasin, {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}<br>
                 Mengetahui,<br>
                 <strong>Kepala Inspektorat Kota Banjarmasin</strong><br><br><br><br><br>
-                <strong>(...................................................)</strong><br>
-                NIP. ........................................
+                <strong style="text-decoration: underline;">Drs. Dolly Syahbana, MM</strong><br>
+                NIP. 196606011986021009
             </td>
         </tr>
     </table>

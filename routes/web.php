@@ -21,9 +21,16 @@ Route::get('/', function () {
     return view('welcome', compact('totalLaporan', 'persentase', 'laporanTerbaru'));
 });
 
-// --- DASHBOARD UMUM ---
+// --- DASHBOARD UMUM (REDIRECT SESUAI PERAN) ---
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $peran = auth()->user()->peran;
+    if ($peran === 'admin') {
+        return redirect()->route('admin.dashboard');
+    } elseif ($peran === 'investigator') {
+        return redirect()->route('investigator.dashboard');
+    } else {
+        return redirect()->route('pelapor.dashboard');
+    }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // --- FITUR LACAK (PUBLIC) ---

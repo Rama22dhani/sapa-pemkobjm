@@ -184,8 +184,8 @@
                                         
                                         <div class="mb-4">
                                             <label class="block text-[10px] text-slate-600 font-bold uppercase mb-1.5">Lampiran Dokumen Bukti (Opsional)</label>
-                                            <input type="file" name="lampiran_bukti" accept=".pdf,.jpg,.jpeg,.png" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-blue-50 file:text-blue-700 bg-slate-50 border border-slate-300 rounded-lg"/>
-                                            <p class="text-[9px] text-slate-400 mt-1">* Format yang didukung: JPG, PNG, PDF. Maksimal 2MB.</p>
+                                            <input type="file" name="lampiran_bukti" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" class="block w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-[10px] file:font-bold file:bg-blue-50 file:text-blue-700 bg-slate-50 border border-slate-300 rounded-lg"/>
+                                            <p class="text-[9px] text-slate-400 mt-1">* Format yang didukung: JPG, PNG, PDF, DOC, DOCX. Maksimal 5MB.</p>
                                         </div>
 
                                         <label class="block text-[10px] text-slate-600 font-bold uppercase mb-1.5">Detail Informasi Tambahan <span class="text-red-500">*</span></label>

@@ -114,9 +114,9 @@ class AdminController extends Controller
             'pihak_penindak'        => 'required|string',
             'tanggal_tindak_lanjut' => 'required|date',
             'tindak_lanjut'         => 'required|string',
-            'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
             'kategori_lainnya'      => 'nullable|string|max:200',
         ]);
 
@@ -308,9 +308,9 @@ class AdminController extends Controller
             'tindak_lanjut'         => 'nullable|string',
             'pihak_penindak'        => 'nullable|string',
             'tanggal_tindak_lanjut' => 'nullable|date',
-            'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'lampiran_bukti'        => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'lampiran_susulan'      => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'bukti_investigasi'     => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
             'kategori_lainnya'      => 'nullable|string|max:200',
         ]);
 
@@ -502,9 +502,9 @@ class AdminController extends Controller
     public function updateBukti(Request $request, $id)
     {
         $request->validate([
-            'lampiran_bukti'    => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'lampiran_susulan'  => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', 
-            'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
+            'lampiran_bukti'    => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'lampiran_susulan'  => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120', 
+            'bukti_investigasi' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
         ]);
 
         $kasus = \App\Models\Pengaduan::findOrFail($id);
@@ -665,7 +665,7 @@ class AdminController extends Controller
                 $data = Pengaduan::whereNotNull('pesan_susulan')->with('user')->latest()->get();
                 break;
             case 'pegawai':
-                $title = "LAPORAN REKAPITULASI DATA PEGAWAI INTERNAL";
+                $title = "LAPORAN REKAPITULASI DATA AKSES PENGAWAS (AKUN)";
                 $data = User::whereIn('peran', ['admin', 'investigator'])->latest()->get();
                 break;
             case 'pengguna':
@@ -673,7 +673,7 @@ class AdminController extends Controller
                 $data = User::where('peran', 'pelapor')->orWhereNull('peran')->latest()->get();
                 break;
             case 'master_pegawai':
-                $title = "LAPORAN REKAPITULASI DATA PEGAWAI";
+                $title = "LAPORAN REKAPITULASI MASTER DATA PEGAWAI";
                 $data = Pegawai::with('user')->latest()->get();
                 break;
 
